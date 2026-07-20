@@ -1,0 +1,1644 @@
+[ +285 ms] Artifact Instance of 'MaterialFonts' is not required, skipping update.
+[   +1 ms] Artifact Instance of 'GradleWrapper' is not required, skipping update.
+[        ] Artifact Instance of 'AndroidGenSnapshotArtifacts' is not required, skipping update.
+[        ] Artifact Instance of 'AndroidInternalBuildArtifacts' is not required, skipping update.
+[        ] Artifact Instance of 'IOSEngineArtifacts' is not required, skipping update.
+[        ] Artifact Instance of 'FlutterWebSdk' is not required, skipping update.
+[   +1 ms] Artifact Instance of 'LegacyCanvasKitRemover' is not required, skipping update.
+[        ] Artifact Instance of 'FlutterSdk' is not required, skipping update.
+[        ] Artifact Instance of 'WindowsEngineArtifacts' is not required, skipping update.
+[        ] Artifact Instance of 'MacOSEngineArtifacts' is not required, skipping update.
+[        ] Artifact Instance of 'LinuxEngineArtifacts' is not required, skipping update.
+[        ] Artifact Instance of 'LinuxFuchsiaSDKArtifacts' is not required, skipping update.
+[        ] Artifact Instance of 'MacOSFuchsiaSDKArtifacts' is not required, skipping update.
+[        ] Artifact Instance of 'FlutterRunnerSDKArtifacts' is not required, skipping update.
+[        ] Artifact Instance of 'FlutterRunnerDebugSymbols' is not required, skipping update.
+[        ] Artifact Instance of 'IosUsbArtifacts' is not required, skipping update.
+[        ] Artifact Instance of 'IosUsbArtifacts' is not required, skipping update.
+[        ] Artifact Instance of 'IosUsbArtifacts' is not required, skipping update.
+[        ] Artifact Instance of 'IosUsbArtifacts' is not required, skipping update.
+[        ] Artifact Instance of 'IosUsbArtifacts' is not required, skipping update.
+[        ] Artifact Instance of 'IosUsbArtifacts' is not required, skipping update.
+[        ] Artifact Instance of 'FontSubsetArtifacts' is not required, skipping update.
+[        ] Artifact Instance of 'PubDependencies' is not required, skipping update.
+[        ] executing: [C:\flutter/] git -c log.showSignature=false log HEAD -n 1 --pretty=format:%ad --date=iso
+[  +85 ms] Exit code 0 from: git -c log.showSignature=false log HEAD -n 1 --pretty=format:%ad --date=iso
+[        ] 2026-06-10 15:52:41 -0700
+[  +24 ms] Artifact Instance of 'AndroidGenSnapshotArtifacts' is not required, skipping update.
+[        ] Artifact Instance of 'AndroidInternalBuildArtifacts' is not required, skipping update.
+[        ] Artifact Instance of 'IOSEngineArtifacts' is not required, skipping update.
+[        ] Artifact Instance of 'FlutterWebSdk' is not required, skipping update.
+[        ] Artifact Instance of 'FlutterEngineStamp' is not required, skipping update.
+[        ] Artifact Instance of 'LegacyCanvasKitRemover' is not required, skipping update.
+[   +2 ms] Artifact Instance of 'WindowsEngineArtifacts' is not required, skipping update.
+[        ] Artifact Instance of 'MacOSEngineArtifacts' is not required, skipping update.
+[        ] Artifact Instance of 'LinuxEngineArtifacts' is not required, skipping update.
+[        ] Artifact Instance of 'LinuxFuchsiaSDKArtifacts' is not required, skipping update.
+[        ] Artifact Instance of 'MacOSFuchsiaSDKArtifacts' is not required, skipping update.
+[        ] Artifact Instance of 'FlutterRunnerSDKArtifacts' is not required, skipping update.
+[        ] Artifact Instance of 'FlutterRunnerDebugSymbols' is not required, skipping update.
+[  +56 ms] executing: C:\Users\LENOVO\AppData\Local\Android\sdk\platform-tools\adb.exe devices -l
+[  +90 ms] List of devices attached
+           5C241JEA311124         device product:stallion model:Pixel_10a device:stallion transport_id:1
+[   +4 ms] C:\Users\LENOVO\AppData\Local\Android\sdk\platform-tools\adb.exe -s 5C241JEA311124 shell getprop
+[ +206 ms] Artifact Instance of 'AndroidInternalBuildArtifacts' is not required, skipping update.
+[        ] Artifact Instance of 'IOSEngineArtifacts' is not required, skipping update.
+[        ] Artifact Instance of 'FlutterEngineStamp' is not required, skipping update.
+[   +6 ms] Artifact Instance of 'MacOSEngineArtifacts' is not required, skipping update.
+[        ] Artifact Instance of 'LinuxEngineArtifacts' is not required, skipping update.
+[        ] Artifact Instance of 'LinuxFuchsiaSDKArtifacts' is not required, skipping update.
+[        ] Artifact Instance of 'MacOSFuchsiaSDKArtifacts' is not required, skipping update.
+[        ] Artifact Instance of 'FlutterRunnerSDKArtifacts' is not required, skipping update.
+[        ] Artifact Instance of 'FlutterRunnerDebugSymbols' is not required, skipping update.
+[ +146 ms] Skipping pub get: version match.
+[ +103 ms] Found plugin shared_preferences at C:\Users\LENOVO\AppData\Local\Pub\Cache\hosted\pub.dev\shared_preferences-2.5.5\
+[   +6 ms] Found plugin shared_preferences_windows at C:\Users\LENOVO\AppData\Local\Pub\Cache\hosted\pub.dev\shared_preferences_windows-2.4.1\
+[   +9 ms] Found plugin path_provider_windows at C:\Users\LENOVO\AppData\Local\Pub\Cache\hosted\pub.dev\path_provider_windows-2.3.0\
+[  +13 ms] Found plugin shared_preferences_web at C:\Users\LENOVO\AppData\Local\Pub\Cache\hosted\pub.dev\shared_preferences_web-2.4.3\
+[   +7 ms] Found plugin shared_preferences_linux at C:\Users\LENOVO\AppData\Local\Pub\Cache\hosted\pub.dev\shared_preferences_linux-2.4.1\
+[   +3 ms] Found plugin path_provider_linux at C:\Users\LENOVO\AppData\Local\Pub\Cache\hosted\pub.dev\path_provider_linux-2.2.2\
+[   +4 ms] Found plugin shared_preferences_foundation at C:\Users\LENOVO\AppData\Local\Pub\Cache\hosted\pub.dev\shared_preferences_foundation-2.5.6\
+[   +3 ms] Found plugin shared_preferences_android at C:\Users\LENOVO\AppData\Local\Pub\Cache\hosted\pub.dev\shared_preferences_android-2.4.26\
+[   +3 ms] Found plugin image_picker at C:\Users\LENOVO\AppData\Local\Pub\Cache\hosted\pub.dev\image_picker-1.2.3\
+[   +2 ms] Found plugin image_picker_windows at C:\Users\LENOVO\AppData\Local\Pub\Cache\hosted\pub.dev\image_picker_windows-0.2.2\
+[  +12 ms] Found plugin file_selector_windows at C:\Users\LENOVO\AppData\Local\Pub\Cache\hosted\pub.dev\file_selector_windows-0.9.3+5\
+[   +3 ms] Found plugin image_picker_macos at C:\Users\LENOVO\AppData\Local\Pub\Cache\hosted\pub.dev\image_picker_macos-0.2.2+1\
+[   +2 ms] Found plugin file_selector_macos at C:\Users\LENOVO\AppData\Local\Pub\Cache\hosted\pub.dev\file_selector_macos-0.9.5\
+[   +1 ms] Found plugin image_picker_linux at C:\Users\LENOVO\AppData\Local\Pub\Cache\hosted\pub.dev\image_picker_linux-0.2.2\
+[   +2 ms] Found plugin file_selector_linux at C:\Users\LENOVO\AppData\Local\Pub\Cache\hosted\pub.dev\file_selector_linux-0.9.4\
+[   +2 ms] Found plugin image_picker_ios at C:\Users\LENOVO\AppData\Local\Pub\Cache\hosted\pub.dev\image_picker_ios-0.8.13+6\
+[   +1 ms] Found plugin image_picker_for_web at C:\Users\LENOVO\AppData\Local\Pub\Cache\hosted\pub.dev\image_picker_for_web-3.1.1\
+[   +3 ms] Found plugin image_picker_android at C:\Users\LENOVO\AppData\Local\Pub\Cache\hosted\pub.dev\image_picker_android-0.8.13+19\
+[   +1 ms] Found plugin flutter_plugin_android_lifecycle at C:\Users\LENOVO\AppData\Local\Pub\Cache\hosted\pub.dev\flutter_plugin_android_lifecycle-2.0.35\
+[   +4 ms] Found plugin path_provider at C:\Users\LENOVO\AppData\Local\Pub\Cache\hosted\pub.dev\path_provider-2.1.6\
+[   +2 ms] Found plugin path_provider_foundation at C:\Users\LENOVO\AppData\Local\Pub\Cache\hosted\pub.dev\path_provider_foundation-2.6.0\
+[  +14 ms] Found plugin path_provider_android at C:\Users\LENOVO\AppData\Local\Pub\Cache\hosted\pub.dev\path_provider_android-2.3.1\
+[   +2 ms] Found plugin jni_flutter at C:\Users\LENOVO\AppData\Local\Pub\Cache\hosted\pub.dev\jni_flutter-1.0.1\
+[   +3 ms] Found plugin jni at C:\Users\LENOVO\AppData\Local\Pub\Cache\hosted\pub.dev\jni-1.0.0\
+[   +5 ms] Found plugin firebase_storage at C:\Users\LENOVO\AppData\Local\Pub\Cache\hosted\pub.dev\firebase_storage-13.4.3\
+[   +2 ms] Found plugin firebase_storage_web at C:\Users\LENOVO\AppData\Local\Pub\Cache\hosted\pub.dev\firebase_storage_web-3.11.9\
+[   +4 ms] Found plugin firebase_core at C:\Users\LENOVO\AppData\Local\Pub\Cache\hosted\pub.dev\firebase_core-4.11.0\
+[   +3 ms] Found plugin firebase_core_web at C:\Users\LENOVO\AppData\Local\Pub\Cache\hosted\pub.dev\firebase_core_web-3.9.0\
+[   +6 ms] Found plugin firebase_auth at C:\Users\LENOVO\AppData\Local\Pub\Cache\hosted\pub.dev\firebase_auth-6.5.3\
+[   +2 ms] Found plugin firebase_auth_web at C:\Users\LENOVO\AppData\Local\Pub\Cache\hosted\pub.dev\firebase_auth_web-6.2.3\
+[  +19 ms] Found plugin cloud_firestore at C:\Users\LENOVO\AppData\Local\Pub\Cache\hosted\pub.dev\cloud_firestore-6.6.0\
+[   +3 ms] Found plugin cloud_firestore_web at C:\Users\LENOVO\AppData\Local\Pub\Cache\hosted\pub.dev\cloud_firestore_web-5.6.0\
+[  +90 ms] Found plugin shared_preferences at C:\Users\LENOVO\AppData\Local\Pub\Cache\hosted\pub.dev\shared_preferences-2.5.5\
+[   +2 ms] Found plugin shared_preferences_windows at C:\Users\LENOVO\AppData\Local\Pub\Cache\hosted\pub.dev\shared_preferences_windows-2.4.1\
+[   +6 ms] Found plugin path_provider_windows at C:\Users\LENOVO\AppData\Local\Pub\Cache\hosted\pub.dev\path_provider_windows-2.3.0\
+[   +8 ms] Found plugin shared_preferences_web at C:\Users\LENOVO\AppData\Local\Pub\Cache\hosted\pub.dev\shared_preferences_web-2.4.3\
+[   +4 ms] Found plugin shared_preferences_linux at C:\Users\LENOVO\AppData\Local\Pub\Cache\hosted\pub.dev\shared_preferences_linux-2.4.1\
+[   +2 ms] Found plugin path_provider_linux at C:\Users\LENOVO\AppData\Local\Pub\Cache\hosted\pub.dev\path_provider_linux-2.2.2\
+[   +2 ms] Found plugin shared_preferences_foundation at C:\Users\LENOVO\AppData\Local\Pub\Cache\hosted\pub.dev\shared_preferences_foundation-2.5.6\
+[   +1 ms] Found plugin shared_preferences_android at C:\Users\LENOVO\AppData\Local\Pub\Cache\hosted\pub.dev\shared_preferences_android-2.4.26\
+[   +2 ms] Found plugin image_picker at C:\Users\LENOVO\AppData\Local\Pub\Cache\hosted\pub.dev\image_picker-1.2.3\
+[   +2 ms] Found plugin image_picker_windows at C:\Users\LENOVO\AppData\Local\Pub\Cache\hosted\pub.dev\image_picker_windows-0.2.2\
+[   +6 ms] Found plugin file_selector_windows at C:\Users\LENOVO\AppData\Local\Pub\Cache\hosted\pub.dev\file_selector_windows-0.9.3+5\
+[   +3 ms] Found plugin image_picker_macos at C:\Users\LENOVO\AppData\Local\Pub\Cache\hosted\pub.dev\image_picker_macos-0.2.2+1\
+[   +1 ms] Found plugin file_selector_macos at C:\Users\LENOVO\AppData\Local\Pub\Cache\hosted\pub.dev\file_selector_macos-0.9.5\
+[   +1 ms] Found plugin image_picker_linux at C:\Users\LENOVO\AppData\Local\Pub\Cache\hosted\pub.dev\image_picker_linux-0.2.2\
+[   +1 ms] Found plugin file_selector_linux at C:\Users\LENOVO\AppData\Local\Pub\Cache\hosted\pub.dev\file_selector_linux-0.9.4\
+[   +1 ms] Found plugin image_picker_ios at C:\Users\LENOVO\AppData\Local\Pub\Cache\hosted\pub.dev\image_picker_ios-0.8.13+6\
+[   +1 ms] Found plugin image_picker_for_web at C:\Users\LENOVO\AppData\Local\Pub\Cache\hosted\pub.dev\image_picker_for_web-3.1.1\
+[   +2 ms] Found plugin image_picker_android at C:\Users\LENOVO\AppData\Local\Pub\Cache\hosted\pub.dev\image_picker_android-0.8.13+19\
+[   +1 ms] Found plugin flutter_plugin_android_lifecycle at C:\Users\LENOVO\AppData\Local\Pub\Cache\hosted\pub.dev\flutter_plugin_android_lifecycle-2.0.35\
+[   +2 ms] Found plugin path_provider at C:\Users\LENOVO\AppData\Local\Pub\Cache\hosted\pub.dev\path_provider-2.1.6\
+[   +1 ms] Found plugin path_provider_foundation at C:\Users\LENOVO\AppData\Local\Pub\Cache\hosted\pub.dev\path_provider_foundation-2.6.0\
+[  +11 ms] Found plugin path_provider_android at C:\Users\LENOVO\AppData\Local\Pub\Cache\hosted\pub.dev\path_provider_android-2.3.1\
+[   +1 ms] Found plugin jni_flutter at C:\Users\LENOVO\AppData\Local\Pub\Cache\hosted\pub.dev\jni_flutter-1.0.1\
+[   +1 ms] Found plugin jni at C:\Users\LENOVO\AppData\Local\Pub\Cache\hosted\pub.dev\jni-1.0.0\
+[   +5 ms] Found plugin firebase_storage at C:\Users\LENOVO\AppData\Local\Pub\Cache\hosted\pub.dev\firebase_storage-13.4.3\
+[   +1 ms] Found plugin firebase_storage_web at C:\Users\LENOVO\AppData\Local\Pub\Cache\hosted\pub.dev\firebase_storage_web-3.11.9\
+[   +2 ms] Found plugin firebase_core at C:\Users\LENOVO\AppData\Local\Pub\Cache\hosted\pub.dev\firebase_core-4.11.0\
+[   +1 ms] Found plugin firebase_core_web at C:\Users\LENOVO\AppData\Local\Pub\Cache\hosted\pub.dev\firebase_core_web-3.9.0\
+[   +3 ms] Found plugin firebase_auth at C:\Users\LENOVO\AppData\Local\Pub\Cache\hosted\pub.dev\firebase_auth-6.5.3\
+[   +1 ms] Found plugin firebase_auth_web at C:\Users\LENOVO\AppData\Local\Pub\Cache\hosted\pub.dev\firebase_auth_web-6.2.3\
+[   +7 ms] Found plugin cloud_firestore at C:\Users\LENOVO\AppData\Local\Pub\Cache\hosted\pub.dev\cloud_firestore-6.6.0\
+[   +1 ms] Found plugin cloud_firestore_web at C:\Users\LENOVO\AppData\Local\Pub\Cache\hosted\pub.dev\cloud_firestore_web-5.6.0\
+[  +13 ms] Skipping generating web_plugin_registrant.dart because it is up-to-date.
+[  +49 ms] Found plugin shared_preferences at C:\Users\LENOVO\AppData\Local\Pub\Cache\hosted\pub.dev\shared_preferences-2.5.5\
+[   +2 ms] Found plugin shared_preferences_windows at C:\Users\LENOVO\AppData\Local\Pub\Cache\hosted\pub.dev\shared_preferences_windows-2.4.1\
+[   +4 ms] Found plugin path_provider_windows at C:\Users\LENOVO\AppData\Local\Pub\Cache\hosted\pub.dev\path_provider_windows-2.3.0\
+[   +6 ms] Found plugin shared_preferences_web at C:\Users\LENOVO\AppData\Local\Pub\Cache\hosted\pub.dev\shared_preferences_web-2.4.3\
+[   +3 ms] Found plugin shared_preferences_linux at C:\Users\LENOVO\AppData\Local\Pub\Cache\hosted\pub.dev\shared_preferences_linux-2.4.1\
+[   +1 ms] Found plugin path_provider_linux at C:\Users\LENOVO\AppData\Local\Pub\Cache\hosted\pub.dev\path_provider_linux-2.2.2\
+[   +2 ms] Found plugin shared_preferences_foundation at C:\Users\LENOVO\AppData\Local\Pub\Cache\hosted\pub.dev\shared_preferences_foundation-2.5.6\
+[   +1 ms] Found plugin shared_preferences_android at C:\Users\LENOVO\AppData\Local\Pub\Cache\hosted\pub.dev\shared_preferences_android-2.4.26\
+[   +1 ms] Found plugin image_picker at C:\Users\LENOVO\AppData\Local\Pub\Cache\hosted\pub.dev\image_picker-1.2.3\
+[   +1 ms] Found plugin image_picker_windows at C:\Users\LENOVO\AppData\Local\Pub\Cache\hosted\pub.dev\image_picker_windows-0.2.2\
+[   +6 ms] Found plugin file_selector_windows at C:\Users\LENOVO\AppData\Local\Pub\Cache\hosted\pub.dev\file_selector_windows-0.9.3+5\
+[   +2 ms] Found plugin image_picker_macos at C:\Users\LENOVO\AppData\Local\Pub\Cache\hosted\pub.dev\image_picker_macos-0.2.2+1\
+[   +1 ms] Found plugin file_selector_macos at C:\Users\LENOVO\AppData\Local\Pub\Cache\hosted\pub.dev\file_selector_macos-0.9.5\
+[   +1 ms] Found plugin image_picker_linux at C:\Users\LENOVO\AppData\Local\Pub\Cache\hosted\pub.dev\image_picker_linux-0.2.2\
+[   +1 ms] Found plugin file_selector_linux at C:\Users\LENOVO\AppData\Local\Pub\Cache\hosted\pub.dev\file_selector_linux-0.9.4\
+[   +1 ms] Found plugin image_picker_ios at C:\Users\LENOVO\AppData\Local\Pub\Cache\hosted\pub.dev\image_picker_ios-0.8.13+6\
+[   +1 ms] Found plugin image_picker_for_web at C:\Users\LENOVO\AppData\Local\Pub\Cache\hosted\pub.dev\image_picker_for_web-3.1.1\
+[   +2 ms] Found plugin image_picker_android at C:\Users\LENOVO\AppData\Local\Pub\Cache\hosted\pub.dev\image_picker_android-0.8.13+19\
+[   +1 ms] Found plugin flutter_plugin_android_lifecycle at C:\Users\LENOVO\AppData\Local\Pub\Cache\hosted\pub.dev\flutter_plugin_android_lifecycle-2.0.35\
+[   +2 ms] Found plugin path_provider at C:\Users\LENOVO\AppData\Local\Pub\Cache\hosted\pub.dev\path_provider-2.1.6\
+[   +2 ms] Found plugin path_provider_foundation at C:\Users\LENOVO\AppData\Local\Pub\Cache\hosted\pub.dev\path_provider_foundation-2.6.0\
+[  +12 ms] Found plugin path_provider_android at C:\Users\LENOVO\AppData\Local\Pub\Cache\hosted\pub.dev\path_provider_android-2.3.1\
+[   +2 ms] Found plugin jni_flutter at C:\Users\LENOVO\AppData\Local\Pub\Cache\hosted\pub.dev\jni_flutter-1.0.1\
+[   +2 ms] Found plugin jni at C:\Users\LENOVO\AppData\Local\Pub\Cache\hosted\pub.dev\jni-1.0.0\
+[   +5 ms] Found plugin firebase_storage at C:\Users\LENOVO\AppData\Local\Pub\Cache\hosted\pub.dev\firebase_storage-13.4.3\
+[   +1 ms] Found plugin firebase_storage_web at C:\Users\LENOVO\AppData\Local\Pub\Cache\hosted\pub.dev\firebase_storage_web-3.11.9\
+[   +3 ms] Found plugin firebase_core at C:\Users\LENOVO\AppData\Local\Pub\Cache\hosted\pub.dev\firebase_core-4.11.0\
+[   +1 ms] Found plugin firebase_core_web at C:\Users\LENOVO\AppData\Local\Pub\Cache\hosted\pub.dev\firebase_core_web-3.9.0\
+[   +4 ms] Found plugin firebase_auth at C:\Users\LENOVO\AppData\Local\Pub\Cache\hosted\pub.dev\firebase_auth-6.5.3\
+[   +1 ms] Found plugin firebase_auth_web at C:\Users\LENOVO\AppData\Local\Pub\Cache\hosted\pub.dev\firebase_auth_web-6.2.3\
+[   +6 ms] Found plugin cloud_firestore at C:\Users\LENOVO\AppData\Local\Pub\Cache\hosted\pub.dev\cloud_firestore-6.6.0\
+[   +2 ms] Found plugin cloud_firestore_web at C:\Users\LENOVO\AppData\Local\Pub\Cache\hosted\pub.dev\cloud_firestore_web-5.6.0\
+[   +8 ms] Generating D:\city_connect\android\app\src\main\java\io\flutter\plugins\GeneratedPluginRegistrant.java
+[   +2 ms] Skipping generating GeneratedPluginRegistrant.java because it is up-to-date.
+[   +6 ms] Skipping generating generated_plugin_registrant.h because it is up-to-date.
+[   +1 ms] Skipping generating generated_plugin_registrant.cc because it is up-to-date.
+[   +2 ms] Skipping generating generated_plugins.cmake because it is up-to-date.
+[   +2 ms] Skipping generating generated_plugin_registrant.h because it is up-to-date.
+[   +1 ms] Skipping generating generated_plugin_registrant.cc because it is up-to-date.
+[   +1 ms] Skipping generating generated_plugins.cmake because it is up-to-date.
+[   +3 ms] Skipping generating GeneratedPluginRegistrant.h because it is up-to-date.
+[   +1 ms] Skipping generating GeneratedPluginRegistrant.m because it is up-to-date.
+[   +2 ms] Skipping generating GeneratedPluginRegistrant.swift because it is up-to-date.
+[  +77 ms] ro.hardware = stallion
+[        ] ro.build.characteristics = nosdcard
+[  +84 ms] Initializing file store
+[  +11 ms] Skipping target: gen_localizations
+[   +3 ms] gen_dart_plugin_registrant: Starting due to {InvalidatedReasonKind.outputSetAddition: The following outputs were added to the output set: D:\city_connect\.dart_tool\flutter_build\dart_plugin_registrant.dart, InvalidatedReasonKind.inputChanged: The following inputs have updated contents: D:\city_connect\.dart_tool\package_config.json}
+[  +46 ms] Found plugin shared_preferences at C:\Users\LENOVO\AppData\Local\Pub\Cache\hosted\pub.dev\shared_preferences-2.5.5\
+[   +1 ms] Found plugin shared_preferences_windows at C:\Users\LENOVO\AppData\Local\Pub\Cache\hosted\pub.dev\shared_preferences_windows-2.4.1\
+[   +3 ms] Found plugin path_provider_windows at C:\Users\LENOVO\AppData\Local\Pub\Cache\hosted\pub.dev\path_provider_windows-2.3.0\
+[   +5 ms] Found plugin shared_preferences_web at C:\Users\LENOVO\AppData\Local\Pub\Cache\hosted\pub.dev\shared_preferences_web-2.4.3\
+[   +3 ms] Found plugin shared_preferences_linux at C:\Users\LENOVO\AppData\Local\Pub\Cache\hosted\pub.dev\shared_preferences_linux-2.4.1\
+[   +1 ms] Found plugin path_provider_linux at C:\Users\LENOVO\AppData\Local\Pub\Cache\hosted\pub.dev\path_provider_linux-2.2.2\
+[   +2 ms] Found plugin shared_preferences_foundation at C:\Users\LENOVO\AppData\Local\Pub\Cache\hosted\pub.dev\shared_preferences_foundation-2.5.6\
+[   +1 ms] Found plugin shared_preferences_android at C:\Users\LENOVO\AppData\Local\Pub\Cache\hosted\pub.dev\shared_preferences_android-2.4.26\
+[   +1 ms] Found plugin image_picker at C:\Users\LENOVO\AppData\Local\Pub\Cache\hosted\pub.dev\image_picker-1.2.3\
+[        ] Found plugin image_picker_windows at C:\Users\LENOVO\AppData\Local\Pub\Cache\hosted\pub.dev\image_picker_windows-0.2.2\
+[   +4 ms] Found plugin file_selector_windows at C:\Users\LENOVO\AppData\Local\Pub\Cache\hosted\pub.dev\file_selector_windows-0.9.3+5\
+[   +2 ms] Found plugin image_picker_macos at C:\Users\LENOVO\AppData\Local\Pub\Cache\hosted\pub.dev\image_picker_macos-0.2.2+1\
+[        ] Found plugin file_selector_macos at C:\Users\LENOVO\AppData\Local\Pub\Cache\hosted\pub.dev\file_selector_macos-0.9.5\
+[   +1 ms] Found plugin image_picker_linux at C:\Users\LENOVO\AppData\Local\Pub\Cache\hosted\pub.dev\image_picker_linux-0.2.2\
+[   +1 ms] Found plugin file_selector_linux at C:\Users\LENOVO\AppData\Local\Pub\Cache\hosted\pub.dev\file_selector_linux-0.9.4\
+[        ] Found plugin image_picker_ios at C:\Users\LENOVO\AppData\Local\Pub\Cache\hosted\pub.dev\image_picker_ios-0.8.13+6\
+[        ] Found plugin image_picker_for_web at C:\Users\LENOVO\AppData\Local\Pub\Cache\hosted\pub.dev\image_picker_for_web-3.1.1\
+[   +1 ms] Found plugin image_picker_android at C:\Users\LENOVO\AppData\Local\Pub\Cache\hosted\pub.dev\image_picker_android-0.8.13+19\
+[        ] Found plugin flutter_plugin_android_lifecycle at C:\Users\LENOVO\AppData\Local\Pub\Cache\hosted\pub.dev\flutter_plugin_android_lifecycle-2.0.35\
+[   +1 ms] Found plugin path_provider at C:\Users\LENOVO\AppData\Local\Pub\Cache\hosted\pub.dev\path_provider-2.1.6\
+[        ] Found plugin path_provider_foundation at C:\Users\LENOVO\AppData\Local\Pub\Cache\hosted\pub.dev\path_provider_foundation-2.6.0\
+[   +7 ms] Found plugin path_provider_android at C:\Users\LENOVO\AppData\Local\Pub\Cache\hosted\pub.dev\path_provider_android-2.3.1\
+[   +1 ms] Found plugin jni_flutter at C:\Users\LENOVO\AppData\Local\Pub\Cache\hosted\pub.dev\jni_flutter-1.0.1\
+[   +1 ms] Found plugin jni at C:\Users\LENOVO\AppData\Local\Pub\Cache\hosted\pub.dev\jni-1.0.0\
+[   +2 ms] Found plugin firebase_storage at C:\Users\LENOVO\AppData\Local\Pub\Cache\hosted\pub.dev\firebase_storage-13.4.3\
+[   +1 ms] Found plugin firebase_storage_web at C:\Users\LENOVO\AppData\Local\Pub\Cache\hosted\pub.dev\firebase_storage_web-3.11.9\
+[   +2 ms] Found plugin firebase_core at C:\Users\LENOVO\AppData\Local\Pub\Cache\hosted\pub.dev\firebase_core-4.11.0\
+[   +1 ms] Found plugin firebase_core_web at C:\Users\LENOVO\AppData\Local\Pub\Cache\hosted\pub.dev\firebase_core_web-3.9.0\
+[   +4 ms] Found plugin firebase_auth at C:\Users\LENOVO\AppData\Local\Pub\Cache\hosted\pub.dev\firebase_auth-6.5.3\
+[   +1 ms] Found plugin firebase_auth_web at C:\Users\LENOVO\AppData\Local\Pub\Cache\hosted\pub.dev\firebase_auth_web-6.2.3\
+[   +6 ms] Found plugin cloud_firestore at C:\Users\LENOVO\AppData\Local\Pub\Cache\hosted\pub.dev\cloud_firestore-6.6.0\
+[   +1 ms] Found plugin cloud_firestore_web at C:\Users\LENOVO\AppData\Local\Pub\Cache\hosted\pub.dev\cloud_firestore_web-5.6.0\
+[  +48 ms] gen_dart_plugin_registrant: Complete
+[   +3 ms] Skipping target: _composite
+[   +2 ms] complete
+[   +4 ms] Launching lib\main.dart on Pixel 10a in debug mode...
+[   +3 ms] C:\flutter\bin\cache\dart-sdk\bin\dartaotruntime.exe C:\flutter\bin\cache\dart-sdk\bin\snapshots\frontend_server_aot.dart.snapshot --sdk-root C:\flutter\bin\cache\artifacts\engine\common\flutter_patched_sdk/ --incremental --target=flutter --experimental-emit-debug-metadata -DFLUTTER_VERSION=3.44.2 -DFLUTTER_CHANNEL=stable -DFLUTTER_GIT_URL=https://github.com/flutter/flutter.git -DFLUTTER_FRAMEWORK_REVISION=c9a6c48423 -DFLUTTER_ENGINE_REVISION=77e2e94772 -DFLUTTER_DART_VERSION=3.12.2 --output-dill C:\Users\LENOVO\AppData\Local\Temp\flutter_tools.4b43ef7d\flutter_tool.5dfd9397\app.dill --packages D:\city_connect\.dart_tool\package_config.json -Ddart.vm.profile=false -Ddart.vm.product=false --enable-asserts --track-widget-creation --filesystem-scheme org-dartlang-root --initialize-from-dill build\11f9252fab9bb4424d40abfb06fd5e81.cache.dill.track.dill --source file:///D:/city_connect/.dart_tool/flutter_build/dart_plugin_registrant.dart --source package:flutter/src/dart_plugin_registrant.dart -Dflutter.dart_plugin_registrant=file:///D:/city_connect/.dart_tool/flutter_build/dart_plugin_registrant.dart --verbosity=error --enable-experiment=alternative-invalidation-strategy
+[  +11 ms] executing: C:\Users\LENOVO\AppData\Local\Android\sdk\platform-tools\adb.exe -s 5C241JEA311124 shell -x logcat -v time -t 1
+[  +20 ms] <- compile package:city_connect/main.dart
+[ +257 ms] --------- beginning of main
+           07-10 19:07:14.626 D/AOC     ( 1489): A3:MSG: tmd3743_device.cc, 997: USF: TMD3743: C/G switch 2 -> 1 d_lux:47.85 w_lux: 54.52 C:0.87 G:0.40
+[  +13 ms] executing: C:\Users\LENOVO\AppData\Local\Android\sdk\platform-tools\adb.exe version
+[  +69 ms] Android Debug Bridge version 1.0.41
+           Version 37.0.0-14910828
+           Installed as C:\Users\LENOVO\AppData\Local\Android\sdk\platform-tools\adb.exe
+           Running on Windows 10.0.26200
+[   +1 ms] executing: C:\Users\LENOVO\AppData\Local\Android\sdk\platform-tools\adb.exe start-server
+[  +60 ms] Building APK
+[   +9 ms] executing: C:\Program Files\Android\Android Studio1\jbr\bin\java -version
+[ +161 ms] Exit code 0 from: C:\Program Files\Android\Android Studio1\jbr\bin\java -version
+[        ] openjdk version "21.0.10" 2026-01-20
+           OpenJDK Runtime Environment (build 21.0.10+-14961533-b1163.108)
+           OpenJDK 64-Bit Server VM (build 21.0.10+-14961533-b1163.108, mixed mode)
+[   +9 ms] Top-level Gradle build file not found, skipping migration of task "clean".
+[   +3 ms] executing: C:\Program Files\Android\Android Studio1\jbr\bin\java --version
+[ +186 ms] Exit code 0 from: C:\Program Files\Android\Android Studio1\jbr\bin\java --version
+[        ] openjdk 21.0.10 2026-01-20
+           OpenJDK Runtime Environment (build 21.0.10+-14961533-b1163.108)
+           OpenJDK 64-Bit Server VM (build 21.0.10+-14961533-b1163.108, mixed mode)
+[   +1 ms] Version of Java is different than impacted version, no migration attempted.
+[   +3 ms] CMake project not found, skipping support Android 15 16k page size migration.
+[  +15 ms] The developer has already configured the Built-In Kotlin flag, skipping migration.
+[   +1 ms] The developer has already configured the new DSL flag, skipping migration.
+[   +7 ms] Using gradle from D:\city_connect\android\gradlew.bat.
+[  +11 ms] LocalFile: 'D:\city_connect\android\build.gradle.kts' doesn't provide an AGP version. Checking settings.
+[   +1 ms] LocalFile: 'D:\city_connect\android\settings.gradle.kts' provides AGP version: 9.0.1
+[  +28 ms] Running Gradle task 'assembleDebug'...
+[   +5 ms] executing: [D:\city_connect\android/] D:\city_connect\android\gradlew.bat --full-stacktrace --info -Pverbose=true -Ptarget-platform=android-arm64 -Ptarget=D:\city_connect\lib\main.dart -Pbase-application-name=android.app.Application -Pdart-defines=RkxVVFRFUl9WRVJTSU9OPTMuNDQuMg==,RkxVVFRFUl9DSEFOTkVMPXN0YWJsZQ==,RkxVVFRFUl9HSVRfVVJMPWh0dHBzOi8vZ2l0aHViLmNvbS9mbHV0dGVyL2ZsdXR0ZXIuZ2l0,RkxVVFRFUl9GUkFNRVdPUktfUkVWSVNJT049YzlhNmM0ODQyMw==,RkxVVFRFUl9FTkdJTkVfUkVWSVNJT049NzdlMmU5NDc3Mg==,RkxVVFRFUl9EQVJUX1ZFUlNJT049My4xMi4y -Pdart-obfuscation=false -Ptrack-widget-creation=true -Ptree-shake-icons=false -Pfilesystem-scheme=org-dartlang-root assembleDebug
+[+1929 ms] Initialized native services in: C:\Users\LENOVO\.gradle\native
+[   +3 ms] Initialized jansi services in: C:\Users\LENOVO\.gradle\native
+[ +740 ms] The client will now receive all logging from the daemon (pid: 27640). The daemon log file: C:\Users\LENOVO\.gradle\daemon\9.1.0\daemon-27640.out.log
+[        ] Starting 4th build in daemon [uptime: 20 mins 31.141 secs, performance: 100%, GC rate: 0.00/s, heap usage: 0% of 8 GiB, non-heap usage: 9% of 4 GiB]
+[ +105 ms] Using 8 worker leases.
+[  +93 ms] Now considering [D:\city_connect\android, C:\flutter\packages\flutter_tools\gradle] as hierarchies to watch
+[        ] Watching the file system is configured to be enabled if available
+[        ] File system watching is active
+[ +296 ms] Starting Build
+[ +110 ms] Now considering [C:\flutter\packages\flutter_tools\gradle, D:\city_connect\android] as hierarchies to watch
+[ +598 ms] > Configure project :gradle
+[        ] Evaluating project ':gradle' using build file 'C:\flutter\packages\flutter_tools\gradle\build.gradle.kts'.
+[   +1 ms] Resolved plugin [id: 'org.gradle.java-gradle-plugin']
+[        ] Resolved plugin [id: 'org.gradle.groovy']
+[        ] Resolved plugin [id: 'org.gradle.kotlin.kotlin-dsl', version: '6.2.0']
+[        ] Resolved plugin [id: 'org.jetbrains.kotlin.jvm', version: '2.2.20']
+[        ] Build a47d33ce-0c50-4714-b961-8f3c0909f52f is started
+[   +3 ms] Using Kotlin Gradle Plugin gradle813 variant
+[        ] kotlin scripting plugin: created the scripting discovery configuration: kotlinScriptDef
+[   +2 ms] kotlin scripting plugin: created the scripting discovery configuration: testKotlinScriptDef
+[   +9 ms] WARNING: Unsupported Kotlin plugin version.
+[        ] The `embedded-kotlin` and `kotlin-dsl` plugins rely on features of Kotlin `2.2.0` that might work differently than in the requested version `2.2.20`.
+[        ] file or directory 'C:\flutter\packages\flutter_tools\gradle\src\main\java', not found
+[        ] Resolved plugin [id: 'dev.flutter.flutter-plugin-loader', version: '1.0.0']
+[        ] Resolved plugin [id: 'com.android.application', version: '9.0.1', apply: false]
+[  +67 ms] Resolved plugin [id: 'com.google.gms.google-services', version: '4.4.4', apply: false]
+[        ] Resolved plugin [id: 'org.jetbrains.kotlin.android', version: '2.3.20', apply: false]
+[ +108 ms] Resolve mutations for :gradle:checkKotlinGradlePluginConfigurationErrors (Thread[#621,Execution worker,5,main]) started.
+[   +1 ms] :gradle:checkKotlinGradlePluginConfigurationErrors (Thread[#621,Execution worker,5,main]) started.
+[        ] > Task :gradle:checkKotlinGradlePluginConfigurationErrors SKIPPED
+[        ] Skipping task ':gradle:checkKotlinGradlePluginConfigurationErrors' as task onlyIf 'errorDiagnostics are present' is false.
+[        ] Resolve mutations for :gradle:compileKotlin (Thread[#621,Execution worker,5,main]) started.
+[        ] :gradle:compileKotlin (Thread[#621,Execution worker,5,main]) started.
+[ +299 ms] > Task :gradle:compileKotlin UP-TO-DATE
+[        ] Caching disabled for task ':gradle:compileKotlin' because:
+[        ]   Build cache is disabled
+[        ] Skipping task ':gradle:compileKotlin' as it is up-to-date.
+[        ] Resolve mutations for :gradle:compileJava (Thread[#621,Execution worker,5,main]) started.
+[        ] :gradle:compileJava (Thread[#621,Execution worker,5,main]) started.
+[  +94 ms] > Task :gradle:compileJava NO-SOURCE
+[   +2 ms] Skipping task ':gradle:compileJava' as it has no source files and no previous output files.
+[   +1 ms] Resolve mutations for :gradle:compileGroovy (Thread[#621,Execution worker,5,main]) started.
+[   +4 ms] :gradle:compileGroovy (Thread[#621,Execution worker,5,main]) started.
+[   +1 ms] > Task :gradle:compileGroovy NO-SOURCE
+[   +7 ms] Skipping task ':gradle:compileGroovy' as it has no source files and no previous output files.
+[   +2 ms] Resolve mutations for :gradle:pluginDescriptors (Thread[#621,Execution worker,5,main]) started.
+[        ] :gradle:pluginDescriptors (Thread[#621,Execution worker,5,main]) started.
+[        ] > Task :gradle:pluginDescriptors UP-TO-DATE
+[   +9 ms] Caching disabled for task ':gradle:pluginDescriptors' because:
+[        ]   Build cache is disabled
+[        ]   Not worth caching
+[        ] Skipping task ':gradle:pluginDescriptors' as it is up-to-date.
+[        ] Resolve mutations for :gradle:processResources (Thread[#621,Execution worker,5,main]) started.
+[   +1 ms] :gradle:processResources (Thread[#621,Execution worker,5,main]) started.
+[   +1 ms] > Task :gradle:processResources UP-TO-DATE
+[        ] Caching disabled for task ':gradle:processResources' because:
+[        ]   Build cache is disabled
+[        ]   Not worth caching
+[   +5 ms] Skipping task ':gradle:processResources' as it is up-to-date.
+[        ] Resolve mutations for :gradle:classes (Thread[#621,Execution worker,5,main]) started.
+[        ] :gradle:classes (Thread[#621,Execution worker,5,main]) started.
+[        ] > Task :gradle:classes UP-TO-DATE
+[        ] Skipping task ':gradle:classes' as it has no actions.
+[        ] Resolve mutations for :gradle:jar (Thread[#621,Execution worker,5,main]) started.
+[        ] :gradle:jar (Thread[#621,Execution worker,5,main]) started.
+[        ] > Task :gradle:jar UP-TO-DATE
+[        ] Caching disabled for task ':gradle:jar' because:
+[        ]   Build cache is disabled
+[        ]   Not worth caching
+[        ] Skipping task ':gradle:jar' as it is up-to-date.
+[ +760 ms] Settings evaluated using settings file 'D:\city_connect\android\settings.gradle.kts'.
+[  +94 ms] Projects loaded. Root project using build file 'D:\city_connect\android\build.gradle.kts'.
+[        ] Included projects: [root project 'android', project ':app', project ':cloud_firestore', project ':firebase_auth', project ':firebase_core', project ':firebase_storage', project ':flutter_plugin_android_lifecycle', project ':image_picker_android', project ':jni', project ':jni_flutter', project ':shared_preferences_android']
+[ +802 ms] > Configure project :app
+[        ] Evaluating project ':app' using build file 'D:\city_connect\android\app\build.gradle.kts'.
+[        ] Resolved plugin [id: 'com.android.application']
+[   +2 ms] Resolved plugin [id: 'com.google.gms.google-services']
+[        ] Resolved plugin [id: 'dev.flutter.flutter-gradle-plugin']
+[        ] WARNING: The option setting 'android.builtInKotlin=false' is deprecated.
+[        ] The current default is 'true'.
+[        ] It will be removed in version 10.0 of the Android Gradle plugin.
+[        ] WARNING: The option setting 'android.newDsl=false' is deprecated.
+[        ] The current default is 'true'.
+[        ] It will be removed in version 10.0 of the Android Gradle plugin.
+[        ] Using default execution profile
+[        ] Build 6b8523f6-26e8-45c1-92e3-c7a445766b93 is started
+[   +1 ms] Using Kotlin Gradle Plugin gradle813 variant
+[        ] Using Kotlin Gradle Plugin gradle813 variant
+[        ] Using Kotlin Gradle Plugin gradle813 variant
+[        ] Using Kotlin Gradle Plugin gradle813 variant
+[        ] Using Kotlin Gradle Plugin gradle813 variant
+[        ] Using Kotlin Gradle Plugin gradle813 variant
+[        ] Using Kotlin Gradle Plugin gradle813 variant
+[        ] Using Kotlin Gradle Plugin gradle813 variant
+[        ] Using Kotlin Gradle Plugin gradle813 variant
+[        ] C/C++: android.ndkVersion from module build.gradle is [28.2.13676358]
+[        ] C/C++: android.ndkPath from module build.gradle is not set
+[        ] C/C++: ndk.dir in local.properties is not set
+[        ] C/C++: Not considering ANDROID_NDK_HOME because support was removed after deprecation period.
+[        ] C/C++: sdkFolder is C:\Users\LENOVO\AppData\Local\Android\sdk
+[        ] C/C++: android.ndkVersion from module build.gradle is [28.2.13676358]
+[        ] C/C++: android.ndkPath from module build.gradle is not set
+[        ] C/C++: ndk.dir in local.properties is not set
+[        ] C/C++: Not considering ANDROID_NDK_HOME because support was removed after deprecation period.
+[        ] C/C++: sdkFolder is C:\Users\LENOVO\AppData\Local\Android\sdk
+[        ] C/C++: android.ndkVersion from module build.gradle is [28.2.13676358]
+[        ] C/C++: android.ndkPath from module build.gradle is not set
+[        ] C/C++: ndk.dir in local.properties is not set
+[        ] C/C++: Not considering ANDROID_NDK_HOME because support was removed after deprecation period.
+[        ] C/C++: sdkFolder is C:\Users\LENOVO\AppData\Local\Android\sdk
+[        ] C/C++: android.ndkVersion from module build.gradle is [28.2.13676358]
+[   +2 ms] C/C++: android.ndkPath from module build.gradle is not set
+[        ] C/C++: ndk.dir in local.properties is not set
+[        ] C/C++: Not considering ANDROID_NDK_HOME because support was removed after deprecation period.
+[        ] C/C++: sdkFolder is C:\Users\LENOVO\AppData\Local\Android\sdk
+[        ] C/C++: android.ndkVersion from module build.gradle is [28.2.13676358]
+[        ] C/C++: android.ndkPath from module build.gradle is not set
+[        ] C/C++: ndk.dir in local.properties is not set
+[        ] C/C++: Not considering ANDROID_NDK_HOME because support was removed after deprecation period.
+[        ] C/C++: sdkFolder is C:\Users\LENOVO\AppData\Local\Android\sdk
+[        ] C/C++: android.ndkVersion from module build.gradle is [28.2.13676358]
+[        ] C/C++: android.ndkPath from module build.gradle is not set
+[        ] C/C++: ndk.dir in local.properties is not set
+[        ] C/C++: Not considering ANDROID_NDK_HOME because support was removed after deprecation period.
+[        ] C/C++: sdkFolder is C:\Users\LENOVO\AppData\Local\Android\sdk
+[        ] C/C++: android.ndkVersion from module build.gradle is [28.2.13676358]
+[        ] C/C++: android.ndkPath from module build.gradle is not set
+[        ] C/C++: ndk.dir in local.properties is not set
+[        ] C/C++: Not considering ANDROID_NDK_HOME because support was removed after deprecation period.
+[   +1 ms] C/C++: sdkFolder is C:\Users\LENOVO\AppData\Local\Android\sdk
+[        ] C/C++: android.ndkVersion from module build.gradle is [28.2.13676358]
+[        ] C/C++: android.ndkPath from module build.gradle is not set
+[        ] C/C++: ndk.dir in local.properties is not set
+[        ] C/C++: Not considering ANDROID_NDK_HOME because support was removed after deprecation period.
+[        ] C/C++: sdkFolder is C:\Users\LENOVO\AppData\Local\Android\sdk
+[        ] C/C++: android.ndkVersion from module build.gradle is [28.2.13676358]
+[        ] C/C++: android.ndkPath from module build.gradle is not set
+[        ] C/C++: ndk.dir in local.properties is not set
+[        ] C/C++: Not considering ANDROID_NDK_HOME because support was removed after deprecation period.
+[        ] C/C++: sdkFolder is C:\Users\LENOVO\AppData\Local\Android\sdk
+[        ] C/C++: android.ndkVersion from module build.gradle is [28.2.13676358]
+[        ] C/C++: android.ndkPath from module build.gradle is not set
+[        ] C/C++: ndk.dir in local.properties is not set
+[        ] C/C++: Not considering ANDROID_NDK_HOME because support was removed after deprecation period.
+[        ] C/C++: sdkFolder is C:\Users\LENOVO\AppData\Local\Android\sdk
+[        ] C/C++: android.ndkVersion from module build.gradle is [28.2.13676358]
+[        ] C/C++: android.ndkPath from module build.gradle is not set
+[        ] C/C++: ndk.dir in local.properties is not set
+[        ] C/C++: Not considering ANDROID_NDK_HOME because support was removed after deprecation period.
+[        ] C/C++: sdkFolder is C:\Users\LENOVO\AppData\Local\Android\sdk
+[        ] C/C++: android.ndkVersion from module build.gradle is [28.2.13676358]
+[        ] C/C++: android.ndkPath from module build.gradle is not set
+[        ] C/C++: ndk.dir in local.properties is not set
+[        ] C/C++: Not considering ANDROID_NDK_HOME because support was removed after deprecation period.
+[        ] C/C++: sdkFolder is C:\Users\LENOVO\AppData\Local\Android\sdk
+[        ] C/C++: android.ndkVersion from module build.gradle is [28.2.13676358]
+[        ] C/C++: android.ndkPath from module build.gradle is not set
+[   +1 ms] C/C++: ndk.dir in local.properties is not set
+[        ] C/C++: Not considering ANDROID_NDK_HOME because support was removed after deprecation period.
+[        ] C/C++: sdkFolder is C:\Users\LENOVO\AppData\Local\Android\sdk
+[        ] C/C++: android.ndkVersion from module build.gradle is [28.2.13676358]
+[        ] C/C++: android.ndkPath from module build.gradle is not set
+[        ] C/C++: ndk.dir in local.properties is not set
+[        ] C/C++: Not considering ANDROID_NDK_HOME because support was removed after deprecation period.
+[        ] C/C++: sdkFolder is C:\Users\LENOVO\AppData\Local\Android\sdk
+[        ] C/C++: android.ndkVersion from module build.gradle is [28.2.13676358]
+[        ] C/C++: android.ndkPath from module build.gradle is not set
+[        ] C/C++: ndk.dir in local.properties is not set
+[        ] C/C++: Not considering ANDROID_NDK_HOME because support was removed after deprecation period.
+[        ] C/C++: sdkFolder is C:\Users\LENOVO\AppData\Local\Android\sdk
+[        ] C/C++: android.ndkVersion from module build.gradle is [28.2.13676358]
+[        ] C/C++: android.ndkPath from module build.gradle is not set
+[        ] C/C++: ndk.dir in local.properties is not set
+[        ] C/C++: Not considering ANDROID_NDK_HOME because support was removed after deprecation period.
+[        ] C/C++: sdkFolder is C:\Users\LENOVO\AppData\Local\Android\sdk
+[        ] C/C++: android.ndkVersion from module build.gradle is [28.2.13676358]
+[        ] C/C++: android.ndkPath from module build.gradle is not set
+[        ] C/C++: ndk.dir in local.properties is not set
+[        ] C/C++: Not considering ANDROID_NDK_HOME because support was removed after deprecation period.
+[        ] C/C++: sdkFolder is C:\Users\LENOVO\AppData\Local\Android\sdk
+[        ] C/C++: android.ndkVersion from module build.gradle is [28.2.13676358]
+[        ] C/C++: android.ndkPath from module build.gradle is not set
+[        ] C/C++: ndk.dir in local.properties is not set
+[        ] C/C++: Not considering ANDROID_NDK_HOME because support was removed after deprecation period.
+[        ] C/C++: sdkFolder is C:\Users\LENOVO\AppData\Local\Android\sdk
+[        ] C/C++: android.ndkVersion from module build.gradle is [28.2.13676358]
+[        ] C/C++: android.ndkPath from module build.gradle is not set
+[        ] C/C++: ndk.dir in local.properties is not set
+[        ] C/C++: Not considering ANDROID_NDK_HOME because support was removed after deprecation period.
+[        ] C/C++: sdkFolder is C:\Users\LENOVO\AppData\Local\Android\sdk
+[        ] w: Deprecated 'org.jetbrains.kotlin.android' plugin usage
+[        ] The 'org.jetbrains.kotlin.android' plugin in project ':app' is no longer required for Kotlin support since AGP 9.0.
+[        ] Solution: Remove both `android.builtInKotlin=true` and `android.newDsl=false` from `gradle.properties`, then migrate to built-in Kotlin.
+[        ] See https://kotl.in/gradle/agp-built-in-kotlin for more details.
+[        ] > Configure project :
+[        ] Evaluating root project 'android' using build file 'D:\city_connect\android\build.gradle.kts'.
+[ +553 ms] > Configure project :cloud_firestore
+[        ] Evaluating project ':cloud_firestore' using build file 'C:\Users\LENOVO\AppData\Local\Pub\Cache\hosted\pub.dev\cloud_firestore-6.6.0\android\build.gradle'.
+[        ] Using default execution profile
+[        ] w: Deprecated 'org.jetbrains.kotlin.android' plugin usage
+[        ] The 'org.jetbrains.kotlin.android' plugin in project ':cloud_firestore' is no longer required for Kotlin support since AGP 9.0.
+[        ] Solution: Remove both `android.builtInKotlin=true` and `android.newDsl=false` from `gradle.properties`, then migrate to built-in Kotlin.
+[        ] See https://kotl.in/gradle/agp-built-in-kotlin for more details.
+[ +200 ms] > Configure project :firebase_auth
+[        ] Evaluating project ':firebase_auth' using build file 'C:\Users\LENOVO\AppData\Local\Pub\Cache\hosted\pub.dev\firebase_auth-6.5.3\android\build.gradle'.
+[        ] Using default execution profile
+[        ] w: Deprecated 'org.jetbrains.kotlin.android' plugin usage
+[        ] The 'org.jetbrains.kotlin.android' plugin in project ':firebase_auth' is no longer required for Kotlin support since AGP 9.0.
+[        ] Solution: Remove both `android.builtInKotlin=true` and `android.newDsl=false` from `gradle.properties`, then migrate to built-in Kotlin.
+[        ] See https://kotl.in/gradle/agp-built-in-kotlin for more details.
+[ +108 ms] > Configure project :firebase_core
+[        ] Evaluating project ':firebase_core' using build file 'C:\Users\LENOVO\AppData\Local\Pub\Cache\hosted\pub.dev\firebase_core-4.11.0\android\build.gradle'.
+[        ] Using default execution profile
+[        ] w: Deprecated 'org.jetbrains.kotlin.android' plugin usage
+[        ] The 'org.jetbrains.kotlin.android' plugin in project ':firebase_core' is no longer required for Kotlin support since AGP 9.0.
+[        ] Solution: Remove both `android.builtInKotlin=true` and `android.newDsl=false` from `gradle.properties`, then migrate to built-in Kotlin.
+[        ] See https://kotl.in/gradle/agp-built-in-kotlin for more details.
+[ +698 ms] > Configure project :firebase_storage
+[        ] Evaluating project ':firebase_storage' using build file 'C:\Users\LENOVO\AppData\Local\Pub\Cache\hosted\pub.dev\firebase_storage-13.4.3\android\build.gradle'.
+[        ] Using default execution profile
+[        ] Using Kotlin Gradle Plugin gradle813 variant
+[        ] w: Deprecated 'org.jetbrains.kotlin.android' plugin usage
+[        ] The 'org.jetbrains.kotlin.android' plugin in project ':firebase_storage' is no longer required for Kotlin support since AGP 9.0.
+[        ] Solution: Remove both `android.builtInKotlin=true` and `android.newDsl=false` from `gradle.properties`, then migrate to built-in Kotlin.
+[        ] See https://kotl.in/gradle/agp-built-in-kotlin for more details.
+[ +501 ms] > Configure project :flutter_plugin_android_lifecycle
+[        ] Evaluating project ':flutter_plugin_android_lifecycle' using build file 'C:\Users\LENOVO\AppData\Local\Pub\Cache\hosted\pub.dev\flutter_plugin_android_lifecycle-2.0.35\android\build.gradle.kts'.
+[   +1 ms] Resolved plugin [id: 'com.android.library']
+[        ] Using default execution profile
+[        ] w: Deprecated 'org.jetbrains.kotlin.android' plugin usage
+[        ] The 'org.jetbrains.kotlin.android' plugin in project ':flutter_plugin_android_lifecycle' is no longer required for Kotlin support since AGP 9.0.
+[        ] Solution: Remove both `android.builtInKotlin=true` and `android.newDsl=false` from `gradle.properties`, then migrate to built-in Kotlin.
+[        ] See https://kotl.in/gradle/agp-built-in-kotlin for more details.
+[ +293 ms] > Configure project :image_picker_android
+[        ] Evaluating project ':image_picker_android' using build file 'C:\Users\LENOVO\AppData\Local\Pub\Cache\hosted\pub.dev\image_picker_android-0.8.13+19\android\build.gradle.kts'.
+[        ] Resolved plugin [id: 'com.android.library']
+[        ] Using default execution profile
+[        ] w: Deprecated 'org.jetbrains.kotlin.android' plugin usage
+[        ] The 'org.jetbrains.kotlin.android' plugin in project ':image_picker_android' is no longer required for Kotlin support since AGP 9.0.
+[        ] Solution: Remove both `android.builtInKotlin=true` and `android.newDsl=false` from `gradle.properties`, then migrate to built-in Kotlin.
+[        ] See https://kotl.in/gradle/agp-built-in-kotlin for more details.
+[ +399 ms] > Configure project :jni
+[        ] Evaluating project ':jni' using build file 'C:\Users\LENOVO\AppData\Local\Pub\Cache\hosted\pub.dev\jni-1.0.0\android\build.gradle'.
+[        ] Using default execution profile
+[        ] C/C++: android.ndkVersion from module build.gradle is [28.2.13676358]
+[        ] C/C++: android.ndkPath from module build.gradle is not set
+[   +2 ms] C/C++: ndk.dir in local.properties is not set
+[        ] C/C++: Not considering ANDROID_NDK_HOME because support was removed after deprecation period.
+[        ] C/C++: sdkFolder is C:\Users\LENOVO\AppData\Local\Android\sdk
+[   +1 ms] C/C++: android.ndkVersion from module build.gradle is [28.2.13676358]
+[        ] C/C++: android.ndkPath from module build.gradle is not set
+[        ] C/C++: ndk.dir in local.properties is not set
+[        ] C/C++: Not considering ANDROID_NDK_HOME because support was removed after deprecation period.
+[        ] C/C++: sdkFolder is C:\Users\LENOVO\AppData\Local\Android\sdk
+[        ] C/C++: android.ndkVersion from module build.gradle is [28.2.13676358]
+[        ] C/C++: android.ndkPath from module build.gradle is not set
+[        ] C/C++: ndk.dir in local.properties is not set
+[        ] C/C++: Not considering ANDROID_NDK_HOME because support was removed after deprecation period.
+[        ] C/C++: sdkFolder is C:\Users\LENOVO\AppData\Local\Android\sdk
+[        ] C/C++: android.ndkVersion from module build.gradle is [28.2.13676358]
+[   +1 ms] C/C++: android.ndkPath from module build.gradle is not set
+[        ] C/C++: ndk.dir in local.properties is not set
+[   +2 ms] C/C++: Not considering ANDROID_NDK_HOME because support was removed after deprecation period.
+[        ] C/C++: sdkFolder is C:\Users\LENOVO\AppData\Local\Android\sdk
+[        ] C/C++: android.ndkVersion from module build.gradle is [28.2.13676358]
+[        ] C/C++: android.ndkPath from module build.gradle is not set
+[        ] C/C++: ndk.dir in local.properties is not set
+[        ] C/C++: Not considering ANDROID_NDK_HOME because support was removed after deprecation period.
+[        ] C/C++: sdkFolder is C:\Users\LENOVO\AppData\Local\Android\sdk
+[        ] C/C++: android.ndkVersion from module build.gradle is [28.2.13676358]
+[        ] C/C++: android.ndkPath from module build.gradle is not set
+[        ] C/C++: ndk.dir in local.properties is not set
+[   +1 ms] C/C++: Not considering ANDROID_NDK_HOME because support was removed after deprecation period.
+[   +2 ms] C/C++: sdkFolder is C:\Users\LENOVO\AppData\Local\Android\sdk
+[        ] C/C++: android.ndkVersion from module build.gradle is [28.2.13676358]
+[        ] C/C++: android.ndkPath from module build.gradle is not set
+[        ] C/C++: ndk.dir in local.properties is not set
+[        ] C/C++: Not considering ANDROID_NDK_HOME because support was removed after deprecation period.
+[        ] C/C++: sdkFolder is C:\Users\LENOVO\AppData\Local\Android\sdk
+[        ] C/C++: android.ndkVersion from module build.gradle is [28.2.13676358]
+[        ] C/C++: android.ndkPath from module build.gradle is not set
+[        ] C/C++: ndk.dir in local.properties is not set
+[        ] C/C++: Not considering ANDROID_NDK_HOME because support was removed after deprecation period.
+[        ] C/C++: sdkFolder is C:\Users\LENOVO\AppData\Local\Android\sdk
+[        ] C/C++: android.ndkVersion from module build.gradle is [28.2.13676358]
+[        ] C/C++: android.ndkPath from module build.gradle is not set
+[        ] C/C++: ndk.dir in local.properties is not set
+[        ] C/C++: Not considering ANDROID_NDK_HOME because support was removed after deprecation period.
+[        ] C/C++: sdkFolder is C:\Users\LENOVO\AppData\Local\Android\sdk
+[        ] C/C++: android.ndkVersion from module build.gradle is [28.2.13676358]
+[        ] C/C++: android.ndkPath from module build.gradle is not set
+[        ] C/C++: ndk.dir in local.properties is not set
+[        ] C/C++: Not considering ANDROID_NDK_HOME because support was removed after deprecation period.
+[        ] C/C++: sdkFolder is C:\Users\LENOVO\AppData\Local\Android\sdk
+[        ] C/C++: android.ndkVersion from module build.gradle is [28.2.13676358]
+[        ] C/C++: android.ndkPath from module build.gradle is not set
+[        ] C/C++: ndk.dir in local.properties is not set
+[        ] C/C++: Not considering ANDROID_NDK_HOME because support was removed after deprecation period.
+[        ] C/C++: sdkFolder is C:\Users\LENOVO\AppData\Local\Android\sdk
+[        ] C/C++: android.ndkVersion from module build.gradle is [28.2.13676358]
+[        ] C/C++: android.ndkPath from module build.gradle is not set
+[        ] C/C++: ndk.dir in local.properties is not set
+[        ] C/C++: Not considering ANDROID_NDK_HOME because support was removed after deprecation period.
+[        ] C/C++: sdkFolder is C:\Users\LENOVO\AppData\Local\Android\sdk
+[        ] C/C++: android.ndkVersion from module build.gradle is [28.2.13676358]
+[        ] C/C++: android.ndkPath from module build.gradle is not set
+[        ] C/C++: ndk.dir in local.properties is not set
+[        ] C/C++: Not considering ANDROID_NDK_HOME because support was removed after deprecation period.
+[        ] C/C++: sdkFolder is C:\Users\LENOVO\AppData\Local\Android\sdk
+[        ] C/C++: android.ndkVersion from module build.gradle is [28.2.13676358]
+[        ] C/C++: android.ndkPath from module build.gradle is not set
+[        ] C/C++: ndk.dir in local.properties is not set
+[        ] C/C++: Not considering ANDROID_NDK_HOME because support was removed after deprecation period.
+[        ] C/C++: sdkFolder is C:\Users\LENOVO\AppData\Local\Android\sdk
+[        ] C/C++: android.ndkVersion from module build.gradle is [28.2.13676358]
+[        ] C/C++: android.ndkPath from module build.gradle is not set
+[        ] C/C++: ndk.dir in local.properties is not set
+[        ] C/C++: Not considering ANDROID_NDK_HOME because support was removed after deprecation period.
+[        ] C/C++: sdkFolder is C:\Users\LENOVO\AppData\Local\Android\sdk
+[        ] C/C++: android.ndkVersion from module build.gradle is [28.2.13676358]
+[   +1 ms] C/C++: android.ndkPath from module build.gradle is not set
+[   +1 ms] C/C++: ndk.dir in local.properties is not set
+[        ] C/C++: Not considering ANDROID_NDK_HOME because support was removed after deprecation period.
+[        ] C/C++: sdkFolder is C:\Users\LENOVO\AppData\Local\Android\sdk
+[        ] C/C++: android.ndkVersion from module build.gradle is [28.2.13676358]
+[        ] C/C++: android.ndkPath from module build.gradle is not set
+[        ] C/C++: ndk.dir in local.properties is not set
+[        ] C/C++: Not considering ANDROID_NDK_HOME because support was removed after deprecation period.
+[        ] C/C++: sdkFolder is C:\Users\LENOVO\AppData\Local\Android\sdk
+[   +2 ms] C/C++: android.ndkVersion from module build.gradle is [28.2.13676358]
+[   +1 ms] C/C++: android.ndkPath from module build.gradle is not set
+[        ] C/C++: ndk.dir in local.properties is not set
+[        ] C/C++: Not considering ANDROID_NDK_HOME because support was removed after deprecation period.
+[        ] C/C++: sdkFolder is C:\Users\LENOVO\AppData\Local\Android\sdk
+[        ] C/C++: android.ndkVersion from module build.gradle is [28.2.13676358]
+[        ] C/C++: android.ndkPath from module build.gradle is not set
+[        ] C/C++: ndk.dir in local.properties is not set
+[        ] C/C++: Not considering ANDROID_NDK_HOME because support was removed after deprecation period.
+[        ] C/C++: sdkFolder is C:\Users\LENOVO\AppData\Local\Android\sdk
+[        ] w: Deprecated 'org.jetbrains.kotlin.android' plugin usage
+[        ] The 'org.jetbrains.kotlin.android' plugin in project ':jni' is no longer required for Kotlin support since AGP 9.0.
+[   +6 ms] Solution: Remove both `android.builtInKotlin=true` and `android.newDsl=false` from `gradle.properties`, then migrate to built-in Kotlin.
+[   +2 ms] See https://kotl.in/gradle/agp-built-in-kotlin for more details.
+[ +134 ms] > Configure project :jni_flutter
+[        ] Evaluating project ':jni_flutter' using build file 'C:\Users\LENOVO\AppData\Local\Pub\Cache\hosted\pub.dev\jni_flutter-1.0.1\android\build.gradle'.
+[        ] Using default execution profile
+[        ] w: Deprecated 'org.jetbrains.kotlin.android' plugin usage
+[        ] The 'org.jetbrains.kotlin.android' plugin in project ':jni_flutter' is no longer required for Kotlin support since AGP 9.0.
+[        ] Solution: Remove both `android.builtInKotlin=true` and `android.newDsl=false` from `gradle.properties`, then migrate to built-in Kotlin.
+[        ] See https://kotl.in/gradle/agp-built-in-kotlin for more details.
+[ +447 ms] > Configure project :shared_preferences_android
+[        ] Evaluating project ':shared_preferences_android' using build file 'C:\Users\LENOVO\AppData\Local\Pub\Cache\hosted\pub.dev\shared_preferences_android-2.4.26\android\build.gradle.kts'.
+[        ] Resolved plugin [id: 'com.android.library']
+[        ] Using default execution profile
+[   +1 ms] w: Deprecated 'org.jetbrains.kotlin.android' plugin usage
+[        ] The 'org.jetbrains.kotlin.android' plugin in project ':shared_preferences_android' is no longer required for Kotlin support since AGP 9.0.
+[        ] Solution: Remove both `android.builtInKotlin=true` and `android.newDsl=false` from `gradle.properties`, then migrate to built-in Kotlin.
+[        ] See https://kotl.in/gradle/agp-built-in-kotlin for more details.
+[        ] All projects evaluated.
+[        ] Task name matched 'assembleDebug'
+[        ] Selected primary task 'assembleDebug' from project :
+[   +3 ms] WARNING: Your app uses the following plugins that apply Kotlin Gradle Plugin (KGP): firebase_storage
+[   +3 ms] Future versions of Flutter will fail to build if your app uses plugins that apply KGP.
+[        ] Please check the changelogs of these plugins and upgrade to a version that supports Built-in Kotlin.
+[        ] If no such version exists, report the issue to the plugin. If necessary, here is a guide on filing 
+[        ] an issue against a plugin: https://docs.flutter.dev/release/breaking-changes/migrate-to-built-in-kotlin/for-app-developers#report-incompatible-kotlin-gradle-plugin-usage-to-plugin-authors
+[        ] If you are a plugin author, please migrate your plugin to Built-in Kotlin using this guide: https://docs.flutter.dev/release/breaking-changes/migrate-to-built-in-kotlin/for-plugin-authors
+[  +37 ms] Adding -Xuse-inline-scopes-numbers Kotlin compiler flag for task :app:compileDebugKotlin
+[ +814 ms] Tasks to be executed: [task ':app:DebugMinSdkCheck', task ':app:preBuild', task ':app:preDebugBuild', task ':app:mergeDebugNativeDebugMetadata', task ':app:checkKotlinGradlePluginConfigurationErrors', task ':app:cleanMergeDebugAssets', task ':app:compileFlutterBuildDebug', task ':app:generateDebugAssets', task ':cloud_firestore:generateDebugAssets', task ':cloud_firestore:preBuild', task ':cloud_firestore:preDebugBuild', task ':cloud_firestore:mergeDebugAssets', task ':firebase_auth:generateDebugAssets', task ':firebase_auth:preBuild', task ':firebase_auth:preDebugBuild', task ':firebase_auth:mergeDebugAssets', task ':firebase_core:generateDebugAssets', task ':firebase_core:preBuild', task ':firebase_core:preDebugBuild', task ':firebase_core:mergeDebugAssets', task ':firebase_storage:generateDebugAssets', task ':firebase_storage:preBuild', task ':firebase_storage:preDebugBuild', task ':firebase_storage:mergeDebugAssets', task ':flutter_plugin_android_lifecycle:generateDebugAssets', task ':flutter_plugin_android_lifecycle:preBuild', task ':flutter_plugin_android_lifecycle:preDebugBuild', task ':flutter_plugin_android_lifecycle:mergeDebugAssets', task ':image_picker_android:generateDebugAssets', task ':image_picker_android:preBuild', task ':image_picker_android:preDebugBuild', task ':image_picker_android:mergeDebugAssets', task ':jni:generateDebugAssets', task ':jni:preBuild', task ':jni:preDebugBuild', task ':jni:mergeDebugAssets', task ':jni_flutter:generateDebugAssets', task ':jni_flutter:preBuild', task ':jni_flutter:preDebugBuild', task ':jni_flutter:mergeDebugAssets', task ':shared_preferences_android:generateDebugAssets', task ':shared_preferences_android:preBuild', task ':shared_preferences_android:preDebugBuild', task ':shared_preferences_android:mergeDebugAssets', task ':app:mergeDebugAssets', task ':app:copyFlutterAssetsDebug', task ':app:generateDebugResources', task ':app:processDebugGoogleServices', task ':app:packageDebugResources', task ':cloud_firestore:processDebugNavigationResources', task ':firebase_auth:processDebugNavigationResources', task ':firebase_core:processDebugNavigationResources', task ':firebase_storage:processDebugNavigationResources', task ':flutter_plugin_android_lifecycle:processDebugNavigationResources', task ':image_picker_android:processDebugNavigationResources', task ':jni:processDebugNavigationResources', task ':jni_flutter:processDebugNavigationResources', task ':shared_preferences_android:processDebugNavigationResources', task ':app:processDebugNavigationResources', task ':app:parseDebugLocalResources', task ':app:generateDebugRFile', task ':cloud_firestore:checkKotlinGradlePluginConfigurationErrors', task ':cloud_firestore:generateDebugBuildConfig', task ':cloud_firestore:generateDebugResources', task ':cloud_firestore:packageDebugResources', task ':cloud_firestore:parseDebugLocalResources', task ':cloud_firestore:generateDebugRFile', task ':firebase_core:checkKotlinGradlePluginConfigurationErrors', task ':firebase_core:generateDebugBuildConfig', task ':firebase_core:generateDebugResources', task ':firebase_core:packageDebugResources', task ':firebase_core:parseDebugLocalResources', task ':firebase_core:generateDebugRFile', task ':firebase_core:compileDebugKotlin', task ':firebase_core:javaPreCompileDebug', task ':firebase_core:compileDebugJavaWithJavac', task ':firebase_core:bundleLibCompileToJarDebug', task ':cloud_firestore:compileDebugKotlin', task ':cloud_firestore:javaPreCompileDebug', task ':cloud_firestore:compileDebugJavaWithJavac', task ':cloud_firestore:bundleLibCompileToJarDebug', task ':firebase_auth:checkKotlinGradlePluginConfigurationErrors', task ':firebase_auth:generateDebugBuildConfig', task ':firebase_auth:generateDebugResources', task ':firebase_auth:packageDebugResources', task ':firebase_auth:parseDebugLocalResources', task ':firebase_auth:generateDebugRFile', task ':firebase_auth:compileDebugKotlin', task ':firebase_auth:javaPreCompileDebug', task ':firebase_auth:compileDebugJavaWithJavac', task ':firebase_auth:bundleLibCompileToJarDebug', task ':firebase_storage:checkKotlinGradlePluginConfigurationErrors', task ':firebase_storage:generateDebugBuildConfig', task ':firebase_storage:generateDebugResources', task ':firebase_storage:packageDebugResources', task ':firebase_storage:parseDebugLocalResources', task ':firebase_storage:generateDebugRFile', task ':firebase_storage:compileDebugKotlin', task ':firebase_storage:javaPreCompileDebug', task ':firebase_storage:compileDebugJavaWithJavac', task ':firebase_storage:bundleLibCompileToJarDebug', task ':flutter_plugin_android_lifecycle:checkKotlinGradlePluginConfigurationErrors', task ':flutter_plugin_android_lifecycle:generateDebugResources', task ':flutter_plugin_android_lifecycle:packageDebugResources', task ':flutter_plugin_android_lifecycle:parseDebugLocalResources', task ':flutter_plugin_android_lifecycle:generateDebugRFile', task ':flutter_plugin_android_lifecycle:compileDebugKotlin', task ':flutter_plugin_android_lifecycle:javaPreCompileDebug', task ':flutter_plugin_android_lifecycle:compileDebugJavaWithJavac', task ':flutter_plugin_android_lifecycle:bundleLibCompileToJarDebug', task ':image_picker_android:checkKotlinGradlePluginConfigurationErrors', task ':image_picker_android:generateDebugResources', task ':image_picker_android:packageDebugResources', task ':image_picker_android:parseDebugLocalResources', task ':image_picker_android:generateDebugRFile', task ':image_picker_android:compileDebugKotlin', task ':image_picker_android:javaPreCompileDebug', task ':image_picker_android:compileDebugJavaWithJavac', task ':image_picker_android:bundleLibCompileToJarDebug', task ':jni:checkKotlinGradlePluginConfigurationErrors', task ':jni:generateDebugResources', task ':jni:packageDebugResources', task ':jni:parseDebugLocalResources', task ':jni:generateDebugRFile', task ':jni:compileDebugKotlin', task ':jni:javaPreCompileDebug', task ':jni:compileDebugJavaWithJavac', task ':jni:bundleLibCompileToJarDebug', task ':jni_flutter:checkKotlinGradlePluginConfigurationErrors', task ':jni_flutter:generateDebugResources', task ':jni_flutter:packageDebugResources', task ':jni_flutter:parseDebugLocalResources', task ':jni_flutter:generateDebugRFile', task ':jni_flutter:compileDebugKotlin', task ':jni_flutter:javaPreCompileDebug', task ':jni_flutter:compileDebugJavaWithJavac', task ':jni_flutter:bundleLibCompileToJarDebug', task ':shared_preferences_android:checkKotlinGradlePluginConfigurationErrors', task ':shared_preferences_android:generateDebugResources', task ':shared_preferences_android:packageDebugResources', task ':shared_preferences_android:parseDebugLocalResources', task ':shared_preferences_android:generateDebugRFile', task ':shared_preferences_android:compileDebugKotlin', task ':shared_preferences_android:javaPreCompileDebug', task ':shared_preferences_android:compileDebugJavaWithJavac', task ':shared_preferences_android:bundleLibCompileToJarDebug', task ':app:compileDebugKotlin', task ':app:javaPreCompileDebug', task ':app:compileDebugJavaWithJavac', task ':app:compressDebugAssets', task ':cloud_firestore:bundleLibRuntimeToJarDebug', task ':firebase_auth:bundleLibRuntimeToJarDebug', task ':firebase_storage:bundleLibRuntimeToJarDebug', task ':firebase_core:bundleLibRuntimeToJarDebug', task ':image_picker_android:bundleLibRuntimeToJarDebug', task ':flutter_plugin_android_lifecycle:bundleLibRuntimeToJarDebug', task ':jni_flutter:bundleLibRuntimeToJarDebug', task ':jni:bundleLibRuntimeToJarDebug', task ':shared_preferences_android:bundleLibRuntimeToJarDebug', task ':app:desugarDebugFileDependencies', task ':cloud_firestore:writeDebugAarMetadata', task ':firebase_auth:writeDebugAarMetadata', task ':firebase_core:writeDebugAarMetadata', task ':firebase_storage:writeDebugAarMetadata', task ':flutter_plugin_android_lifecycle:writeDebugAarMetadata', task ':image_picker_android:writeDebugAarMetadata', task ':jni:writeDebugAarMetadata', task ':jni_flutter:writeDebugAarMetadata', task ':shared_preferences_android:writeDebugAarMetadata', task ':app:checkDebugAarMetadata', task ':app:compileDebugNavigationResources', task ':app:mapDebugSourceSetPaths', task ':app:mergeDebugResources', task ':app:createDebugCompatibleScreenManifests', task ':app:extractDeepLinksDebug', task ':cloud_firestore:extractDeepLinksDebug', task ':cloud_firestore:processDebugManifest', task ':firebase_auth:extractDeepLinksDebug', task ':firebase_auth:processDebugManifest', task ':firebase_core:extractDeepLinksDebug', task ':firebase_core:processDebugManifest', task ':firebase_storage:extractDeepLinksDebug', task ':firebase_storage:processDebugManifest', task ':flutter_plugin_android_lifecycle:extractDeepLinksDebug', task ':flutter_plugin_android_lifecycle:processDebugManifest', task ':image_picker_android:extractDeepLinksDebug', task ':image_picker_android:processDebugManifest', task ':jni:extractDeepLinksDebug', task ':jni:processDebugManifest', task ':jni_flutter:extractDeepLinksDebug', task ':jni_flutter:processDebugManifest', task ':shared_preferences_android:extractDeepLinksDebug', task ':shared_preferences_android:processDebugManifest', task ':app:processDebugMainManifest', task ':app:outputDebugAppLinkSettings', task ':app:processDebugManifest', task ':app:processDebugManifestForPackage', task ':cloud_firestore:compileDebugLibraryResources', task ':firebase_auth:compileDebugLibraryResources', task ':firebase_core:compileDebugLibraryResources', task ':firebase_storage:compileDebugLibraryResources', task ':flutter_plugin_android_lifecycle:compileDebugLibraryResources', task ':image_picker_android:compileDebugLibraryResources', task ':jni:compileDebugLibraryResources', task ':jni_flutter:compileDebugLibraryResources', task ':shared_preferences_android:compileDebugLibraryResources', task ':app:processDebugResources', task ':app:dexBuilderDebug', task ':app:mergeDebugGlobalSynthetics', task ':app:processDebugJavaRes', task ':cloud_firestore:processDebugJavaRes', task ':firebase_auth:processDebugJavaRes', task ':firebase_core:processDebugJavaRes', task ':firebase_storage:processDebugJavaRes', task ':flutter_plugin_android_lifecycle:processDebugJavaRes', task ':image_picker_android:processDebugJavaRes', task ':jni:processDebugJavaRes', task ':jni_flutter:processDebugJavaRes', task ':shared_preferences_android:processDebugJavaRes', task ':app:mergeDebugJavaResource', task ':app:checkDebugDuplicateClasses', task ':app:mergeExtDexDebug', task ':cloud_firestore:bundleLibRuntimeToDirDebug', task ':firebase_auth:bundleLibRuntimeToDirDebug', task ':firebase_storage:bundleLibRuntimeToDirDebug', task ':firebase_core:bundleLibRuntimeToDirDebug', task ':image_picker_android:bundleLibRuntimeToDirDebug', task ':flutter_plugin_android_lifecycle:bundleLibRuntimeToDirDebug', task ':jni_flutter:bundleLibRuntimeToDirDebug', task ':jni:bundleLibRuntimeToDirDebug', task ':shared_preferences_android:bundleLibRuntimeToDirDebug', task ':app:mergeLibDexDebug', task ':app:mergeProjectDexDebug', task ':app:configureCMakeDebug[arm64-v8a]', task ':app:buildCMakeDebug[arm64-v8a]', task ':app:configureCMakeDebug[armeabi-v7a]', task ':app:buildCMakeDebug[armeabi-v7a]', task ':app:configureCMakeDebug[x86_64]', task ':app:buildCMakeDebug[x86_64]', task ':app:copyJniLibsflutterBuildDebug', task ':app:mergeDebugJniLibFolders', task ':cloud_firestore:mergeDebugJniLibFolders', task ':cloud_firestore:mergeDebugNativeLibs', task ':cloud_firestore:copyDebugJniLibsProjectOnly', task ':firebase_auth:mergeDebugJniLibFolders', task ':firebase_auth:mergeDebugNativeLibs', task ':firebase_auth:copyDebugJniLibsProjectOnly', task ':firebase_core:mergeDebugJniLibFolders', task ':firebase_core:mergeDebugNativeLibs', task ':firebase_core:copyDebugJniLibsProjectOnly', task ':firebase_storage:mergeDebugJniLibFolders', task ':firebase_storage:mergeDebugNativeLibs', task ':firebase_storage:copyDebugJniLibsProjectOnly', task ':flutter_plugin_android_lifecycle:mergeDebugJniLibFolders', task ':flutter_plugin_android_lifecycle:mergeDebugNativeLibs', task ':flutter_plugin_android_lifecycle:copyDebugJniLibsProjectOnly', task ':image_picker_android:mergeDebugJniLibFolders', task ':image_picker_android:mergeDebugNativeLibs', task ':image_picker_android:copyDebugJniLibsProjectOnly', task ':jni:preProfileBuild', task ':jni:configureCMakeDebug[arm64-v8a]', task ':jni:buildCMakeDebug[arm64-v8a]', task ':jni:configureCMakeDebug[armeabi-v7a]', task ':jni:buildCMakeDebug[armeabi-v7a]', task ':jni:configureCMakeDebug[x86]', task ':jni:buildCMakeDebug[x86]', task ':jni:configureCMakeDebug[x86_64]', task ':jni:buildCMakeDebug[x86_64]', task ':jni:mergeDebugJniLibFolders', task ':jni:mergeDebugNativeLibs', task ':jni:copyDebugJniLibsProjectOnly', task ':jni_flutter:mergeDebugJniLibFolders', task ':jni_flutter:mergeDebugNativeLibs', task ':jni_flutter:copyDebugJniLibsProjectOnly', task ':shared_preferences_android:mergeDebugJniLibFolders', task ':shared_preferences_android:mergeDebugNativeLibs', task ':shared_preferences_android:copyDebugJniLibsProjectOnly', task ':app:mergeDebugNativeLibs', task ':app:stripDebugDebugSymbols', task ':app:validateSigningDebug', task ':app:writeDebugAppMetadata', task ':app:writeDebugSigningConfigVersions', task ':app:packageDebug', task ':app:createDebugApkListingFileRedirect', task ':app:assembleDebug', task ':cloud_firestore:checkDebugAarMetadata', task ':cloud_firestore:stripDebugDebugSymbols', task ':cloud_firestore:copyDebugJniLibsProjectAndLocalJars', task ':cloud_firestore:extractDebugAnnotations', task ':cloud_firestore:extractDeepLinksForAarDebug', task ':cloud_firestore:mergeDebugGeneratedProguardFiles', task ':cloud_firestore:mergeDebugConsumerProguardFiles', task ':cloud_firestore:prepareDebugArtProfile', task ':cloud_firestore:prepareLintJarForPublish', task ':cloud_firestore:mergeDebugJavaResource', task ':cloud_firestore:syncDebugLibJars', task ':cloud_firestore:bundleDebugAar', task ':cloud_firestore:assembleDebug', task ':firebase_auth:checkDebugAarMetadata', task ':firebase_auth:stripDebugDebugSymbols', task ':firebase_auth:copyDebugJniLibsProjectAndLocalJars', task ':firebase_auth:extractDebugAnnotations', task ':firebase_auth:extractDeepLinksForAarDebug', task ':firebase_auth:mergeDebugGeneratedProguardFiles', task ':firebase_auth:mergeDebugConsumerProguardFiles', task ':firebase_auth:prepareDebugArtProfile', task ':firebase_auth:prepareLintJarForPublish', task ':firebase_auth:mergeDebugJavaResource', task ':firebase_auth:syncDebugLibJars', task ':firebase_auth:bundleDebugAar', task ':firebase_auth:assembleDebug', task ':firebase_core:checkDebugAarMetadata', task ':firebase_core:stripDebugDebugSymbols', task ':firebase_core:copyDebugJniLibsProjectAndLocalJars', task ':firebase_core:extractDebugAnnotations', task ':firebase_core:extractDeepLinksForAarDebug', task ':firebase_core:mergeDebugGeneratedProguardFiles', task ':firebase_core:mergeDebugConsumerProguardFiles', task ':firebase_core:prepareDebugArtProfile', task ':firebase_core:prepareLintJarForPublish', task ':firebase_core:mergeDebugJavaResource', task ':firebase_core:syncDebugLibJars', task ':firebase_core:bundleDebugAar', task ':firebase_core:assembleDebug', task ':firebase_storage:checkDebugAarMetadata', task ':firebase_storage:stripDebugDebugSymbols', task ':firebase_storage:copyDebugJniLibsProjectAndLocalJars', task ':firebase_storage:extractDebugAnnotations', task ':firebase_storage:extractDeepLinksForAarDebug', task ':firebase_storage:mergeDebugGeneratedProguardFiles', task ':firebase_storage:mergeDebugConsumerProguardFiles', task ':firebase_storage:prepareDebugArtProfile', task ':firebase_storage:prepareLintJarForPublish', task ':firebase_storage:mergeDebugJavaResource', task ':firebase_storage:syncDebugLibJars', task ':firebase_storage:bundleDebugAar', task ':firebase_storage:assembleDebug', task ':flutter_plugin_android_lifecycle:checkDebugAarMetadata', task ':flutter_plugin_android_lifecycle:stripDebugDebugSymbols', task ':flutter_plugin_android_lifecycle:copyDebugJniLibsProjectAndLocalJars', task ':flutter_plugin_android_lifecycle:extractDebugAnnotations', task ':flutter_plugin_android_lifecycle:extractDeepLinksForAarDebug', task ':flutter_plugin_android_lifecycle:mergeDebugGeneratedProguardFiles', task ':flutter_plugin_android_lifecycle:mergeDebugConsumerProguardFiles', task ':flutter_plugin_android_lifecycle:prepareDebugArtProfile', task ':flutter_plugin_android_lifecycle:prepareLintJarForPublish', task ':flutter_plugin_android_lifecycle:mergeDebugJavaResource', task ':flutter_plugin_android_lifecycle:syncDebugLibJars', task ':flutter_plugin_android_lifecycle:bundleDebugAar', task ':flutter_plugin_android_lifecycle:assembleDebug', task ':image_picker_android:checkDebugAarMetadata', task ':image_picker_android:stripDebugDebugSymbols', task ':image_picker_android:copyDebugJniLibsProjectAndLocalJars', task ':image_picker_android:extractDebugAnnotations', task ':image_picker_android:extractDeepLinksForAarDebug', task ':image_picker_android:mergeDebugGeneratedProguardFiles', task ':image_picker_android:mergeDebugConsumerProguardFiles', task ':image_picker_android:prepareDebugArtProfile', task ':image_picker_android:prepareLintJarForPublish', task ':image_picker_android:mergeDebugJavaResource', task ':image_picker_android:syncDebugLibJars', task ':image_picker_android:bundleDebugAar', task ':image_picker_android:assembleDebug', task ':jni:checkDebugAarMetadata', task ':jni:stripDebugDebugSymbols', task ':jni:copyDebugJniLibsProjectAndLocalJars', task ':jni:extractDebugAnnotations', task ':jni:extractDeepLinksForAarDebug', task ':jni:mergeDebugGeneratedProguardFiles', task ':jni:mergeDebugConsumerProguardFiles', task ':jni:prepareDebugArtProfile', task ':jni:prepareLintJarForPublish', task ':jni:mergeDebugJavaResource', task ':jni:syncDebugLibJars', task ':jni:bundleDebugAar', task ':jni:assembleDebug', task ':jni_flutter:checkDebugAarMetadata', task ':jni_flutter:stripDebugDebugSymbols', task ':jni_flutter:copyDebugJniLibsProjectAndLocalJars', task ':jni_flutter:extractDebugAnnotations', task ':jni_flutter:extractDeepLinksForAarDebug', task ':jni_flutter:mergeDebugGeneratedProguardFiles', task ':jni_flutter:mergeDebugConsumerProguardFiles', task ':jni_flutter:prepareDebugArtProfile', task ':jni_flutter:prepareLintJarForPublish', task ':jni_flutter:mergeDebugJavaResource', task ':jni_flutter:syncDebugLibJars', task ':jni_flutter:bundleDebugAar', task ':jni_flutter:assembleDebug', task ':shared_preferences_android:checkDebugAarMetadata', task ':shared_preferences_android:stripDebugDebugSymbols', task ':shared_preferences_android:copyDebugJniLibsProjectAndLocalJars', task ':shared_preferences_android:extractDebugAnnotations', task ':shared_preferences_android:extractDeepLinksForAarDebug', task ':shared_preferences_android:mergeDebugGeneratedProguardFiles', task ':shared_preferences_android:mergeDebugConsumerProguardFiles', task ':shared_preferences_android:prepareDebugArtProfile', task ':shared_preferences_android:prepareLintJarForPublish', task ':shared_preferences_android:mergeDebugJavaResource', task ':shared_preferences_android:syncDebugLibJars', task ':shared_preferences_android:bundleDebugAar', task ':shared_preferences_android:assembleDebug']
+[   +1 ms] Tasks that were excluded: []
+[  +82 ms] work action Parameters of IdentityTransform (Thread[#626,Execution worker Thread 6,5,main]) started.
+[        ] work action Parameters of DexingNoClasspathTransform (Thread[#626,Execution worker Thread 6,5,main]) started.
+[        ] work action Parameters of DexingOutputSplitTransform (Thread[#626,Execution worker Thread 6,5,main]) started.
+[        ] work action Parameters of ClassesDirToClassesTransform (Thread[#626,Execution worker Thread 6,5,main]) started.
+[        ] work action Parameters of DexingOutputSplitTransform (Thread[#626,Execution worker Thread 6,5,main]) started.
+[        ] Resolve mutations for :app:DebugMinSdkCheck (Thread[#626,Execution worker Thread 6,5,main]) started.
+[        ] :app:DebugMinSdkCheck (Thread[#626,Execution worker Thread 6,5,main]) started.
+[ +107 ms] > Task :app:DebugMinSdkCheck
+[        ] Caching disabled for task ':app:DebugMinSdkCheck' because:
+[        ]   Build cache is disabled
+[        ] Task ':app:DebugMinSdkCheck' is not up-to-date because:
+[        ]   Task has not declared any outputs despite executing actions.
+[        ] Resolve mutations for :app:preBuild (Thread[#626,Execution worker Thread 6,5,main]) started.
+[        ] :app:preBuild (Thread[#626,Execution worker Thread 6,5,main]) started.
+[        ] > Task :app:preBuild UP-TO-DATE
+[        ] Skipping task ':app:preBuild' as it has no actions.
+[        ] Resolve mutations for :app:preDebugBuild (Thread[#626,Execution worker Thread 6,5,main]) started.
+[        ] :app:preDebugBuild (Thread[#626,Execution worker Thread 6,5,main]) started.
+[        ] > Task :app:preDebugBuild UP-TO-DATE
+[        ] Skipping task ':app:preDebugBuild' as it has no actions.
+[        ] Resolve mutations for :app:mergeDebugNativeDebugMetadata (Thread[#626,Execution worker Thread 6,5,main]) started.
+[        ] :app:mergeDebugNativeDebugMetadata (Thread[#626,Execution worker Thread 6,5,main]) started.
+[        ] > Task :app:mergeDebugNativeDebugMetadata NO-SOURCE
+[        ] Skipping task ':app:mergeDebugNativeDebugMetadata' as it has no source files and no previous output files.
+[        ] Resolve mutations for :app:checkKotlinGradlePluginConfigurationErrors (Thread[#626,Execution worker Thread 6,5,main]) started.
+[        ] :app:checkKotlinGradlePluginConfigurationErrors (Thread[#626,Execution worker Thread 6,5,main]) started.
+[        ] > Task :app:checkKotlinGradlePluginConfigurationErrors SKIPPED
+[        ] Skipping task ':app:checkKotlinGradlePluginConfigurationErrors' as task onlyIf 'errorDiagnostics are present' is false.
+[        ] Resolve mutations for :app:cleanMergeDebugAssets (Thread[#626,Execution worker Thread 6,5,main]) started.
+[        ] :app:cleanMergeDebugAssets (Thread[#626,Execution worker Thread 6,5,main]) started.
+[        ] > Task :app:cleanMergeDebugAssets
+[        ] Caching disabled for task ':app:cleanMergeDebugAssets' because:
+[        ]   Build cache is disabled
+[        ] Task ':app:cleanMergeDebugAssets' is not up-to-date because:
+[        ]   Task has not declared any outputs despite executing actions.
+[        ] Resolve mutations for :app:compileFlutterBuildDebug (Thread[#626,Execution worker Thread 6,5,main]) started.
+[        ] :app:compileFlutterBuildDebug (Thread[#626,Execution worker Thread 6,5,main]) started.
+[+1987 ms] > Task :app:compileFlutterBuildDebug
+[        ] Caching disabled for task ':app:compileFlutterBuildDebug' because:
+[        ]   Build cache is disabled
+[        ]   Caching has not been enabled for the task
+[        ] Task ':app:compileFlutterBuildDebug' is not up-to-date because:
+[        ]   Value of input property 'verbose' has changed for task ':app:compileFlutterBuildDebug'
+[        ] Starting process 'command 'C:\flutter\bin\flutter.bat''. Working directory: D:\city_connect Command: C:\flutter\bin\flutter.bat --verbose assemble --no-version-check --depfile D:\city_connect\build\app\intermediates\flutter\debug/flutter_build.d --output D:\city_connect\build\app\intermediates\flutter\debug -dTargetFile=D:\city_connect\lib\main.dart -dTargetPlatform=android -dBuildMode=debug -dTrackWidgetCreation=true --DartDefines=RkxVVFRFUl9WRVJTSU9OPTMuNDQuMg==,RkxVVFRFUl9DSEFOTkVMPXN0YWJsZQ==,RkxVVFRFUl9HSVRfVVJMPWh0dHBzOi8vZ2l0aHViLmNvbS9mbHV0dGVyL2ZsdXR0ZXIuZ2l0,RkxVVFRFUl9GUkFNRVdPUktfUkVWSVNJT049YzlhNmM0ODQyMw==,RkxVVFRFUl9FTkdJTkVfUkVWSVNJT049NzdlMmU5NDc3Mg==,RkxVVFRFUl9EQVJUX1ZFUlNJT049My4xMi4y -dFlavor= -dAndroidArchs=android-arm64 -dMinSdkVersion=24 debug_android_application
+[   +1 ms] Successfully started process 'command 'C:\flutter\bin\flutter.bat''
+[+1704 ms] [ +280 ms] Artifact Instance of 'MaterialFonts' is not required, skipping update.
+[        ] [        ] Artifact Instance of 'GradleWrapper' is not required, skipping update.
+[        ] [        ] Artifact Instance of 'AndroidGenSnapshotArtifacts' is not required, skipping update.
+[        ] [        ] Artifact Instance of 'AndroidInternalBuildArtifacts' is not required, skipping update.
+[        ] [        ] Artifact Instance of 'IOSEngineArtifacts' is not required, skipping update.
+[        ] [        ] Artifact Instance of 'FlutterWebSdk' is not required, skipping update.
+[        ] [   +1 ms] Artifact Instance of 'LegacyCanvasKitRemover' is not required, skipping update.
+[        ] [        ] Artifact Instance of 'FlutterSdk' is not required, skipping update.
+[        ] [        ] Artifact Instance of 'WindowsEngineArtifacts' is not required, skipping update.
+[        ] [        ] Artifact Instance of 'MacOSEngineArtifacts' is not required, skipping update.
+[        ] [        ] Artifact Instance of 'LinuxEngineArtifacts' is not required, skipping update.
+[        ] [        ] Artifact Instance of 'LinuxFuchsiaSDKArtifacts' is not required, skipping update.
+[        ] [        ] Artifact Instance of 'MacOSFuchsiaSDKArtifacts' is not required, skipping update.
+[        ] [        ] Artifact Instance of 'FlutterRunnerSDKArtifacts' is not required, skipping update.
+[        ] [        ] Artifact Instance of 'FlutterRunnerDebugSymbols' is not required, skipping update.
+[   +2 ms] [        ] Artifact Instance of 'IosUsbArtifacts' is not required, skipping update.
+[   +1 ms] [        ] Artifact Instance of 'IosUsbArtifacts' is not required, skipping update.
+[        ] [        ] Artifact Instance of 'IosUsbArtifacts' is not required, skipping update.
+[        ] [        ] Artifact Instance of 'IosUsbArtifacts' is not required, skipping update.
+[        ] [        ] Artifact Instance of 'IosUsbArtifacts' is not required, skipping update.
+[   +1 ms] [        ] Artifact Instance of 'IosUsbArtifacts' is not required, skipping update.
+[        ] [        ] Artifact Instance of 'FontSubsetArtifacts' is not required, skipping update.
+[        ] [        ] Artifact Instance of 'PubDependencies' is not required, skipping update.
+[        ] [  +12 ms] Artifact Instance of 'AndroidGenSnapshotArtifacts' is not required, skipping update.
+[        ] [        ] Artifact Instance of 'AndroidInternalBuildArtifacts' is not required, skipping update.
+[        ] [        ] Artifact Instance of 'IOSEngineArtifacts' is not required, skipping update.
+[        ] [        ] Artifact Instance of 'FlutterWebSdk' is not required, skipping update.
+[        ] [        ] Artifact Instance of 'FlutterEngineStamp' is not required, skipping update.
+[        ] [        ] Artifact Instance of 'LegacyCanvasKitRemover' is not required, skipping update.
+[        ] [   +3 ms] Artifact Instance of 'WindowsEngineArtifacts' is not required, skipping update.
+[        ] [        ] Artifact Instance of 'MacOSEngineArtifacts' is not required, skipping update.
+[        ] [        ] Artifact Instance of 'LinuxEngineArtifacts' is not required, skipping update.
+[        ] [        ] Artifact Instance of 'LinuxFuchsiaSDKArtifacts' is not required, skipping update.
+[        ] [        ] Artifact Instance of 'MacOSFuchsiaSDKArtifacts' is not required, skipping update.
+[        ] [        ] Artifact Instance of 'FlutterRunnerSDKArtifacts' is not required, skipping update.
+[        ] [        ] Artifact Instance of 'FlutterRunnerDebugSymbols' is not required, skipping update.
+[  +77 ms] [ +116 ms] Artifact Instance of 'MaterialFonts' is not required, skipping update.
+[        ] [        ] Artifact Instance of 'GradleWrapper' is not required, skipping update.
+[        ] [   +6 ms] Artifact Instance of 'AndroidInternalBuildArtifacts' is not required, skipping update.
+[        ] [        ] Artifact Instance of 'IOSEngineArtifacts' is not required, skipping update.
+[        ] [        ] Artifact Instance of 'FlutterWebSdk' is not required, skipping update.
+[   +1 ms] [        ] Artifact Instance of 'FlutterEngineStamp' is not required, skipping update.
+[        ] [        ] Artifact Instance of 'LegacyCanvasKitRemover' is not required, skipping update.
+[        ] [        ] Artifact Instance of 'FlutterSdk' is not required, skipping update.
+[        ] [        ] Artifact Instance of 'WindowsEngineArtifacts' is not required, skipping update.
+[        ] [        ] Artifact Instance of 'MacOSEngineArtifacts' is not required, skipping update.
+[        ] [        ] Artifact Instance of 'LinuxEngineArtifacts' is not required, skipping update.
+[        ] [        ] Artifact Instance of 'LinuxFuchsiaSDKArtifacts' is not required, skipping update.
+[        ] [        ] Artifact Instance of 'MacOSFuchsiaSDKArtifacts' is not required, skipping update.
+[        ] [        ] Artifact Instance of 'FlutterRunnerSDKArtifacts' is not required, skipping update.
+[        ] [        ] Artifact Instance of 'FlutterRunnerDebugSymbols' is not required, skipping update.
+[        ] [        ] Artifact Instance of 'IosUsbArtifacts' is not required, skipping update.
+[        ] [        ] Artifact Instance of 'IosUsbArtifacts' is not required, skipping update.
+[        ] [        ] Artifact Instance of 'IosUsbArtifacts' is not required, skipping update.
+[        ] [        ] Artifact Instance of 'IosUsbArtifacts' is not required, skipping update.
+[        ] [        ] Artifact Instance of 'IosUsbArtifacts' is not required, skipping update.
+[        ] [        ] Artifact Instance of 'IosUsbArtifacts' is not required, skipping update.
+[   +1 ms] [        ] Artifact Instance of 'FontSubsetArtifacts' is not required, skipping update.
+[        ] [        ] Artifact Instance of 'PubDependencies' is not required, skipping update.
+[  +86 ms] [  +79 ms] Initializing file store
+[        ] [  +28 ms] Done initializing file store
+[ +108 ms] [ +123 ms] dart_build: Starting due to {InvalidatedReasonKind.inputChanged: The following inputs have updated contents: D:\city_connect\.dart_tool\package_config.json,D:\city_connect\.dart_tool\package_config.json,D:\city_connect\pubspec.yaml,d:\city_connect\.dart_tool\package_config.json}
+[        ] [   +4 ms] Skipping target: gen_localizations
+[        ] [   +3 ms] gen_dart_plugin_registrant: Starting due to {InvalidatedReasonKind.inputChanged: The following inputs have updated contents: D:\city_connect\.dart_tool\package_config.json,D:\city_connect\.dart_tool\flutter_build\dart_plugin_registrant.dart}
+[ +295 ms] [ +222 ms] Building native assets for android_arm64.
+[        ] [  +94 ms] Found plugin shared_preferences at C:\Users\LENOVO\AppData\Local\Pub\Cache\hosted\pub.dev\shared_preferences-2.5.5\
+[        ] [   +8 ms] Found plugin shared_preferences_windows at C:\Users\LENOVO\AppData\Local\Pub\Cache\hosted\pub.dev\shared_preferences_windows-2.4.1\
+[ +108 ms] [  +13 ms] Recompiling C:\Users\LENOVO\AppData\Local\Pub\Cache\hosted\pub.dev\objective_c-9.4.1\hook\build.dart. File contents changed: d:\city_connect\.dart_tool\package_config.json.
+[        ] [   +4 ms] Running `C:\flutter\bin\cache\dart-sdk\bin\dart compile kernel --packages=D:\city_connect\.dart_tool\package_config.json --output=D:\city_connect\.dart_tool\hooks_runner\objective_c\e6e4f8c162\hook.dill --depfile=D:\city_connect\.dart_tool\hooks_runner\objective_c\e6e4f8c162\hook.dill.d C:\Users\LENOVO\AppData\Local\Pub\Cache\hosted\pub.dev\objective_c-9.4.1\hook\build.dart`.
+[        ] [  +33 ms] Found plugin path_provider_windows at C:\Users\LENOVO\AppData\Local\Pub\Cache\hosted\pub.dev\path_provider_windows-2.3.0\
+[        ] [  +13 ms] Found plugin shared_preferences_web at C:\Users\LENOVO\AppData\Local\Pub\Cache\hosted\pub.dev\shared_preferences_web-2.4.3\
+[        ] [   +8 ms] Found plugin shared_preferences_linux at C:\Users\LENOVO\AppData\Local\Pub\Cache\hosted\pub.dev\shared_preferences_linux-2.4.1\
+[        ] [   +4 ms] Found plugin path_provider_linux at C:\Users\LENOVO\AppData\Local\Pub\Cache\hosted\pub.dev\path_provider_linux-2.2.2\
+[        ] [   +7 ms] Found plugin shared_preferences_foundation at C:\Users\LENOVO\AppData\Local\Pub\Cache\hosted\pub.dev\shared_preferences_foundation-2.5.6\
+[   +1 ms] [   +5 ms] Found plugin shared_preferences_android at C:\Users\LENOVO\AppData\Local\Pub\Cache\hosted\pub.dev\shared_preferences_android-2.4.26\
+[  +90 ms] [   +5 ms] Found plugin image_picker at C:\Users\LENOVO\AppData\Local\Pub\Cache\hosted\pub.dev\image_picker-1.2.3\
+[        ] [   +4 ms] Found plugin image_picker_windows at C:\Users\LENOVO\AppData\Local\Pub\Cache\hosted\pub.dev\image_picker_windows-0.2.2\
+[        ] [  +16 ms] Found plugin file_selector_windows at C:\Users\LENOVO\AppData\Local\Pub\Cache\hosted\pub.dev\file_selector_windows-0.9.3+5\
+[        ] [   +6 ms] Found plugin image_picker_macos at C:\Users\LENOVO\AppData\Local\Pub\Cache\hosted\pub.dev\image_picker_macos-0.2.2+1\
+[        ] [   +3 ms] Found plugin file_selector_macos at C:\Users\LENOVO\AppData\Local\Pub\Cache\hosted\pub.dev\file_selector_macos-0.9.5\
+[        ] [   +3 ms] Found plugin image_picker_linux at C:\Users\LENOVO\AppData\Local\Pub\Cache\hosted\pub.dev\image_picker_linux-0.2.2\
+[        ] [   +3 ms] Found plugin file_selector_linux at C:\Users\LENOVO\AppData\Local\Pub\Cache\hosted\pub.dev\file_selector_linux-0.9.4\
+[        ] [   +3 ms] Found plugin image_picker_ios at C:\Users\LENOVO\AppData\Local\Pub\Cache\hosted\pub.dev\image_picker_ios-0.8.13+6\
+[        ] [   +3 ms] Found plugin image_picker_for_web at C:\Users\LENOVO\AppData\Local\Pub\Cache\hosted\pub.dev\image_picker_for_web-3.1.1\
+[        ] [  +10 ms] Found plugin image_picker_android at C:\Users\LENOVO\AppData\Local\Pub\Cache\hosted\pub.dev\image_picker_android-0.8.13+19\
+[        ] [  +21 ms] Found plugin flutter_plugin_android_lifecycle at C:\Users\LENOVO\AppData\Local\Pub\Cache\hosted\pub.dev\flutter_plugin_android_lifecycle-2.0.35\
+[        ] [   +7 ms] Found plugin path_provider at C:\Users\LENOVO\AppData\Local\Pub\Cache\hosted\pub.dev\path_provider-2.1.6\
+[        ] [   +4 ms] Found plugin path_provider_foundation at C:\Users\LENOVO\AppData\Local\Pub\Cache\hosted\pub.dev\path_provider_foundation-2.6.0\
+[        ] [  +18 ms] Found plugin path_provider_android at C:\Users\LENOVO\AppData\Local\Pub\Cache\hosted\pub.dev\path_provider_android-2.3.1\
+[  +89 ms] [   +3 ms] Found plugin jni_flutter at C:\Users\LENOVO\AppData\Local\Pub\Cache\hosted\pub.dev\jni_flutter-1.0.1\
+[        ] [   +4 ms] Found plugin jni at C:\Users\LENOVO\AppData\Local\Pub\Cache\hosted\pub.dev\jni-1.0.0\
+[        ] [   +6 ms] Found plugin firebase_storage at C:\Users\LENOVO\AppData\Local\Pub\Cache\hosted\pub.dev\firebase_storage-13.4.3\
+[        ] [   +3 ms] Found plugin firebase_storage_web at C:\Users\LENOVO\AppData\Local\Pub\Cache\hosted\pub.dev\firebase_storage_web-3.11.9\
+[        ] [   +4 ms] Found plugin firebase_core at C:\Users\LENOVO\AppData\Local\Pub\Cache\hosted\pub.dev\firebase_core-4.11.0\
+[        ] [   +2 ms] Found plugin firebase_core_web at C:\Users\LENOVO\AppData\Local\Pub\Cache\hosted\pub.dev\firebase_core_web-3.9.0\
+[        ] [   +7 ms] Found plugin firebase_auth at C:\Users\LENOVO\AppData\Local\Pub\Cache\hosted\pub.dev\firebase_auth-6.5.3\
+[        ] [   +3 ms] Found plugin firebase_auth_web at C:\Users\LENOVO\AppData\Local\Pub\Cache\hosted\pub.dev\firebase_auth_web-6.2.3\
+[        ] [  +14 ms] Found plugin cloud_firestore at C:\Users\LENOVO\AppData\Local\Pub\Cache\hosted\pub.dev\cloud_firestore-6.6.0\
+[        ] [   +3 ms] Found plugin cloud_firestore_web at C:\Users\LENOVO\AppData\Local\Pub\Cache\hosted\pub.dev\cloud_firestore_web-5.6.0\
+[ +107 ms] [  +25 ms] Skipping generating dart_plugin_registrant.dart because it is up-to-date.
+[        ] [        ] gen_dart_plugin_registrant: Complete
+[+2494 ms] [+2544 ms] kernel_snapshot_program: Starting due to {InvalidatedReasonKind.inputChanged: The following inputs have updated contents: D:\city_connect\.dart_tool\package_config.json,D:\city_connect\.dart_tool\flutter_build\dart_plugin_registrant.dart,D:\city_connect\lib\index.dart}
+[ +110 ms] [ +129 ms] C:\flutter\bin\cache\dart-sdk\bin\dartaotruntime.exe C:\flutter\bin\cache\dart-sdk\bin\snapshots\frontend_server_aot.dart.snapshot --sdk-root C:\flutter\bin\cache\artifacts\engine\common\flutter_patched_sdk/ --target=flutter --no-print-incremental-dependencies -DFLUTTER_VERSION=3.44.2 -DFLUTTER_CHANNEL=stable -DFLUTTER_GIT_URL=https://github.com/flutter/flutter.git -DFLUTTER_FRAMEWORK_REVISION=c9a6c48423 -DFLUTTER_ENGINE_REVISION=77e2e94772 -DFLUTTER_DART_VERSION=3.12.2 -DFLUTTER_APP_FLAVOR= -Ddart.vm.profile=false -Ddart.vm.product=false --enable-asserts --track-widget-creation --no-link-platform --packages D:\city_connect\.dart_tool\package_config.json --output-dill D:\city_connect\.dart_tool\flutter_build\5d5c8acc247746c1c3258b82d584d7cb\app.dill --depfile D:\city_connect\.dart_tool\flutter_build\5d5c8acc247746c1c3258b82d584d7cb\kernel_snapshot_program.d --incremental --initialize-from-dill D:\city_connect\.dart_tool\flutter_build\5d5c8acc247746c1c3258b82d584d7cb\app.dill --source file:///D:/city_connect/.dart_tool/flutter_build/dart_plugin_registrant.dart --source package:flutter/src/dart_plugin_registrant.dart -Dflutter.dart_plugin_registrant=file:///D:/city_connect/.dart_tool/flutter_build/dart_plugin_registrant.dart --verbosity=error package:city_connect/main.dart
+[  +91 ms] [ +105 ms] Rerunning build for objective_c in D:\city_connect\.dart_tool\hooks_runner\objective_c\e6e4f8c162\. Hook Dart sources and D:\city_connect\.dart_tool\hooks_runner\objective_c\e6e4f8c162\hook.dill
+[        ] [   +2 ms] input.json contents:
+[        ]            {
+[        ]              "assets": {},
+[        ]              "config": {
+[        ]                "build_asset_types": [
+[        ]                  "code_assets/code"
+[        ]                ],
+[        ]                "extensions": {
+[        ]                  "code_assets": {
+[        ]                    "android": {
+[        ]                      "target_ndk_api": 24
+[        ]                    },
+[        ]                    "c_compiler": {
+[        ]                      "ar": "C:\\Users\\LENOVO\\AppData\\Local\\Android\\sdk\\ndk\\28.2.13676358\\toolchains\\llvm\\prebuilt\\windows-x86_64\\bin\\llvm-ar.exe",
+[        ]                      "cc": "C:\\Users\\LENOVO\\AppData\\Local\\Android\\sdk\\ndk\\28.2.13676358\\toolchains\\llvm\\prebuilt\\windows-x86_64\\bin\\clang.exe",
+[        ]                      "ld": "C:\\Users\\LENOVO\\AppData\\Local\\Android\\sdk\\ndk\\28.2.13676358\\toolchains\\llvm\\prebuilt\\windows-x86_64\\bin\\ld.lld.exe"
+[        ]                    },
+[        ]                    "link_mode_preference": "dynamic",
+[        ]                    "target_architecture": "arm64",
+[        ]                    "target_os": "android"
+[        ]                  }
+[        ]                },
+[        ]                "linking_enabled": false
+[        ]              },
+[        ]              "out_dir_shared": "D:\\city_connect\\.dart_tool\\hooks_runner\\shared\\objective_c\\build\\",
+[        ]              "out_file": "D:\\city_connect\\.dart_tool\\hooks_runner\\objective_c\\e6e4f8c162\\output.json",
+[        ]              "package_name": "objective_c",
+[        ]              "package_root": "C:\\Users\\LENOVO\\AppData\\Local\\Pub\\Cache\\hosted\\pub.dev\\objective_c-9.4.1\\",
+[        ]              "user_defines": {}
+[        ]            }
+[        ] [  +15 ms] Running `(cd C:\Users\LENOVO\AppData\Local\Pub\Cache\hosted\pub.dev\objective_c-9.4.1\; PATH=C:\Program Files\Android\Android Studio1\jbr\bin;C:\Program Files\Common Files\Oracle\Java\javapath;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\WINDOWS\System32\OpenSSH\;C:\Program Files (x86)\NVIDIA Corporation\PhysX\Common;C:\Program Files\NVIDIA Corporation\NVIDIA NvDLISR;C:\Program Files (x86)\Microsoft SQL Server\160\Tools\Binn\;C:\Program Files\Microsoft SQL Server\160\Tools\Binn\;C:\Program Files\Microsoft SQL Server\Client SDK\ODBC\170\Tools\Binn\;C:\Program Files\Microsoft SQL Server\160\DTS\Binn\;C:\Program Files\Java\jdk-24;C:\MinGW\bin;C:\Program Files\cursor\resources\app\bin;D:\xampp\php;D:\Nodejs\;D:\Git\cmd;C:\Program Files\dotnet\;C:\Program Files\Microsoft SQL Server\170\Tools\Binn\;C:\Program Files\VSCodium\bin;C:\Users\LENOVO\AppData\Local\Programs\Python\Python313\Scripts\;C:\Users\LENOVO\AppData\Local\Programs\Python\Python313\;C:\Users\LENOVO\AppData\Local\Microsoft\WindowsApps;C:\MinGW\bin;C:\xampp\php;C:\Users\LENOVO\AppData\Roaming\npm;D:\Cursor\resources\app\bin;D:\VS_code\bin;D:\Antigravity\bin;C:\Users\LENOVO\AppData\Local\Programs\Antigravity IDE\bin;C:\Users\LENOVO\AppData\Local\Programs\Ollama;C:\Users\LENOVO\.dotnet\tools;C:\Users\LENOVO\AppData\Local\Pub\Cache\bin;C:\flutter\bin;;C:\flutter\bin\mingit\cmd;C:\flutter\bin\mingit\cmd PROGRAMDATA=C:\ProgramData SYSTEMDRIVE=C: SYSTEMROOT=C:\WINDOWS TEMP=C:\Users\LENOVO\AppData\Local\Temp TMP=C:\Users\LENOVO\AppData\Local\Temp USERPROFILE=C:\Users\LENOVO WINDIR=C:\WINDOWS C:\flutter\bin\cache\dart-sdk\bin\dart --packages=D:\city_connect\.dart_tool\package_config.json D:\city_connect\.dart_tool\hooks_runner\objective_c\e6e4f8c162\hook.dill --config=D:\city_connect\.dart_tool\hooks_runner\objective_c\e6e4f8c162\input.json )`.
+[ +598 ms] [ +521 ms] output.json contents:
+[        ]            {
+[        ]              "assets_for_linking": {},
+[        ]              "status": "success",
+[        ]              "timestamp": "2026-07-10 19:07:30.000"
+[        ]            }
+[        ] [  +62 ms] Building native assets for android_arm64 done.
+[        ] [   +9 ms] dart_build: Complete
+[  +91 ms] [  +20 ms] install_code_assets: Starting due to {InvalidatedReasonKind.inputChanged: The following inputs have updated contents: D:\city_connect\.dart_tool\flutter_build\5d5c8acc247746c1c3258b82d584d7cb\dart_build_result.json,D:\city_connect\.dart_tool\package_config.json}
+[        ] [  +17 ms] Writing native assets json to file:///D:/city_connect/.dart_tool/flutter_build/5d5c8acc247746c1c3258b82d584d7cb/native_assets.json.
+[        ] [   +2 ms] Writing D:\city_connect\.dart_tool\flutter_build\5d5c8acc247746c1c3258b82d584d7cb\native_assets.json done.
+[        ] [   +1 ms] install_code_assets: Complete
+[+21104 ms] [+21118 ms] kernel_snapshot_program: Complete
+[+1195 ms] [+1206 ms] debug_android_application: Starting due to {InvalidatedReasonKind.inputChanged: The following inputs have updated contents: D:\city_connect\.dart_tool\flutter_build\5d5c8acc247746c1c3258b82d584d7cb\app.dill,D:\city_connect\.dart_tool\flutter_build\5d5c8acc247746c1c3258b82d584d7cb\dart_build_result.json,D:\city_connect\pubspec.yaml}
+[ +296 ms] [ +285 ms] impellerc command: [C:\flutter\bin\cache\artifacts\engine\windows-x64\impellerc.exe, --sksl, --runtime-stage-gles, --runtime-stage-gles3, --runtime-stage-vulkan, --iplr, --sl=D:\city_connect\build\app\intermediates\flutter\debug\flutter_assets\shaders/ink_sparkle.frag, --spirv=D:\city_connect\build\app\intermediates\flutter\debug\flutter_assets\shaders/ink_sparkle.frag.spirv, --input=C:\flutter\packages\flutter\lib\src\material\shaders\ink_sparkle.frag, --input-type=frag, --include=C:\flutter\packages\flutter\lib\src\material\shaders, --include=C:\flutter\bin\cache\artifacts\engine\windows-x64\shader_lib]
+[        ] [   +1 ms] impellerc command: [C:\flutter\bin\cache\artifacts\engine\windows-x64\impellerc.exe, --sksl, --runtime-stage-gles, --runtime-stage-gles3, --runtime-stage-vulkan, --iplr, --sl=D:\city_connect\build\app\intermediates\flutter\debug\flutter_assets\shaders/stretch_effect.frag, --spirv=D:\city_connect\build\app\intermediates\flutter\debug\flutter_assets\shaders/stretch_effect.frag.spirv, --input=C:\flutter\packages\flutter\lib\src\material\shaders\stretch_effect.frag, --input-type=frag, --include=C:\flutter\packages\flutter\lib\src\material\shaders, --include=C:\flutter\bin\cache\artifacts\engine\windows-x64\shader_lib]
+[+1106 ms] [+1130 ms] debug_android_application: Complete
+[ +898 ms] [ +878 ms] Persisting file store
+[        ] [  +21 ms] Done persisting file store
+[  +94 ms] [  +34 ms] build succeeded.
+[        ] [  +21 ms] "flutter assemble" took 29,110ms.
+[ +107 ms] [ +141 ms] Running 1 shutdown hook
+[        ] [   +1 ms] Shutdown hooks complete
+[ +297 ms] [ +257 ms] exiting with code 0
+[ +203 ms] Resolve mutations for :app:generateDebugAssets (Thread[#626,Execution worker Thread 6,5,main]) started.
+[        ] :app:generateDebugAssets (Thread[#621,Execution worker,5,main]) started.
+[        ] > Task :app:generateDebugAssets UP-TO-DATE
+[        ] Skipping task ':app:generateDebugAssets' as it has no actions.
+[        ] Resolve mutations for :cloud_firestore:generateDebugAssets (Thread[#624,Execution worker Thread 4,5,main]) started.
+[        ] :cloud_firestore:generateDebugAssets (Thread[#624,Execution worker Thread 4,5,main]) started.
+[        ] > Task :cloud_firestore:generateDebugAssets UP-TO-DATE
+[        ] Skipping task ':cloud_firestore:generateDebugAssets' as it has no actions.
+[        ] Resolve mutations for :cloud_firestore:preBuild (Thread[#624,Execution worker Thread 4,5,main]) started.
+[        ] :cloud_firestore:preBuild (Thread[#624,Execution worker Thread 4,5,main]) started.
+[        ] > Task :cloud_firestore:preBuild UP-TO-DATE
+[        ] Skipping task ':cloud_firestore:preBuild' as it has no actions.
+[        ] Resolve mutations for :cloud_firestore:preDebugBuild (Thread[#624,Execution worker Thread 4,5,main]) started.
+[        ] :cloud_firestore:preDebugBuild (Thread[#624,Execution worker Thread 4,5,main]) started.
+[  +89 ms] > Task :cloud_firestore:preDebugBuild UP-TO-DATE
+[        ] Skipping task ':cloud_firestore:preDebugBuild' as it has no actions.
+[        ] Resolve mutations for :cloud_firestore:mergeDebugAssets (Thread[#624,Execution worker Thread 4,5,main]) started.
+[        ] :cloud_firestore:mergeDebugAssets (Thread[#624,Execution worker Thread 4,5,main]) started.
+[        ] > Task :cloud_firestore:mergeDebugAssets UP-TO-DATE
+[        ] Caching disabled for task ':cloud_firestore:mergeDebugAssets' because:
+[        ]   Build cache is disabled
+[        ]   Simple merging task
+[        ] Skipping task ':cloud_firestore:mergeDebugAssets' as it is up-to-date.
+[        ] work action resolve mergeDebugAssets (project :cloud_firestore) (Thread[#624,Execution worker Thread 4,5,main]) started.
+[        ] Resolve mutations for :firebase_auth:generateDebugAssets (Thread[#624,Execution worker Thread 4,5,main]) started.
+[        ] :firebase_auth:generateDebugAssets (Thread[#624,Execution worker Thread 4,5,main]) started.
+[        ] > Task :firebase_auth:generateDebugAssets UP-TO-DATE
+[        ] Skipping task ':firebase_auth:generateDebugAssets' as it has no actions.
+[        ] Resolve mutations for :firebase_auth:preBuild (Thread[#626,Execution worker Thread 6,5,main]) started.
+[        ] :firebase_auth:preBuild (Thread[#627,Execution worker Thread 7,5,main]) started.
+[        ] > Task :firebase_auth:preBuild UP-TO-DATE
+[        ] Skipping task ':firebase_auth:preBuild' as it has no actions.
+[        ] Resolve mutations for :firebase_auth:preDebugBuild (Thread[#627,Execution worker Thread 7,5,main]) started.
+[        ] :firebase_auth:preDebugBuild (Thread[#627,Execution worker Thread 7,5,main]) started.
+[        ] > Task :firebase_auth:preDebugBuild UP-TO-DATE
+[        ] Skipping task ':firebase_auth:preDebugBuild' as it has no actions.
+[        ] Resolve mutations for :firebase_auth:mergeDebugAssets (Thread[#627,Execution worker Thread 7,5,main]) started.
+[        ] :firebase_auth:mergeDebugAssets (Thread[#627,Execution worker Thread 7,5,main]) started.
+[        ] > Task :firebase_auth:mergeDebugAssets UP-TO-DATE
+[        ] Caching disabled for task ':firebase_auth:mergeDebugAssets' because:
+[        ]   Build cache is disabled
+[        ]   Simple merging task
+[        ] Skipping task ':firebase_auth:mergeDebugAssets' as it is up-to-date.
+[        ] work action resolve mergeDebugAssets (project :firebase_auth) (Thread[#627,Execution worker Thread 7,5,main]) started.
+[        ] Resolve mutations for :firebase_core:generateDebugAssets (Thread[#627,Execution worker Thread 7,5,main]) started.
+[        ] :firebase_core:generateDebugAssets (Thread[#627,Execution worker Thread 7,5,main]) started.
+[        ] > Task :firebase_core:generateDebugAssets UP-TO-DATE
+[        ] Skipping task ':firebase_core:generateDebugAssets' as it has no actions.
+[        ] Resolve mutations for :firebase_core:preBuild (Thread[#627,Execution worker Thread 7,5,main]) started.
+[        ] :firebase_core:preBuild (Thread[#627,Execution worker Thread 7,5,main]) started.
+[        ] > Task :firebase_core:preBuild UP-TO-DATE
+[        ] Skipping task ':firebase_core:preBuild' as it has no actions.
+[        ] Resolve mutations for :firebase_core:preDebugBuild (Thread[#627,Execution worker Thread 7,5,main]) started.
+[        ] :firebase_core:preDebugBuild (Thread[#627,Execution worker Thread 7,5,main]) started.
+[        ] > Task :firebase_core:preDebugBuild UP-TO-DATE
+[        ] Skipping task ':firebase_core:preDebugBuild' as it has no actions.
+[        ] Resolve mutations for :firebase_core:mergeDebugAssets (Thread[#627,Execution worker Thread 7,5,main]) started.
+[        ] :firebase_core:mergeDebugAssets (Thread[#622,Execution worker Thread 2,5,main]) started.
+[        ] > Task :firebase_core:mergeDebugAssets UP-TO-DATE
+[        ] Caching disabled for task ':firebase_core:mergeDebugAssets' because:
+[        ]   Build cache is disabled
+[        ]   Simple merging task
+[        ] Skipping task ':firebase_core:mergeDebugAssets' as it is up-to-date.
+[        ] work action resolve mergeDebugAssets (project :firebase_core) (Thread[#622,Execution worker Thread 2,5,main]) started.
+[        ] Resolve mutations for :firebase_storage:generateDebugAssets (Thread[#622,Execution worker Thread 2,5,main]) started.
+[        ] :firebase_storage:generateDebugAssets (Thread[#622,Execution worker Thread 2,5,main]) started.
+[        ] > Task :firebase_storage:generateDebugAssets UP-TO-DATE
+[        ] Skipping task ':firebase_storage:generateDebugAssets' as it has no actions.
+[        ] Resolve mutations for :firebase_storage:preBuild (Thread[#622,Execution worker Thread 2,5,main]) started.
+[        ] :firebase_storage:preBuild (Thread[#621,Execution worker,5,main]) started.
+[        ] > Task :firebase_storage:preBuild UP-TO-DATE
+[        ] Skipping task ':firebase_storage:preBuild' as it has no actions.
+[        ] Resolve mutations for :firebase_storage:preDebugBuild (Thread[#621,Execution worker,5,main]) started.
+[        ] :firebase_storage:preDebugBuild (Thread[#621,Execution worker,5,main]) started.
+[        ] > Task :firebase_storage:preDebugBuild UP-TO-DATE
+[        ] Skipping task ':firebase_storage:preDebugBuild' as it has no actions.
+[   +1 ms] Resolve mutations for :firebase_storage:mergeDebugAssets (Thread[#621,Execution worker,5,main]) started.
+[        ] :firebase_storage:mergeDebugAssets (Thread[#621,Execution worker,5,main]) started.
+[        ] > Task :firebase_storage:mergeDebugAssets UP-TO-DATE
+[        ] Caching disabled for task ':firebase_storage:mergeDebugAssets' because:
+[        ]   Build cache is disabled
+[        ]   Simple merging task
+[        ] Skipping task ':firebase_storage:mergeDebugAssets' as it is up-to-date.
+[        ] work action resolve mergeDebugAssets (project :firebase_storage) (Thread[#621,Execution worker,5,main]) started.
+[        ] Resolve mutations for :flutter_plugin_android_lifecycle:generateDebugAssets (Thread[#621,Execution worker,5,main]) started.
+[        ] :flutter_plugin_android_lifecycle:generateDebugAssets (Thread[#621,Execution worker,5,main]) started.
+[        ] > Task :flutter_plugin_android_lifecycle:generateDebugAssets UP-TO-DATE
+[        ] Skipping task ':flutter_plugin_android_lifecycle:generateDebugAssets' as it has no actions.
+[        ] Resolve mutations for :flutter_plugin_android_lifecycle:preBuild (Thread[#621,Execution worker,5,main]) started.
+[        ] :flutter_plugin_android_lifecycle:preBuild (Thread[#621,Execution worker,5,main]) started.
+[        ] > Task :flutter_plugin_android_lifecycle:preBuild UP-TO-DATE
+[        ] Skipping task ':flutter_plugin_android_lifecycle:preBuild' as it has no actions.
+[        ] Resolve mutations for :flutter_plugin_android_lifecycle:preDebugBuild (Thread[#621,Execution worker,5,main]) started.
+[        ] :flutter_plugin_android_lifecycle:preDebugBuild (Thread[#621,Execution worker,5,main]) started.
+[        ] > Task :flutter_plugin_android_lifecycle:preDebugBuild UP-TO-DATE
+[        ] Skipping task ':flutter_plugin_android_lifecycle:preDebugBuild' as it has no actions.
+[        ] Resolve mutations for :flutter_plugin_android_lifecycle:mergeDebugAssets (Thread[#621,Execution worker,5,main]) started.
+[        ] :flutter_plugin_android_lifecycle:mergeDebugAssets (Thread[#621,Execution worker,5,main]) started.
+[        ] > Task :flutter_plugin_android_lifecycle:mergeDebugAssets UP-TO-DATE
+[        ] Caching disabled for task ':flutter_plugin_android_lifecycle:mergeDebugAssets' because:
+[        ]   Build cache is disabled
+[        ]   Simple merging task
+[        ] Skipping task ':flutter_plugin_android_lifecycle:mergeDebugAssets' as it is up-to-date.
+[        ] work action resolve mergeDebugAssets (project :flutter_plugin_android_lifecycle) (Thread[#621,Execution worker,5,main]) started.
+[        ] Resolve mutations for :image_picker_android:generateDebugAssets (Thread[#621,Execution worker,5,main]) started.
+[        ] :image_picker_android:generateDebugAssets (Thread[#621,Execution worker,5,main]) started.
+[        ] > Task :image_picker_android:generateDebugAssets UP-TO-DATE
+[        ] Skipping task ':image_picker_android:generateDebugAssets' as it has no actions.
+[        ] Resolve mutations for :image_picker_android:preBuild (Thread[#621,Execution worker,5,main]) started.
+[        ] :image_picker_android:preBuild (Thread[#621,Execution worker,5,main]) started.
+[        ] > Task :image_picker_android:preBuild UP-TO-DATE
+[        ] Skipping task ':image_picker_android:preBuild' as it has no actions.
+[        ] Resolve mutations for :image_picker_android:preDebugBuild (Thread[#621,Execution worker,5,main]) started.
+[        ] :image_picker_android:preDebugBuild (Thread[#621,Execution worker,5,main]) started.
+[        ] > Task :image_picker_android:preDebugBuild UP-TO-DATE
+[        ] Skipping task ':image_picker_android:preDebugBuild' as it has no actions.
+[        ] Resolve mutations for :image_picker_android:mergeDebugAssets (Thread[#621,Execution worker,5,main]) started.
+[        ] :image_picker_android:mergeDebugAssets (Thread[#621,Execution worker,5,main]) started.
+[        ] > Task :image_picker_android:mergeDebugAssets UP-TO-DATE
+[        ] Caching disabled for task ':image_picker_android:mergeDebugAssets' because:
+[        ]   Build cache is disabled
+[        ]   Simple merging task
+[        ] Skipping task ':image_picker_android:mergeDebugAssets' as it is up-to-date.
+[        ] work action resolve mergeDebugAssets (project :image_picker_android) (Thread[#621,Execution worker,5,main]) started.
+[        ] Resolve mutations for :jni:generateDebugAssets (Thread[#621,Execution worker,5,main]) started.
+[        ] :jni:generateDebugAssets (Thread[#621,Execution worker,5,main]) started.
+[        ] > Task :jni:generateDebugAssets UP-TO-DATE
+[        ] Skipping task ':jni:generateDebugAssets' as it has no actions.
+[        ] Resolve mutations for :jni:preBuild (Thread[#621,Execution worker,5,main]) started.
+[   +1 ms] :jni:preBuild (Thread[#624,Execution worker Thread 4,5,main]) started.
+[        ] > Task :jni:preBuild UP-TO-DATE
+[        ] Skipping task ':jni:preBuild' as it has no actions.
+[        ] Resolve mutations for :jni:preDebugBuild (Thread[#624,Execution worker Thread 4,5,main]) started.
+[        ] :jni:preDebugBuild (Thread[#624,Execution worker Thread 4,5,main]) started.
+[        ] > Task :jni:preDebugBuild UP-TO-DATE
+[        ] Skipping task ':jni:preDebugBuild' as it has no actions.
+[        ] Resolve mutations for :jni:mergeDebugAssets (Thread[#624,Execution worker Thread 4,5,main]) started.
+[        ] :jni:mergeDebugAssets (Thread[#624,Execution worker Thread 4,5,main]) started.
+[        ] > Task :jni:mergeDebugAssets UP-TO-DATE
+[        ] Caching disabled for task ':jni:mergeDebugAssets' because:
+[        ]   Build cache is disabled
+[        ]   Simple merging task
+[        ] Skipping task ':jni:mergeDebugAssets' as it is up-to-date.
+[        ] work action resolve mergeDebugAssets (project :jni) (Thread[#624,Execution worker Thread 4,5,main]) started.
+[        ] Resolve mutations for :jni_flutter:generateDebugAssets (Thread[#624,Execution worker Thread 4,5,main]) started.
+[        ] :jni_flutter:generateDebugAssets (Thread[#624,Execution worker Thread 4,5,main]) started.
+[        ] > Task :jni_flutter:generateDebugAssets UP-TO-DATE
+[        ] Skipping task ':jni_flutter:generateDebugAssets' as it has no actions.
+[        ] Resolve mutations for :jni_flutter:preBuild (Thread[#624,Execution worker Thread 4,5,main]) started.
+[        ] :jni_flutter:preBuild (Thread[#624,Execution worker Thread 4,5,main]) started.
+[        ] > Task :jni_flutter:preBuild UP-TO-DATE
+[        ] Skipping task ':jni_flutter:preBuild' as it has no actions.
+[        ] Resolve mutations for :jni_flutter:preDebugBuild (Thread[#624,Execution worker Thread 4,5,main]) started.
+[        ] :jni_flutter:preDebugBuild (Thread[#624,Execution worker Thread 4,5,main]) started.
+[        ] > Task :jni_flutter:preDebugBuild UP-TO-DATE
+[        ] Skipping task ':jni_flutter:preDebugBuild' as it has no actions.
+[        ] Resolve mutations for :jni_flutter:mergeDebugAssets (Thread[#624,Execution worker Thread 4,5,main]) started.
+[        ] :jni_flutter:mergeDebugAssets (Thread[#624,Execution worker Thread 4,5,main]) started.
+[        ] > Task :jni_flutter:mergeDebugAssets UP-TO-DATE
+[        ] Caching disabled for task ':jni_flutter:mergeDebugAssets' because:
+[        ]   Build cache is disabled
+[        ]   Simple merging task
+[        ] Skipping task ':jni_flutter:mergeDebugAssets' as it is up-to-date.
+[        ] work action resolve mergeDebugAssets (project :jni_flutter) (Thread[#624,Execution worker Thread 4,5,main]) started.
+[        ] Resolve mutations for :shared_preferences_android:generateDebugAssets (Thread[#624,Execution worker Thread 4,5,main]) started.
+[        ] :shared_preferences_android:generateDebugAssets (Thread[#624,Execution worker Thread 4,5,main]) started.
+[        ] > Task :shared_preferences_android:generateDebugAssets UP-TO-DATE
+[        ] Skipping task ':shared_preferences_android:generateDebugAssets' as it has no actions.
+[        ] Resolve mutations for :shared_preferences_android:preBuild (Thread[#624,Execution worker Thread 4,5,main]) started.
+[        ] :shared_preferences_android:preBuild (Thread[#624,Execution worker Thread 4,5,main]) started.
+[        ] > Task :shared_preferences_android:preBuild UP-TO-DATE
+[        ] Skipping task ':shared_preferences_android:preBuild' as it has no actions.
+[        ] Resolve mutations for :shared_preferences_android:preDebugBuild (Thread[#624,Execution worker Thread 4,5,main]) started.
+[        ] :shared_preferences_android:preDebugBuild (Thread[#627,Execution worker Thread 7,5,main]) started.
+[        ] > Task :shared_preferences_android:preDebugBuild UP-TO-DATE
+[        ] Skipping task ':shared_preferences_android:preDebugBuild' as it has no actions.
+[        ] Resolve mutations for :shared_preferences_android:mergeDebugAssets (Thread[#627,Execution worker Thread 7,5,main]) started.
+[        ] :shared_preferences_android:mergeDebugAssets (Thread[#627,Execution worker Thread 7,5,main]) started.
+[        ] > Task :shared_preferences_android:mergeDebugAssets UP-TO-DATE
+[        ] Caching disabled for task ':shared_preferences_android:mergeDebugAssets' because:
+[        ]   Build cache is disabled
+[   +1 ms]   Simple merging task
+[        ] Skipping task ':shared_preferences_android:mergeDebugAssets' as it is up-to-date.
+[        ] work action resolve mergeDebugAssets (project :shared_preferences_android) (Thread[#627,Execution worker Thread 7,5,main]) started.
+[        ] Resolve mutations for :app:mergeDebugAssets (Thread[#627,Execution worker Thread 7,5,main]) started.
+[        ] :app:mergeDebugAssets (Thread[#627,Execution worker Thread 7,5,main]) started.
+[+1948 ms] > Task :app:mergeDebugAssets
+[        ] Resource missing. [HTTP GET: https://dl.google.com/dl/android/maven2/com/google/guava/guava/32.1.3-android/guava-32.1.3-android.pom]
+[        ] Downloading https://repo.maven.apache.org/maven2/com/google/guava/guava/32.1.3-android/guava-32.1.3-android.pom to C:\Users\LENOVO\.gradle\.tmp\gradle_download10015527487665598619bin
+[        ] Resource missing. [HTTP GET: https://dl.google.com/dl/android/maven2/com/google/guava/guava-parent/32.1.3-android/guava-parent-32.1.3-android.pom]
+[        ] Downloading https://repo.maven.apache.org/maven2/com/google/guava/guava-parent/32.1.3-android/guava-parent-32.1.3-android.pom to C:\Users\LENOVO\.gradle\.tmp\gradle_download6264407559909869330bin
+[        ] Downloading https://repo.maven.apache.org/maven2/com/google/guava/guava/32.1.3-android/guava-32.1.3-android.module to C:\Users\LENOVO\.gradle\.tmp\gradle_download100348228556095426bin
+[        ] Resource missing. [HTTP GET: https://dl.google.com/dl/android/maven2/org/checkerframework/checker-qual/3.37.0/checker-qual-3.37.0.pom]
+[ +106 ms] Downloading https://repo.maven.apache.org/maven2/org/checkerframework/checker-qual/3.37.0/checker-qual-3.37.0.pom to C:\Users\LENOVO\.gradle\.tmp\gradle_download18358263124608513656bin
+[  +93 ms] Downloading https://repo.maven.apache.org/maven2/org/checkerframework/checker-qual/3.37.0/checker-qual-3.37.0.module to C:\Users\LENOVO\.gradle\.tmp\gradle_download7348695938461195761bin
+[ +203 ms] Caching disabled for task ':app:mergeDebugAssets' because:
+[        ]   Build cache is disabled
+[        ]   Simple merging task
+[        ] Task ':app:mergeDebugAssets' is not up-to-date because:
+[        ]   Output property 'outputDir' file D:\city_connect\build\app\intermediates\assets\debug\mergeDebugAssets has been removed.
+[        ] The input changes require a full rebuild for incremental task ':app:mergeDebugAssets'.
+[        ] Resolve mutations for :app:copyFlutterAssetsDebug (Thread[#620,included builds,5,main]) started.
+[        ] :app:copyFlutterAssetsDebug (Thread[#620,included builds,5,main]) started.
+[ +808 ms] > Task :app:copyFlutterAssetsDebug
+[        ] Caching disabled for task ':app:copyFlutterAssetsDebug' because:
+[        ]   Build cache is disabled
+[        ]   Not worth caching
+[        ] Task ':app:copyFlutterAssetsDebug' is not up-to-date because:
+[        ]   Output property 'destinationDir' file D:\city_connect\build\app\intermediates\assets\debug\mergeDebugAssets\flutter_assets has been removed.
+[        ]   Output property 'destinationDir' file D:\city_connect\build\app\intermediates\assets\debug\mergeDebugAssets\flutter_assets\AssetManifest.bin has been removed.
+[        ]   Output property 'destinationDir' file D:\city_connect\build\app\intermediates\assets\debug\mergeDebugAssets\flutter_assets\FontManifest.json has been removed.
+[        ]   and more...
+[        ] Resolve mutations for :app:generateDebugResources (Thread[#620,included builds,5,main]) started.
+[        ] :app:generateDebugResources (Thread[#620,included builds,5,main]) started.
+[   +1 ms] > Task :app:generateDebugResources UP-TO-DATE
+[        ] Caching disabled for task ':app:generateDebugResources' because:
+[        ]   Build cache is disabled
+[        ] Skipping task ':app:generateDebugResources' as it is up-to-date.
+[        ] Resolve mutations for :app:processDebugGoogleServices (Thread[#620,included builds,5,main]) started.
+[        ] :app:processDebugGoogleServices (Thread[#620,included builds,5,main]) started.
+[        ] > Task :app:processDebugGoogleServices UP-TO-DATE
+[        ] Caching disabled for task ':app:processDebugGoogleServices' because:
+[        ]   Build cache is disabled
+[        ] Skipping task ':app:processDebugGoogleServices' as it is up-to-date.
+[        ] Resolve mutations for :app:packageDebugResources (Thread[#620,included builds,5,main]) started.
+[        ] :app:packageDebugResources (Thread[#627,Execution worker Thread 7,5,main]) started.
+[        ] > Task :app:packageDebugResources UP-TO-DATE
+[        ] Caching disabled for task ':app:packageDebugResources' because:
+[        ]   Build cache is disabled
+[        ] Skipping task ':app:packageDebugResources' as it is up-to-date.
+[        ] Resolve mutations for :cloud_firestore:processDebugNavigationResources (Thread[#627,Execution worker Thread 7,5,main]) started.
+[        ] :cloud_firestore:processDebugNavigationResources (Thread[#627,Execution worker Thread 7,5,main]) started.
+[        ] > Task :cloud_firestore:processDebugNavigationResources UP-TO-DATE
+[        ] Caching disabled for task ':cloud_firestore:processDebugNavigationResources' because:
+[        ]   Build cache is disabled
+[        ] Skipping task ':cloud_firestore:processDebugNavigationResources' as it is up-to-date.
+[        ] work action resolve debug (project :cloud_firestore) (Thread[#627,Execution worker Thread 7,5,main]) started.
+[        ] Resolve mutations for :firebase_auth:processDebugNavigationResources (Thread[#627,Execution worker Thread 7,5,main]) started.
+[        ] :firebase_auth:processDebugNavigationResources (Thread[#627,Execution worker Thread 7,5,main]) started.
+[        ] > Task :firebase_auth:processDebugNavigationResources UP-TO-DATE
+[        ] Caching disabled for task ':firebase_auth:processDebugNavigationResources' because:
+[        ]   Build cache is disabled
+[        ] Skipping task ':firebase_auth:processDebugNavigationResources' as it is up-to-date.
+[        ] work action resolve debug (project :firebase_auth) (Thread[#626,Execution worker Thread 6,5,main]) started.
+[        ] Resolve mutations for :firebase_core:processDebugNavigationResources (Thread[#626,Execution worker Thread 6,5,main]) started.
+[        ] :firebase_core:processDebugNavigationResources (Thread[#626,Execution worker Thread 6,5,main]) started.
+[        ] > Task :firebase_core:processDebugNavigationResources UP-TO-DATE
+[        ] Caching disabled for task ':firebase_core:processDebugNavigationResources' because:
+[        ]   Build cache is disabled
+[        ] Skipping task ':firebase_core:processDebugNavigationResources' as it is up-to-date.
+[        ] work action resolve debug (project :firebase_core) (Thread[#626,Execution worker Thread 6,5,main]) started.
+[        ] Resolve mutations for :firebase_storage:processDebugNavigationResources (Thread[#626,Execution worker Thread 6,5,main]) started.
+[        ] :firebase_storage:processDebugNavigationResources (Thread[#626,Execution worker Thread 6,5,main]) started.
+[        ] > Task :firebase_storage:processDebugNavigationResources UP-TO-DATE
+[        ] Caching disabled for task ':firebase_storage:processDebugNavigationResources' because:
+[        ]   Build cache is disabled
+[        ] Skipping task ':firebase_storage:processDebugNavigationResources' as it is up-to-date.
+[        ] work action resolve debug (project :firebase_storage) (Thread[#626,Execution worker Thread 6,5,main]) started.
+[        ] Resolve mutations for :flutter_plugin_android_lifecycle:processDebugNavigationResources (Thread[#626,Execution worker Thread 6,5,main]) started.
+[        ] :flutter_plugin_android_lifecycle:processDebugNavigationResources (Thread[#623,Execution worker Thread 3,5,main]) started.
+[        ] > Task :flutter_plugin_android_lifecycle:processDebugNavigationResources UP-TO-DATE
+[        ] Caching disabled for task ':flutter_plugin_android_lifecycle:processDebugNavigationResources' because:
+[        ]   Build cache is disabled
+[        ] Skipping task ':flutter_plugin_android_lifecycle:processDebugNavigationResources' as it is up-to-date.
+[        ] work action resolve debug (project :flutter_plugin_android_lifecycle) (Thread[#623,Execution worker Thread 3,5,main]) started.
+[        ] Resolve mutations for :image_picker_android:processDebugNavigationResources (Thread[#623,Execution worker Thread 3,5,main]) started.
+[        ] :image_picker_android:processDebugNavigationResources (Thread[#623,Execution worker Thread 3,5,main]) started.
+[        ] > Task :image_picker_android:processDebugNavigationResources UP-TO-DATE
+[        ] Caching disabled for task ':image_picker_android:processDebugNavigationResources' because:
+[        ]   Build cache is disabled
+[        ] Skipping task ':image_picker_android:processDebugNavigationResources' as it is up-to-date.
+[        ] work action resolve debug (project :image_picker_android) (Thread[#623,Execution worker Thread 3,5,main]) started.
+[        ] Resolve mutations for :jni:processDebugNavigationResources (Thread[#621,Execution worker,5,main]) started.
+[        ] :jni:processDebugNavigationResources (Thread[#621,Execution worker,5,main]) started.
+[        ] > Task :jni:processDebugNavigationResources UP-TO-DATE
+[        ] Caching disabled for task ':jni:processDebugNavigationResources' because:
+[        ]   Build cache is disabled
+[        ] Skipping task ':jni:processDebugNavigationResources' as it is up-to-date.
+[        ] work action resolve debug (project :jni) (Thread[#621,Execution worker,5,main]) started.
+[        ] Resolve mutations for :jni_flutter:processDebugNavigationResources (Thread[#621,Execution worker,5,main]) started.
+[        ] :jni_flutter:processDebugNavigationResources (Thread[#621,Execution worker,5,main]) started.
+[        ] > Task :jni_flutter:processDebugNavigationResources UP-TO-DATE
+[        ] Caching disabled for task ':jni_flutter:processDebugNavigationResources' because:
+[        ]   Build cache is disabled
+[        ] Skipping task ':jni_flutter:processDebugNavigationResources' as it is up-to-date.
+[        ] work action resolve debug (project :jni_flutter) (Thread[#621,Execution worker,5,main]) started.
+[        ] Resolve mutations for :shared_preferences_android:processDebugNavigationResources (Thread[#621,Execution worker,5,main]) started.
+[        ] :shared_preferences_android:processDebugNavigationResources (Thread[#621,Execution worker,5,main]) started.
+[        ] > Task :shared_preferences_android:processDebugNavigationResources UP-TO-DATE
+[        ] Caching disabled for task ':shared_preferences_android:processDebugNavigationResources' because:
+[        ]   Build cache is disabled
+[        ] Skipping task ':shared_preferences_android:processDebugNavigationResources' as it is up-to-date.
+[        ] work action resolve debug (project :shared_preferences_android) (Thread[#621,Execution worker,5,main]) started.
+[        ] Resolve mutations for :app:processDebugNavigationResources (Thread[#626,Execution worker Thread 6,5,main]) started.
+[        ] :app:processDebugNavigationResources (Thread[#626,Execution worker Thread 6,5,main]) started.
+[        ] > Task :app:processDebugNavigationResources UP-TO-DATE
+[        ] Caching disabled for task ':app:processDebugNavigationResources' because:
+[        ]   Build cache is disabled
+[        ] Skipping task ':app:processDebugNavigationResources' as it is up-to-date.
+[        ] Resolve mutations for :app:parseDebugLocalResources (Thread[#626,Execution worker Thread 6,5,main]) started.
+[        ] :app:parseDebugLocalResources (Thread[#626,Execution worker Thread 6,5,main]) started.
+[  +73 ms] > Task :app:parseDebugLocalResources UP-TO-DATE
+[        ] Caching disabled for task ':app:parseDebugLocalResources' because:
+[        ]   Build cache is disabled
+[        ] Skipping task ':app:parseDebugLocalResources' as it is up-to-date.
+[        ] Resolve mutations for :app:generateDebugRFile (Thread[#626,Execution worker Thread 6,5,main]) started.
+[        ] :app:generateDebugRFile (Thread[#626,Execution worker Thread 6,5,main]) started.
+[        ] > Task :app:generateDebugRFile UP-TO-DATE
+[        ] Caching disabled for task ':app:generateDebugRFile' because:
+[        ]   Build cache is disabled
+[   +1 ms] Skipping task ':app:generateDebugRFile' as it is up-to-date.
+[        ] Resolve mutations for :cloud_firestore:checkKotlinGradlePluginConfigurationErrors (Thread[#626,Execution worker Thread 6,5,main]) started.
+[   +1 ms] :cloud_firestore:checkKotlinGradlePluginConfigurationErrors (Thread[#626,Execution worker Thread 6,5,main]) started.
+[   +1 ms] > Task :cloud_firestore:checkKotlinGradlePluginConfigurationErrors SKIPPED
+[        ] Skipping task ':cloud_firestore:checkKotlinGradlePluginConfigurationErrors' as task onlyIf 'errorDiagnostics are present' is false.
+[        ] Resolve mutations for :cloud_firestore:generateDebugBuildConfig (Thread[#621,Execution worker,5,main]) started.
+[        ] :cloud_firestore:generateDebugBuildConfig (Thread[#621,Execution worker,5,main]) started.
+[        ] > Task :cloud_firestore:generateDebugBuildConfig UP-TO-DATE
+[        ] Caching disabled for task ':cloud_firestore:generateDebugBuildConfig' because:
+[        ]   Build cache is disabled
+[        ] Skipping task ':cloud_firestore:generateDebugBuildConfig' as it is up-to-date.
+[        ] Resolve mutations for :cloud_firestore:generateDebugResources (Thread[#621,Execution worker,5,main]) started.
+[        ] :cloud_firestore:generateDebugResources (Thread[#621,Execution worker,5,main]) started.
+[        ] > Task :cloud_firestore:generateDebugResources UP-TO-DATE
+[        ] Caching disabled for task ':cloud_firestore:generateDebugResources' because:
+[        ]   Build cache is disabled
+[        ] Skipping task ':cloud_firestore:generateDebugResources' as it is up-to-date.
+[        ] Resolve mutations for :cloud_firestore:packageDebugResources (Thread[#621,Execution worker,5,main]) started.
+[        ] :cloud_firestore:packageDebugResources (Thread[#621,Execution worker,5,main]) started.
+[        ] > Task :cloud_firestore:packageDebugResources UP-TO-DATE
+[        ] Caching disabled for task ':cloud_firestore:packageDebugResources' because:
+[        ]   Build cache is disabled
+[        ] Skipping task ':cloud_firestore:packageDebugResources' as it is up-to-date.
+[        ] work action resolve packageDebugResources (project :cloud_firestore) (Thread[#626,Execution worker Thread 6,5,main]) started.
+[        ] Resolve mutations for :cloud_firestore:parseDebugLocalResources (Thread[#626,Execution worker Thread 6,5,main]) started.
+[        ] :cloud_firestore:parseDebugLocalResources (Thread[#626,Execution worker Thread 6,5,main]) started.
+[        ] > Task :cloud_firestore:parseDebugLocalResources UP-TO-DATE
+[        ] Caching disabled for task ':cloud_firestore:parseDebugLocalResources' because:
+[        ]   Build cache is disabled
+[        ] Skipping task ':cloud_firestore:parseDebugLocalResources' as it is up-to-date.
+[        ] Resolve mutations for :cloud_firestore:generateDebugRFile (Thread[#626,Execution worker Thread 6,5,main]) started.
+[        ] :cloud_firestore:generateDebugRFile (Thread[#626,Execution worker Thread 6,5,main]) started.
+[        ] > Task :cloud_firestore:generateDebugRFile UP-TO-DATE
+[        ] Caching disabled for task ':cloud_firestore:generateDebugRFile' because:
+[        ]   Build cache is disabled
+[        ] Skipping task ':cloud_firestore:generateDebugRFile' as it is up-to-date.
+[        ] work action resolve package-aware-r.txt (project :cloud_firestore) (Thread[#626,Execution worker Thread 6,5,main]) started.
+[        ] Resolve mutations for :firebase_core:checkKotlinGradlePluginConfigurationErrors (Thread[#626,Execution worker Thread 6,5,main]) started.
+[        ] :firebase_core:checkKotlinGradlePluginConfigurationErrors (Thread[#626,Execution worker Thread 6,5,main]) started.
+[        ] > Task :firebase_core:checkKotlinGradlePluginConfigurationErrors SKIPPED
+[   +1 ms] Skipping task ':firebase_core:checkKotlinGradlePluginConfigurationErrors' as task onlyIf 'errorDiagnostics are present' is false.
+[        ] Resolve mutations for :firebase_core:generateDebugBuildConfig (Thread[#626,Execution worker Thread 6,5,main]) started.
+[        ] :firebase_core:generateDebugBuildConfig (Thread[#626,Execution worker Thread 6,5,main]) started.
+[        ] > Task :firebase_core:generateDebugBuildConfig UP-TO-DATE
+[        ] Caching disabled for task ':firebase_core:generateDebugBuildConfig' because:
+[        ]   Build cache is disabled
+[        ] Skipping task ':firebase_core:generateDebugBuildConfig' as it is up-to-date.
+[        ] Resolve mutations for :firebase_core:generateDebugResources (Thread[#626,Execution worker Thread 6,5,main]) started.
+[        ] :firebase_core:generateDebugResources (Thread[#626,Execution worker Thread 6,5,main]) started.
+[        ] > Task :firebase_core:generateDebugResources UP-TO-DATE
+[        ] Caching disabled for task ':firebase_core:generateDebugResources' because:
+[        ]   Build cache is disabled
+[        ] Skipping task ':firebase_core:generateDebugResources' as it is up-to-date.
+[        ] Resolve mutations for :firebase_core:packageDebugResources (Thread[#626,Execution worker Thread 6,5,main]) started.
+[        ] :firebase_core:packageDebugResources (Thread[#626,Execution worker Thread 6,5,main]) started.
+[        ] > Task :firebase_core:packageDebugResources UP-TO-DATE
+[        ] Caching disabled for task ':firebase_core:packageDebugResources' because:
+[        ]   Build cache is disabled
+[        ] Skipping task ':firebase_core:packageDebugResources' as it is up-to-date.
+[        ] work action resolve packageDebugResources (project :firebase_core) (Thread[#626,Execution worker Thread 6,5,main]) started.
+[        ] Resolve mutations for :firebase_core:parseDebugLocalResources (Thread[#626,Execution worker Thread 6,5,main]) started.
+[        ] :firebase_core:parseDebugLocalResources (Thread[#626,Execution worker Thread 6,5,main]) started.
+[        ] > Task :firebase_core:parseDebugLocalResources UP-TO-DATE
+[        ] Caching disabled for task ':firebase_core:parseDebugLocalResources' because:
+[        ]   Build cache is disabled
+[        ] Skipping task ':firebase_core:parseDebugLocalResources' as it is up-to-date.
+[   +1 ms] Resolve mutations for :firebase_core:generateDebugRFile (Thread[#626,Execution worker Thread 6,5,main]) started.
+[        ] :firebase_core:generateDebugRFile (Thread[#626,Execution worker Thread 6,5,main]) started.
+[        ] > Task :firebase_core:generateDebugRFile UP-TO-DATE
+[        ] Caching disabled for task ':firebase_core:generateDebugRFile' because:
+[        ]   Build cache is disabled
+[        ] Skipping task ':firebase_core:generateDebugRFile' as it is up-to-date.
+[        ] work action resolve package-aware-r.txt (project :firebase_core) (Thread[#626,Execution worker Thread 6,5,main]) started.
+[        ] Resolve mutations for :firebase_core:compileDebugKotlin (Thread[#626,Execution worker Thread 6,5,main]) started.
+[        ] :firebase_core:compileDebugKotlin (Thread[#626,Execution worker Thread 6,5,main]) started.
+[        ] > Task :firebase_core:compileDebugKotlin NO-SOURCE
+[        ] Skipping task ':firebase_core:compileDebugKotlin' as it has no source files and no previous output files.
+[        ] Resolve mutations for :firebase_core:javaPreCompileDebug (Thread[#620,included builds,5,main]) started.
+[        ] :firebase_core:javaPreCompileDebug (Thread[#620,included builds,5,main]) started.
+[        ] > Task :firebase_core:javaPreCompileDebug UP-TO-DATE
+[        ] Caching disabled for task ':firebase_core:javaPreCompileDebug' because:
+[        ]   Build cache is disabled
+[        ] Skipping task ':firebase_core:javaPreCompileDebug' as it is up-to-date.
+[        ] Resolve mutations for :firebase_core:compileDebugJavaWithJavac (Thread[#620,included builds,5,main]) started.
+[        ] :firebase_core:compileDebugJavaWithJavac (Thread[#620,included builds,5,main]) started.
+[ +166 ms] > Task :firebase_core:compileDebugJavaWithJavac UP-TO-DATE
+[        ] Custom actions are attached to task ':firebase_core:compileDebugJavaWithJavac'.
+[        ] Caching disabled for task ':firebase_core:compileDebugJavaWithJavac' because:
+[        ]   Build cache is disabled
+[        ] Skipping task ':firebase_core:compileDebugJavaWithJavac' as it is up-to-date.
+[        ] No compile result for :firebase_core:compileDebugJavaWithJavac
+[        ] No compile result for :firebase_core:compileDebugJavaWithJavac
+[        ] No compile result for :firebase_core:compileDebugJavaWithJavac
+[        ] No compile result for :firebase_core:compileDebugJavaWithJavac
+[        ] Resolve mutations for :firebase_core:bundleLibCompileToJarDebug (Thread[#620,included builds,5,main]) started.
+[        ] :firebase_core:bundleLibCompileToJarDebug (Thread[#622,Execution worker Thread 2,5,main]) started.
+[   +3 ms] > Task :firebase_core:bundleLibCompileToJarDebug UP-TO-DATE
+[        ] Caching disabled for task ':firebase_core:bundleLibCompileToJarDebug' because:
+[        ]   Build cache is disabled
+[        ]   Simple merging task
+[        ] Skipping task ':firebase_core:bundleLibCompileToJarDebug' as it is up-to-date.
+[        ] work action resolve classes.jar (project :firebase_core) (Thread[#620,included builds,5,main]) started.
+[        ] Resolve mutations for :cloud_firestore:compileDebugKotlin (Thread[#620,included builds,5,main]) started.
+[        ] :cloud_firestore:compileDebugKotlin (Thread[#620,included builds,5,main]) started.
+[        ] > Task :cloud_firestore:compileDebugKotlin NO-SOURCE
+[        ] Skipping task ':cloud_firestore:compileDebugKotlin' as it has no source files and no previous output files.
+[        ] Resolve mutations for :cloud_firestore:javaPreCompileDebug (Thread[#620,included builds,5,main]) started.
+[        ] :cloud_firestore:javaPreCompileDebug (Thread[#620,included builds,5,main]) started.
+[        ] > Task :cloud_firestore:javaPreCompileDebug UP-TO-DATE
+[   +4 ms] Caching disabled for task ':cloud_firestore:javaPreCompileDebug' because:
+[        ]   Build cache is disabled
+[        ] Skipping task ':cloud_firestore:javaPreCompileDebug' as it is up-to-date.
+[   +1 ms] Resolve mutations for :cloud_firestore:compileDebugJavaWithJavac (Thread[#620,included builds,5,main]) started.
+[   +3 ms] :cloud_firestore:compileDebugJavaWithJavac (Thread[#620,included builds,5,main]) started.
+[  +70 ms] > Task :cloud_firestore:compileDebugJavaWithJavac UP-TO-DATE
+[        ] Custom actions are attached to task ':cloud_firestore:compileDebugJavaWithJavac'.
+[        ] Caching disabled for task ':cloud_firestore:compileDebugJavaWithJavac' because:
+[        ]   Build cache is disabled
+[        ] Skipping task ':cloud_firestore:compileDebugJavaWithJavac' as it is up-to-date.
+[        ] No compile result for :cloud_firestore:compileDebugJavaWithJavac
+[        ] No compile result for :cloud_firestore:compileDebugJavaWithJavac
+[        ] No compile result for :cloud_firestore:compileDebugJavaWithJavac
+[        ] No compile result for :cloud_firestore:compileDebugJavaWithJavac
+[        ] Resolve mutations for :cloud_firestore:bundleLibCompileToJarDebug (Thread[#620,included builds,5,main]) started.
+[        ] :cloud_firestore:bundleLibCompileToJarDebug (Thread[#623,Execution worker Thread 3,5,main]) started.
+[        ] > Task :cloud_firestore:bundleLibCompileToJarDebug UP-TO-DATE
+[        ] Caching disabled for task ':cloud_firestore:bundleLibCompileToJarDebug' because:
+[        ]   Build cache is disabled
+[        ]   Simple merging task
+[        ] Skipping task ':cloud_firestore:bundleLibCompileToJarDebug' as it is up-to-date.
+[        ] work action resolve classes.jar (project :cloud_firestore) (Thread[#623,Execution worker Thread 3,5,main]) started.
+[        ] Resolve mutations for :firebase_auth:checkKotlinGradlePluginConfigurationErrors (Thread[#623,Execution worker Thread 3,5,main]) started.
+[        ] :firebase_auth:checkKotlinGradlePluginConfigurationErrors (Thread[#623,Execution worker Thread 3,5,main]) started.
+[        ] > Task :firebase_auth:checkKotlinGradlePluginConfigurationErrors SKIPPED
+[        ] Skipping task ':firebase_auth:checkKotlinGradlePluginConfigurationErrors' as task onlyIf 'errorDiagnostics are present' is false.
+[        ] Resolve mutations for :firebase_auth:generateDebugBuildConfig (Thread[#623,Execution worker Thread 3,5,main]) started.
+[        ] :firebase_auth:generateDebugBuildConfig (Thread[#624,Execution worker Thread 4,5,main]) started.
+[        ] > Task :firebase_auth:generateDebugBuildConfig UP-TO-DATE
+[        ] Caching disabled for task ':firebase_auth:generateDebugBuildConfig' because:
+[        ]   Build cache is disabled
+[        ] Skipping task ':firebase_auth:generateDebugBuildConfig' as it is up-to-date.
+[        ] Resolve mutations for :firebase_auth:generateDebugResources (Thread[#623,Execution worker Thread 3,5,main]) started.
+[        ] :firebase_auth:generateDebugResources (Thread[#623,Execution worker Thread 3,5,main]) started.
+[        ] > Task :firebase_auth:generateDebugResources UP-TO-DATE
+[        ] Caching disabled for task ':firebase_auth:generateDebugResources' because:
+[        ]   Build cache is disabled
+[        ] Skipping task ':firebase_auth:generateDebugResources' as it is up-to-date.
+[        ] Resolve mutations for :firebase_auth:packageDebugResources (Thread[#624,Execution worker Thread 4,5,main]) started.
+[        ] :firebase_auth:packageDebugResources (Thread[#623,Execution worker Thread 3,5,main]) started.
+[        ] > Task :firebase_auth:packageDebugResources UP-TO-DATE
+[        ] Caching disabled for task ':firebase_auth:packageDebugResources' because:
+[        ]   Build cache is disabled
+[        ] Skipping task ':firebase_auth:packageDebugResources' as it is up-to-date.
+[        ] work action resolve packageDebugResources (project :firebase_auth) (Thread[#623,Execution worker Thread 3,5,main]) started.
+[        ] Resolve mutations for :firebase_auth:parseDebugLocalResources (Thread[#623,Execution worker Thread 3,5,main]) started.
+[        ] :firebase_auth:parseDebugLocalResources (Thread[#623,Execution worker Thread 3,5,main]) started.
+[        ] > Task :firebase_auth:parseDebugLocalResources UP-TO-DATE
+[        ] Caching disabled for task ':firebase_auth:parseDebugLocalResources' because:
+[        ]   Build cache is disabled
+[        ] Skipping task ':firebase_auth:parseDebugLocalResources' as it is up-to-date.
+[        ] Resolve mutations for :firebase_auth:generateDebugRFile (Thread[#620,included builds,5,main]) started.
+[        ] :firebase_auth:generateDebugRFile (Thread[#620,included builds,5,main]) started.
+[        ] > Task :firebase_auth:generateDebugRFile UP-TO-DATE
+[        ] Caching disabled for task ':firebase_auth:generateDebugRFile' because:
+[        ]   Build cache is disabled
+[        ] Skipping task ':firebase_auth:generateDebugRFile' as it is up-to-date.
+[        ] work action resolve package-aware-r.txt (project :firebase_auth) (Thread[#620,included builds,5,main]) started.
+[        ] Resolve mutations for :firebase_auth:compileDebugKotlin (Thread[#620,included builds,5,main]) started.
+[        ] :firebase_auth:compileDebugKotlin (Thread[#620,included builds,5,main]) started.
+[ +109 ms] > Task :firebase_auth:compileDebugKotlin NO-SOURCE
+[        ] Skipping task ':firebase_auth:compileDebugKotlin' as it has no source files and no previous output files.
+[        ] Resolve mutations for :firebase_auth:javaPreCompileDebug (Thread[#620,included builds,5,main]) started.
+[        ] :firebase_auth:javaPreCompileDebug (Thread[#620,included builds,5,main]) started.
+[   +1 ms] > Task :firebase_auth:javaPreCompileDebug UP-TO-DATE
+[   +6 ms] Caching disabled for task ':firebase_auth:javaPreCompileDebug' because:
+[        ]   Build cache is disabled
+[        ] Skipping task ':firebase_auth:javaPreCompileDebug' as it is up-to-date.
+[        ] Resolve mutations for :firebase_auth:compileDebugJavaWithJavac (Thread[#620,included builds,5,main]) started.
+[        ] :firebase_auth:compileDebugJavaWithJavac (Thread[#620,included builds,5,main]) started.
+[  +92 ms] > Task :firebase_auth:compileDebugJavaWithJavac UP-TO-DATE
+[        ] Custom actions are attached to task ':firebase_auth:compileDebugJavaWithJavac'.
+[        ] Caching disabled for task ':firebase_auth:compileDebugJavaWithJavac' because:
+[   +1 ms]   Build cache is disabled
+[        ] Skipping task ':firebase_auth:compileDebugJavaWithJavac' as it is up-to-date.
+[        ] No compile result for :firebase_auth:compileDebugJavaWithJavac
+[        ] No compile result for :firebase_auth:compileDebugJavaWithJavac
+[        ] No compile result for :firebase_auth:compileDebugJavaWithJavac
+[        ] No compile result for :firebase_auth:compileDebugJavaWithJavac
+[        ] Resolve mutations for :firebase_auth:bundleLibCompileToJarDebug (Thread[#620,included builds,5,main]) started.
+[        ] :firebase_auth:bundleLibCompileToJarDebug (Thread[#620,included builds,5,main]) started.
+[        ] > Task :firebase_auth:bundleLibCompileToJarDebug UP-TO-DATE
+[        ] Caching disabled for task ':firebase_auth:bundleLibCompileToJarDebug' because:
+[        ]   Build cache is disabled
+[        ]   Simple merging task
+[        ] Skipping task ':firebase_auth:bundleLibCompileToJarDebug' as it is up-to-date.
+[        ] work action resolve classes.jar (project :firebase_auth) (Thread[#620,included builds,5,main]) started.
+[        ] Resolve mutations for :firebase_storage:checkKotlinGradlePluginConfigurationErrors (Thread[#623,Execution worker Thread 3,5,main]) started.
+[        ] :firebase_storage:checkKotlinGradlePluginConfigurationErrors (Thread[#623,Execution worker Thread 3,5,main]) started.
+[        ] > Task :firebase_storage:checkKotlinGradlePluginConfigurationErrors SKIPPED
+[        ] Skipping task ':firebase_storage:checkKotlinGradlePluginConfigurationErrors' as task onlyIf 'errorDiagnostics are present' is false.
+[        ] Resolve mutations for :firebase_storage:generateDebugBuildConfig (Thread[#623,Execution worker Thread 3,5,main]) started.
+[        ] :firebase_storage:generateDebugBuildConfig (Thread[#623,Execution worker Thread 3,5,main]) started.
+[        ] > Task :firebase_storage:generateDebugBuildConfig UP-TO-DATE
+[        ] Caching disabled for task ':firebase_storage:generateDebugBuildConfig' because:
+[        ]   Build cache is disabled
+[        ] Skipping task ':firebase_storage:generateDebugBuildConfig' as it is up-to-date.
+[        ] Resolve mutations for :firebase_storage:generateDebugResources (Thread[#623,Execution worker Thread 3,5,main]) started.
+[        ] :firebase_storage:generateDebugResources (Thread[#623,Execution worker Thread 3,5,main]) started.
+[        ] > Task :firebase_storage:generateDebugResources UP-TO-DATE
+[        ] Caching disabled for task ':firebase_storage:generateDebugResources' because:
+[        ]   Build cache is disabled
+[        ] Skipping task ':firebase_storage:generateDebugResources' as it is up-to-date.
+[        ] Resolve mutations for :firebase_storage:packageDebugResources (Thread[#624,Execution worker Thread 4,5,main]) started.
+[        ] :firebase_storage:packageDebugResources (Thread[#624,Execution worker Thread 4,5,main]) started.
+[        ] > Task :firebase_storage:packageDebugResources UP-TO-DATE
+[        ] Caching disabled for task ':firebase_storage:packageDebugResources' because:
+[        ]   Build cache is disabled
+[        ] Skipping task ':firebase_storage:packageDebugResources' as it is up-to-date.
+[        ] work action resolve packageDebugResources (project :firebase_storage) (Thread[#624,Execution worker Thread 4,5,main]) started.
+[        ] Resolve mutations for :firebase_storage:parseDebugLocalResources (Thread[#624,Execution worker Thread 4,5,main]) started.
+[        ] :firebase_storage:parseDebugLocalResources (Thread[#624,Execution worker Thread 4,5,main]) started.
+[        ] > Task :firebase_storage:parseDebugLocalResources UP-TO-DATE
+[        ] Caching disabled for task ':firebase_storage:parseDebugLocalResources' because:
+[        ]   Build cache is disabled
+[        ] Skipping task ':firebase_storage:parseDebugLocalResources' as it is up-to-date.
+[        ] Resolve mutations for :firebase_storage:generateDebugRFile (Thread[#627,Execution worker Thread 7,5,main]) started.
+[        ] :firebase_storage:generateDebugRFile (Thread[#627,Execution worker Thread 7,5,main]) started.
+[        ] > Task :firebase_storage:generateDebugRFile UP-TO-DATE
+[        ] Caching disabled for task ':firebase_storage:generateDebugRFile' because:
+[        ]   Build cache is disabled
+[        ] Skipping task ':firebase_storage:generateDebugRFile' as it is up-to-date.
+[        ] work action resolve package-aware-r.txt (project :firebase_storage) (Thread[#624,Execution worker Thread 4,5,main]) started.
+[        ] Resolve mutations for :firebase_storage:compileDebugKotlin (Thread[#624,Execution worker Thread 4,5,main]) started.
+[        ] :firebase_storage:compileDebugKotlin (Thread[#624,Execution worker Thread 4,5,main]) started.
+[ +361 ms] Resolve mutations for :firebase_storage:javaPreCompileDebug (Thread[#627,Execution worker Thread 7,5,main]) started.
+[        ] :firebase_storage:javaPreCompileDebug (Thread[#627,Execution worker Thread 7,5,main]) started.
+[        ] > Task :firebase_storage:javaPreCompileDebug UP-TO-DATE
+[        ] Caching disabled for task ':firebase_storage:javaPreCompileDebug' because:
+[        ]   Build cache is disabled
+[        ] Skipping task ':firebase_storage:javaPreCompileDebug' as it is up-to-date.
+[        ] Resolve mutations for :flutter_plugin_android_lifecycle:checkKotlinGradlePluginConfigurationErrors (Thread[#627,Execution worker Thread 7,5,main]) started.
+[        ] :flutter_plugin_android_lifecycle:checkKotlinGradlePluginConfigurationErrors (Thread[#627,Execution worker Thread 7,5,main]) started.
+[   +1 ms] > Task :flutter_plugin_android_lifecycle:checkKotlinGradlePluginConfigurationErrors SKIPPED
+[        ] Skipping task ':flutter_plugin_android_lifecycle:checkKotlinGradlePluginConfigurationErrors' as task onlyIf 'errorDiagnostics are present' is false.
+[        ] Resolve mutations for :flutter_plugin_android_lifecycle:generateDebugResources (Thread[#620,included builds,5,main]) started.
+[        ] :flutter_plugin_android_lifecycle:generateDebugResources (Thread[#620,included builds,5,main]) started.
+[        ] > Task :flutter_plugin_android_lifecycle:generateDebugResources UP-TO-DATE
+[        ] Caching disabled for task ':flutter_plugin_android_lifecycle:generateDebugResources' because:
+[        ]   Build cache is disabled
+[        ] Skipping task ':flutter_plugin_android_lifecycle:generateDebugResources' as it is up-to-date.
+[        ] Resolve mutations for :flutter_plugin_android_lifecycle:packageDebugResources (Thread[#620,included builds,5,main]) started.
+[        ] :flutter_plugin_android_lifecycle:packageDebugResources (Thread[#620,included builds,5,main]) started.
+[  +86 ms] > Task :flutter_plugin_android_lifecycle:packageDebugResources UP-TO-DATE
+[        ] Caching disabled for task ':flutter_plugin_android_lifecycle:packageDebugResources' because:
+[        ]   Build cache is disabled
+[        ] Skipping task ':flutter_plugin_android_lifecycle:packageDebugResources' as it is up-to-date.
+[        ] work action resolve packageDebugResources (project :flutter_plugin_android_lifecycle) (Thread[#620,included builds,5,main]) started.
+[        ] Resolve mutations for :flutter_plugin_android_lifecycle:parseDebugLocalResources (Thread[#620,included builds,5,main]) started.
+[        ] :flutter_plugin_android_lifecycle:parseDebugLocalResources (Thread[#620,included builds,5,main]) started.
+[        ] > Task :flutter_plugin_android_lifecycle:parseDebugLocalResources UP-TO-DATE
+[        ] Caching disabled for task ':flutter_plugin_android_lifecycle:parseDebugLocalResources' because:
+[        ]   Build cache is disabled
+[        ] Skipping task ':flutter_plugin_android_lifecycle:parseDebugLocalResources' as it is up-to-date.
+[        ] Resolve mutations for :flutter_plugin_android_lifecycle:generateDebugRFile (Thread[#620,included builds,5,main]) started.
+[        ] :flutter_plugin_android_lifecycle:generateDebugRFile (Thread[#620,included builds,5,main]) started.
+[        ] > Task :flutter_plugin_android_lifecycle:generateDebugRFile UP-TO-DATE
+[        ] Caching disabled for task ':flutter_plugin_android_lifecycle:generateDebugRFile' because:
+[        ]   Build cache is disabled
+[        ] Skipping task ':flutter_plugin_android_lifecycle:generateDebugRFile' as it is up-to-date.
+[        ] work action resolve package-aware-r.txt (project :flutter_plugin_android_lifecycle) (Thread[#620,included builds,5,main]) started.
+[        ] Resolve mutations for :flutter_plugin_android_lifecycle:compileDebugKotlin (Thread[#620,included builds,5,main]) started.
+[        ] :flutter_plugin_android_lifecycle:compileDebugKotlin (Thread[#620,included builds,5,main]) started.
+[        ] > Task :flutter_plugin_android_lifecycle:compileDebugKotlin NO-SOURCE
+[        ] Skipping task ':flutter_plugin_android_lifecycle:compileDebugKotlin' as it has no source files and no previous output files.
+[        ] Resolve mutations for :flutter_plugin_android_lifecycle:javaPreCompileDebug (Thread[#620,included builds,5,main]) started.
+[        ] :flutter_plugin_android_lifecycle:javaPreCompileDebug (Thread[#623,Execution worker Thread 3,5,main]) started.
+[        ] > Task :flutter_plugin_android_lifecycle:javaPreCompileDebug UP-TO-DATE
+[        ] Caching disabled for task ':flutter_plugin_android_lifecycle:javaPreCompileDebug' because:
+[        ]   Build cache is disabled
+[        ] Skipping task ':flutter_plugin_android_lifecycle:javaPreCompileDebug' as it is up-to-date.
+[        ] Resolve mutations for :flutter_plugin_android_lifecycle:compileDebugJavaWithJavac (Thread[#623,Execution worker Thread 3,5,main]) started.
+[        ] :flutter_plugin_android_lifecycle:compileDebugJavaWithJavac (Thread[#623,Execution worker Thread 3,5,main]) started.
+[        ] > Task :flutter_plugin_android_lifecycle:compileDebugJavaWithJavac UP-TO-DATE
+[        ] Custom actions are attached to task ':flutter_plugin_android_lifecycle:compileDebugJavaWithJavac'.
+[        ] Caching disabled for task ':flutter_plugin_android_lifecycle:compileDebugJavaWithJavac' because:
+[        ]   Build cache is disabled
+[        ] Skipping task ':flutter_plugin_android_lifecycle:compileDebugJavaWithJavac' as it is up-to-date.
+[        ] No compile result for :flutter_plugin_android_lifecycle:compileDebugJavaWithJavac
+[        ] No compile result for :flutter_plugin_android_lifecycle:compileDebugJavaWithJavac
+[        ] No compile result for :flutter_plugin_android_lifecycle:compileDebugJavaWithJavac
+[        ] No compile result for :flutter_plugin_android_lifecycle:compileDebugJavaWithJavac
+[        ] Resolve mutations for :flutter_plugin_android_lifecycle:bundleLibCompileToJarDebug (Thread[#623,Execution worker Thread 3,5,main]) started.
+[        ] :flutter_plugin_android_lifecycle:bundleLibCompileToJarDebug (Thread[#623,Execution worker Thread 3,5,main]) started.
+[        ] > Task :flutter_plugin_android_lifecycle:bundleLibCompileToJarDebug UP-TO-DATE
+[        ] Caching disabled for task ':flutter_plugin_android_lifecycle:bundleLibCompileToJarDebug' because:
+[        ]   Build cache is disabled
+[        ]   Simple merging task
+[        ] Skipping task ':flutter_plugin_android_lifecycle:bundleLibCompileToJarDebug' as it is up-to-date.
+[        ] work action resolve classes.jar (project :flutter_plugin_android_lifecycle) (Thread[#623,Execution worker Thread 3,5,main]) started.
+[        ] Resolve mutations for :image_picker_android:checkKotlinGradlePluginConfigurationErrors (Thread[#625,Execution worker Thread 5,5,main]) started.
+[        ] :image_picker_android:checkKotlinGradlePluginConfigurationErrors (Thread[#625,Execution worker Thread 5,5,main]) started.
+[        ] > Task :image_picker_android:checkKotlinGradlePluginConfigurationErrors SKIPPED
+[        ] Skipping task ':image_picker_android:checkKotlinGradlePluginConfigurationErrors' as task onlyIf 'errorDiagnostics are present' is false.
+[        ] Resolve mutations for :image_picker_android:generateDebugResources (Thread[#625,Execution worker Thread 5,5,main]) started.
+[        ] :image_picker_android:generateDebugResources (Thread[#625,Execution worker Thread 5,5,main]) started.
+[        ] > Task :image_picker_android:generateDebugResources UP-TO-DATE
+[        ] Caching disabled for task ':image_picker_android:generateDebugResources' because:
+[        ]   Build cache is disabled
+[        ] Skipping task ':image_picker_android:generateDebugResources' as it is up-to-date.
+[        ] Resolve mutations for :image_picker_android:packageDebugResources (Thread[#625,Execution worker Thread 5,5,main]) started.
+[        ] :image_picker_android:packageDebugResources (Thread[#625,Execution worker Thread 5,5,main]) started.
+[        ] > Task :image_picker_android:packageDebugResources UP-TO-DATE
+[        ] Caching disabled for task ':image_picker_android:packageDebugResources' because:
+[        ]   Build cache is disabled
+[        ] Skipping task ':image_picker_android:packageDebugResources' as it is up-to-date.
+[        ] work action resolve packageDebugResources (project :image_picker_android) (Thread[#625,Execution worker Thread 5,5,main]) started.
+[        ] Resolve mutations for :image_picker_android:parseDebugLocalResources (Thread[#625,Execution worker Thread 5,5,main]) started.
+[        ] :image_picker_android:parseDebugLocalResources (Thread[#625,Execution worker Thread 5,5,main]) started.
+[  +78 ms] > Task :image_picker_android:parseDebugLocalResources UP-TO-DATE
+[        ] Caching disabled for task ':image_picker_android:parseDebugLocalResources' because:
+[        ]   Build cache is disabled
+[        ] Skipping task ':image_picker_android:parseDebugLocalResources' as it is up-to-date.
+[        ] Resolve mutations for :image_picker_android:generateDebugRFile (Thread[#625,Execution worker Thread 5,5,main]) started.
+[        ] :image_picker_android:generateDebugRFile (Thread[#625,Execution worker Thread 5,5,main]) started.
+[        ] > Task :image_picker_android:generateDebugRFile UP-TO-DATE
+[        ] Caching disabled for task ':image_picker_android:generateDebugRFile' because:
+[        ]   Build cache is disabled
+[        ] Skipping task ':image_picker_android:generateDebugRFile' as it is up-to-date.
+[        ] work action resolve package-aware-r.txt (project :image_picker_android) (Thread[#625,Execution worker Thread 5,5,main]) started.
+[        ] Resolve mutations for :image_picker_android:compileDebugKotlin (Thread[#622,Execution worker Thread 2,5,main]) started.
+[        ] :image_picker_android:compileDebugKotlin (Thread[#622,Execution worker Thread 2,5,main]) started.
+[ +204 ms] Resolve mutations for :image_picker_android:javaPreCompileDebug (Thread[#625,Execution worker Thread 5,5,main]) started.
+[        ] :image_picker_android:javaPreCompileDebug (Thread[#625,Execution worker Thread 5,5,main]) started.
+[        ] > Task :image_picker_android:javaPreCompileDebug UP-TO-DATE
+[        ] Caching disabled for task ':image_picker_android:javaPreCompileDebug' because:
+[        ]   Build cache is disabled
+[        ] Skipping task ':image_picker_android:javaPreCompileDebug' as it is up-to-date.
+[        ] Resolve mutations for :jni:checkKotlinGradlePluginConfigurationErrors (Thread[#625,Execution worker Thread 5,5,main]) started.
+[        ] :jni:checkKotlinGradlePluginConfigurationErrors (Thread[#625,Execution worker Thread 5,5,main]) started.
+[        ] > Task :jni:checkKotlinGradlePluginConfigurationErrors SKIPPED
+[        ] Skipping task ':jni:checkKotlinGradlePluginConfigurationErrors' as task onlyIf 'errorDiagnostics are present' is false.
+[        ] Resolve mutations for :jni:generateDebugResources (Thread[#625,Execution worker Thread 5,5,main]) started.
+[        ] :jni:generateDebugResources (Thread[#625,Execution worker Thread 5,5,main]) started.
+[        ] > Task :jni:generateDebugResources UP-TO-DATE
+[        ] Caching disabled for task ':jni:generateDebugResources' because:
+[        ]   Build cache is disabled
+[        ] Skipping task ':jni:generateDebugResources' as it is up-to-date.
+[        ] Resolve mutations for :jni:packageDebugResources (Thread[#625,Execution worker Thread 5,5,main]) started.
+[        ] :jni:packageDebugResources (Thread[#625,Execution worker Thread 5,5,main]) started.
+[        ] > Task :jni:packageDebugResources UP-TO-DATE
+[        ] Caching disabled for task ':jni:packageDebugResources' because:
+[        ]   Build cache is disabled
+[        ] Skipping task ':jni:packageDebugResources' as it is up-to-date.
+[        ] work action resolve packageDebugResources (project :jni) (Thread[#625,Execution worker Thread 5,5,main]) started.
+[        ] Resolve mutations for :jni:parseDebugLocalResources (Thread[#625,Execution worker Thread 5,5,main]) started.
+[        ] :jni:parseDebugLocalResources (Thread[#625,Execution worker Thread 5,5,main]) started.
+[  +99 ms] > Task :jni:parseDebugLocalResources UP-TO-DATE
+[        ] Caching disabled for task ':jni:parseDebugLocalResources' because:
+[        ]   Build cache is disabled
+[        ] Skipping task ':jni:parseDebugLocalResources' as it is up-to-date.
+[        ] Resolve mutations for :jni:generateDebugRFile (Thread[#625,Execution worker Thread 5,5,main]) started.
+[        ] :jni:generateDebugRFile (Thread[#625,Execution worker Thread 5,5,main]) started.
+[        ] > Task :jni:generateDebugRFile UP-TO-DATE
+[        ] Caching disabled for task ':jni:generateDebugRFile' because:
+[        ]   Build cache is disabled
+[        ] Skipping task ':jni:generateDebugRFile' as it is up-to-date.
+[        ] work action resolve package-aware-r.txt (project :jni) (Thread[#625,Execution worker Thread 5,5,main]) started.
+[   +6 ms] Resolve mutations for :jni:compileDebugKotlin (Thread[#625,Execution worker Thread 5,5,main]) started.
+[        ] :jni:compileDebugKotlin (Thread[#625,Execution worker Thread 5,5,main]) started.
+[        ] > Task :jni:compileDebugKotlin NO-SOURCE
+[        ] Skipping task ':jni:compileDebugKotlin' as it has no source files and no previous output files.
+[        ] Resolve mutations for :jni:javaPreCompileDebug (Thread[#620,included builds,5,main]) started.
+[        ] :jni:javaPreCompileDebug (Thread[#620,included builds,5,main]) started.
+[        ] > Task :jni:javaPreCompileDebug UP-TO-DATE
+[        ] Caching disabled for task ':jni:javaPreCompileDebug' because:
+[        ]   Build cache is disabled
+[        ] Skipping task ':jni:javaPreCompileDebug' as it is up-to-date.
+[        ] Resolve mutations for :jni:compileDebugJavaWithJavac (Thread[#620,included builds,5,main]) started.
+[        ] :jni:compileDebugJavaWithJavac (Thread[#620,included builds,5,main]) started.
+[        ] > Task :jni:compileDebugJavaWithJavac UP-TO-DATE
+[        ] Custom actions are attached to task ':jni:compileDebugJavaWithJavac'.
+[        ] Caching disabled for task ':jni:compileDebugJavaWithJavac' because:
+[        ]   Build cache is disabled
+[        ] Skipping task ':jni:compileDebugJavaWithJavac' as it is up-to-date.
+[        ] No compile result for :jni:compileDebugJavaWithJavac
+[        ] No compile result for :jni:compileDebugJavaWithJavac
+[        ] No compile result for :jni:compileDebugJavaWithJavac
+[        ] No compile result for :jni:compileDebugJavaWithJavac
+[        ] Resolve mutations for :jni:bundleLibCompileToJarDebug (Thread[#620,included builds,5,main]) started.
+[        ] :jni:bundleLibCompileToJarDebug (Thread[#620,included builds,5,main]) started.
+[        ] > Task :jni:bundleLibCompileToJarDebug UP-TO-DATE
+[        ] Caching disabled for task ':jni:bundleLibCompileToJarDebug' because:
+[        ]   Build cache is disabled
+[        ]   Simple merging task
+[        ] Skipping task ':jni:bundleLibCompileToJarDebug' as it is up-to-date.
+[        ] work action resolve classes.jar (project :jni) (Thread[#620,included builds,5,main]) started.
+[        ] Resolve mutations for :jni_flutter:checkKotlinGradlePluginConfigurationErrors (Thread[#620,included builds,5,main]) started.
+[        ] :jni_flutter:checkKotlinGradlePluginConfigurationErrors (Thread[#620,included builds,5,main]) started.
+[        ] > Task :jni_flutter:checkKotlinGradlePluginConfigurationErrors SKIPPED
+[   +1 ms] Skipping task ':jni_flutter:checkKotlinGradlePluginConfigurationErrors' as task onlyIf 'errorDiagnostics are present' is false.
+[        ] Resolve mutations for :jni_flutter:generateDebugResources (Thread[#620,included builds,5,main]) started.
+[        ] :jni_flutter:generateDebugResources (Thread[#620,included builds,5,main]) started.
+[        ] > Task :jni_flutter:generateDebugResources UP-TO-DATE
+[        ] Caching disabled for task ':jni_flutter:generateDebugResources' because:
+[        ]   Build cache is disabled
+[        ] Skipping task ':jni_flutter:generateDebugResources' as it is up-to-date.
+[        ] Resolve mutations for :jni_flutter:packageDebugResources (Thread[#620,included builds,5,main]) started.
+[        ] :jni_flutter:packageDebugResources (Thread[#620,included builds,5,main]) started.
+[        ] > Task :jni_flutter:packageDebugResources UP-TO-DATE
+[        ] Caching disabled for task ':jni_flutter:packageDebugResources' because:
+[        ]   Build cache is disabled
+[        ] Skipping task ':jni_flutter:packageDebugResources' as it is up-to-date.
+[        ] work action resolve packageDebugResources (project :jni_flutter) (Thread[#620,included builds,5,main]) started.
+[        ] Resolve mutations for :jni_flutter:parseDebugLocalResources (Thread[#620,included builds,5,main]) started.
+[        ] :jni_flutter:parseDebugLocalResources (Thread[#620,included builds,5,main]) started.
+[        ] > Task :jni_flutter:parseDebugLocalResources UP-TO-DATE
+[        ] Caching disabled for task ':jni_flutter:parseDebugLocalResources' because:
+[        ]   Build cache is disabled
+[        ] Skipping task ':jni_flutter:parseDebugLocalResources' as it is up-to-date.
+[        ] Resolve mutations for :jni_flutter:generateDebugRFile (Thread[#620,included builds,5,main]) started.
+[        ] :jni_flutter:generateDebugRFile (Thread[#620,included builds,5,main]) started.
+[        ] > Task :jni_flutter:generateDebugRFile UP-TO-DATE
+[        ] Caching disabled for task ':jni_flutter:generateDebugRFile' because:
+[        ]   Build cache is disabled
+[        ] Skipping task ':jni_flutter:generateDebugRFile' as it is up-to-date.
+[        ] work action resolve package-aware-r.txt (project :jni_flutter) (Thread[#620,included builds,5,main]) started.
+[        ] Resolve mutations for :jni_flutter:compileDebugKotlin (Thread[#620,included builds,5,main]) started.
+[        ] :jni_flutter:compileDebugKotlin (Thread[#620,included builds,5,main]) started.
+[  +72 ms] > Task :jni_flutter:compileDebugKotlin NO-SOURCE
+[        ] Skipping task ':jni_flutter:compileDebugKotlin' as it has no source files and no previous output files.
+[        ] Resolve mutations for :jni_flutter:javaPreCompileDebug (Thread[#620,included builds,5,main]) started.
+[        ] :jni_flutter:javaPreCompileDebug (Thread[#620,included builds,5,main]) started.
+[        ] > Task :jni_flutter:javaPreCompileDebug UP-TO-DATE
+[        ] Caching disabled for task ':jni_flutter:javaPreCompileDebug' because:
+[        ]   Build cache is disabled
+[        ] Skipping task ':jni_flutter:javaPreCompileDebug' as it is up-to-date.
+[        ] Resolve mutations for :jni_flutter:compileDebugJavaWithJavac (Thread[#620,included builds,5,main]) started.
+[        ] :jni_flutter:compileDebugJavaWithJavac (Thread[#620,included builds,5,main]) started.
+[        ] > Task :jni_flutter:compileDebugJavaWithJavac UP-TO-DATE
+[        ] Custom actions are attached to task ':jni_flutter:compileDebugJavaWithJavac'.
+[        ] Caching disabled for task ':jni_flutter:compileDebugJavaWithJavac' because:
+[        ]   Build cache is disabled
+[        ] Skipping task ':jni_flutter:compileDebugJavaWithJavac' as it is up-to-date.
+[        ] No compile result for :jni_flutter:compileDebugJavaWithJavac
+[        ] No compile result for :jni_flutter:compileDebugJavaWithJavac
+[        ] No compile result for :jni_flutter:compileDebugJavaWithJavac
+[        ] No compile result for :jni_flutter:compileDebugJavaWithJavac
+[        ] Resolve mutations for :jni_flutter:bundleLibCompileToJarDebug (Thread[#620,included builds,5,main]) started.
+[        ] :jni_flutter:bundleLibCompileToJarDebug (Thread[#620,included builds,5,main]) started.
+[        ] > Task :jni_flutter:bundleLibCompileToJarDebug UP-TO-DATE
+[        ] Caching disabled for task ':jni_flutter:bundleLibCompileToJarDebug' because:
+[        ]   Build cache is disabled
+[        ]   Simple merging task
+[        ] Skipping task ':jni_flutter:bundleLibCompileToJarDebug' as it is up-to-date.
+[        ] work action resolve classes.jar (project :jni_flutter) (Thread[#621,Execution worker,5,main]) started.
+[        ] Resolve mutations for :shared_preferences_android:checkKotlinGradlePluginConfigurationErrors (Thread[#621,Execution worker,5,main]) started.
+[        ] :shared_preferences_android:checkKotlinGradlePluginConfigurationErrors (Thread[#621,Execution worker,5,main]) started.
+[        ] > Task :shared_preferences_android:checkKotlinGradlePluginConfigurationErrors SKIPPED
+[        ] Skipping task ':shared_preferences_android:checkKotlinGradlePluginConfigurationErrors' as task onlyIf 'errorDiagnostics are present' is false.
+[        ] Resolve mutations for :shared_preferences_android:generateDebugResources (Thread[#621,Execution worker,5,main]) started.
+[        ] :shared_preferences_android:generateDebugResources (Thread[#621,Execution worker,5,main]) started.
+[        ] > Task :shared_preferences_android:generateDebugResources UP-TO-DATE
+[        ] Caching disabled for task ':shared_preferences_android:generateDebugResources' because:
+[        ]   Build cache is disabled
+[        ] Skipping task ':shared_preferences_android:generateDebugResources' as it is up-to-date.
+[        ] Resolve mutations for :shared_preferences_android:packageDebugResources (Thread[#621,Execution worker,5,main]) started.
+[        ] :shared_preferences_android:packageDebugResources (Thread[#621,Execution worker,5,main]) started.
+[        ] > Task :shared_preferences_android:packageDebugResources UP-TO-DATE
+[        ] Caching disabled for task ':shared_preferences_android:packageDebugResources' because:
+[        ]   Build cache is disabled
+[        ] Skipping task ':shared_preferences_android:packageDebugResources' as it is up-to-date.
+[        ] work action resolve packageDebugResources (project :shared_preferences_android) (Thread[#621,Execution worker,5,main]) started.
+[        ] Resolve mutations for :shared_preferences_android:parseDebugLocalResources (Thread[#621,Execution worker,5,main]) started.
+[        ] :shared_preferences_android:parseDebugLocalResources (Thread[#621,Execution worker,5,main]) started.
+[        ] > Task :shared_preferences_android:parseDebugLocalResources UP-TO-DATE
+[        ] Caching disabled for task ':shared_preferences_android:parseDebugLocalResources' because:
+[        ]   Build cache is disabled
+[        ] Skipping task ':shared_preferences_android:parseDebugLocalResources' as it is up-to-date.
+[        ] Resolve mutations for :shared_preferences_android:generateDebugRFile (Thread[#621,Execution worker,5,main]) started.
+[        ] :shared_preferences_android:generateDebugRFile (Thread[#621,Execution worker,5,main]) started.
+[        ] > Task :shared_preferences_android:generateDebugRFile UP-TO-DATE
+[        ] Caching disabled for task ':shared_preferences_android:generateDebugRFile' because:
+[        ]   Build cache is disabled
+[        ] Skipping task ':shared_preferences_android:generateDebugRFile' as it is up-to-date.
+[        ] work action resolve package-aware-r.txt (project :shared_preferences_android) (Thread[#621,Execution worker,5,main]) started.
+[        ] Resolve mutations for :shared_preferences_android:compileDebugKotlin (Thread[#621,Execution worker,5,main]) started.
+[        ] :shared_preferences_android:compileDebugKotlin (Thread[#621,Execution worker,5,main]) started.
+[+1071 ms] Running 3 shutdown hooks
+[ +639 ms] Shutdown hooks complete
+[ +117 ms] Resolve mutations for :shared_preferences_android:javaPreCompileDebug (Thread[#627,Execution worker Thread 7,5,main]) started.
+[        ] :shared_preferences_android:javaPreCompileDebug (Thread[#627,Execution worker Thread 7,5,main]) started.
+[        ] > Task :shared_preferences_android:javaPreCompileDebug UP-TO-DATE
+[        ] Caching disabled for task ':shared_preferences_android:javaPreCompileDebug' because:
+[        ]   Build cache is disabled
+[        ] Skipping task ':shared_preferences_android:javaPreCompileDebug' as it is up-to-date.
+[        ] Resolve mutations for :app:javaPreCompileDebug (Thread[#627,Execution worker Thread 7,5,main]) started.
+[        ] :app:javaPreCompileDebug (Thread[#627,Execution worker Thread 7,5,main]) started.
+[        ] > Task :app:javaPreCompileDebug UP-TO-DATE
+[        ] Caching disabled for task ':app:javaPreCompileDebug' because:
+[        ]   Build cache is disabled
+[        ] Skipping task ':app:javaPreCompileDebug' as it is up-to-date.
+[        ] Resolve mutations for :app:compressDebugAssets (Thread[#627,Execution worker Thread 7,5,main]) started.
+[        ] :app:compressDebugAssets (Thread[#627,Execution worker Thread 7,5,main]) started.
+[  +83 ms] Resolve mutations for :cloud_firestore:bundleLibRuntimeToJarDebug (Thread[#626,Execution worker Thread 6,5,main]) started.
+[        ] :cloud_firestore:bundleLibRuntimeToJarDebug (Thread[#626,Execution worker Thread 6,5,main]) started.
+[        ] > Task :firebase_storage:compileDebugKotlin
+[        ] Adding -Xuse-inline-scopes-numbers Kotlin compiler flag for task :firebase_storage:compileDebugAndroidTestKotlin
+[        ] GradleBuildProject.Builder should not be accessed through AnalyticsConfiguratorService after AnalyticsService is created. Analytics information of this build might be incomplete.
+[   +2 ms] Caching disabled for task ':firebase_storage:compileDebugKotlin' because:
+[        ]   Build cache is disabled
+[        ] Task ':firebase_storage:compileDebugKotlin' is not up-to-date because:
+[        ]   Task has failed previously.
+[        ] The input changes require a full rebuild for incremental task ':firebase_storage:compileDebugKotlin'.
+[        ] file or directory 'C:\Users\LENOVO\AppData\Local\Pub\Cache\hosted\pub.dev\firebase_storage-13.4.3\android\src\debug\kotlin', not found
+[        ] file or directory 'C:\Users\LENOVO\AppData\Local\Pub\Cache\hosted\pub.dev\firebase_storage-13.4.3\android\src\debug\java', not found
+[ +116 ms] file or directory 'C:\Users\LENOVO\AppData\Local\Pub\Cache\hosted\pub.dev\firebase_storage-13.4.3\android\src\debug\kotlin', not found
+[        ] file or directory 'C:\Users\LENOVO\AppData\Local\Pub\Cache\hosted\pub.dev\firebase_storage-13.4.3\android\src\debug\java', not found
+[        ] file or directory 'C:\Users\LENOVO\AppData\Local\Pub\Cache\hosted\pub.dev\firebase_storage-13.4.3\android\src\debug\kotlin', not found
+[        ] file or directory 'C:\Users\LENOVO\AppData\Local\Pub\Cache\hosted\pub.dev\firebase_storage-13.4.3\android\src\debug\java', not found
+[        ] file or directory 'C:\Users\LENOVO\AppData\Local\Pub\Cache\hosted\pub.dev\firebase_storage-13.4.3\android\src\main\java', not found
+[        ] file or directory 'C:\Users\LENOVO\AppData\Local\Pub\Cache\hosted\pub.dev\firebase_storage-13.4.3\android\src\main\java', not found
+[        ] file or directory 'C:\Users\LENOVO\AppData\Local\Pub\Cache\hosted\pub.dev\firebase_storage-13.4.3\android\src\main\java', not found
+[        ] file or directory 'C:\Users\LENOVO\AppData\Local\Pub\Cache\hosted\pub.dev\firebase_storage-13.4.3\android\src\main\java', not found
+[   +9 ms] exiting with code 0
+Terminate batch job (Y/N)? ^C
+^CTerminate batch job (Y/N)? ^C
