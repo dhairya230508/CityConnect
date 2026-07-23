@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:intl/intl.dart';
 import 'home.dart';
 import 'profile.dart';
+import 'index.dart';
 import 'admin.dart';
 
 
@@ -349,7 +350,7 @@ class _ComplaintPageState extends State<ComplaintPage> {
               if (index == 0) {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const home()),
+                  MaterialPageRoute(builder: (context) => const HomeScreen()),
                 );
               } else if (index == 1) {
                 Navigator.push(
@@ -375,11 +376,7 @@ class _ComplaintPageState extends State<ComplaintPage> {
                 activeIcon: Icon(Icons.assignment),
                 label: "COMPLAINTS",
               ),
-              // BottomNavigationBarItem(
-              //   icon: Icon(Icons.notifications_none),
-              //   activeIcon: Icon(Icons.notifications),
-              //   label: "ALERTS",
-              // ),
+
               BottomNavigationBarItem(
                 icon: Icon(Icons.person_outline),
                 activeIcon: Icon(Icons.person),

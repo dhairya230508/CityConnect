@@ -88,23 +88,15 @@ class _RegisterState extends State<Register> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    "JOIN CITYCONNECT",
-                    style: GoogleFonts.poppins(
-                      fontSize: 24,
-                      color: Colors.blue,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
 
-                  const SizedBox(height: 15),
+                  const SizedBox(height: 30),
 
                   Text(
                     "Create Account",
                     style: GoogleFonts.poppins(
                       fontSize: 34,
                       fontWeight: FontWeight.bold,
-                      color: Colors.black,
+                      color: Colors.blue,
                     ),
                   ),
 

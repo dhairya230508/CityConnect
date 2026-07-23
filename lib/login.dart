@@ -18,9 +18,18 @@ class _LoginPageState extends State<LoginPage> {
 
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
+  final TextEditingController resetEmailController = TextEditingController();
+  final FirebaseAuth _auth = FirebaseAuth.instance;
 
   bool obscurePassword = true;
 
+  @override
+  void dispose() {
+    emailController.dispose();
+    passwordController.dispose();
+    resetEmailController.dispose();
+    super.dispose();
+  }
 
   Future<void> loginUser() async {
     if (!_formKey.currentState!.validate()) return;
@@ -43,6 +52,7 @@ class _LoginPageState extends State<LoginPage> {
           .get();
 
       if (adminQuery.docs.isNotEmpty) {
+        if (!mounted) return;
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(
@@ -61,6 +71,7 @@ class _LoginPageState extends State<LoginPage> {
           .get();
 
       if (userQuery.docs.isNotEmpty) {
+        if (!mounted) return;
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(
@@ -70,208 +81,254 @@ class _LoginPageState extends State<LoginPage> {
         return;
       }
 
+      if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text("User record not found")),
       );
     } on FirebaseAuthException catch (e) {
+      if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text(e.message ?? "Login Failed")),
       );
     }
   }
-  final FirebaseAuth _auth = FirebaseAuth.instance;
 
+  // ============================================================
+  // FORGOT PASSWORD — confirmation box (matches reference design)
+  // If the login email field already has a value, it is shown as
+  // plain confirmation text and the user just taps "Send Email".
+  // If it's empty, an inline editable field appears in its place
+  // so the user can type the email once, right inside this dialog,
+  // without needing to go back and fill the field above.
+  // ============================================================
   void _showForgotPasswordDialog(BuildContext context) {
-    final emailResetController = TextEditingController(text: emailController.text.trim());
-    final formKey = GlobalKey<FormState>();
+    resetEmailController.text = emailController.text.trim();
     bool isSending = false;
+
+    // Decided ONCE, when the dialog opens — not recalculated on every
+    // keystroke. This is what stopped the input field from vanishing
+    // after the first character typed.
+    final bool wasEmailPrefilled = resetEmailController.text.isNotEmpty;
 
     showDialog(
       context: context,
+      barrierDismissible: true,
       builder: (BuildContext dialogContext) {
         return StatefulBuilder(
           builder: (context, setState) {
             return Dialog(
               shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(22),
+                borderRadius: BorderRadius.circular(24),
               ),
-              elevation: 10,
               backgroundColor: Colors.white,
               child: Padding(
-                padding: const EdgeInsets.all(24),
-                child: Form(
-                  key: formKey,
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Center(
-                        child: Container(
-                          padding: const EdgeInsets.all(16),
-                          decoration: const BoxDecoration(
-                            color: Color(0xFFEAF4FF),
-                            shape: BoxShape.circle,
-                          ),
-                          child: const Icon(
-                            Icons.lock_reset_rounded,
-                            color: Color(0xFF2563EB),
-                            size: 32,
-                          ),
-                        ),
+                padding: const EdgeInsets.fromLTRB(24, 32, 24, 24),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    // Icon badge
+                    Container(
+                      padding: const EdgeInsets.all(18),
+                      decoration: const BoxDecoration(
+                        color: Color(0xFFEAF4FF),
+                        shape: BoxShape.circle,
                       ),
-                      const SizedBox(height: 20),
-                      Center(
-                        child: Text(
-                          "Reset Password",
-                          style: GoogleFonts.poppins(
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
-                            color: const Color(0xFF111827),
-                          ),
-                        ),
+                      child: const Icon(
+                        Icons.mark_email_read_outlined,
+                        color: Color(0xFF2563EB),
+                        size: 34,
                       ),
-                      const SizedBox(height: 10),
+                    ),
+
+                    const SizedBox(height: 20),
+
+                    Text(
+                      "Send Reset Link",
+                      style: GoogleFonts.poppins(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                        color: const Color(0xFF0F172A),
+                      ),
+                    ),
+
+                    const SizedBox(height: 12),
+
+                    // Either a plain confirmation line (email already
+                    // known) or a compact inline field to type it.
+                    // wasEmailPrefilled is fixed for the dialog's whole
+                    // lifetime, so typing never swaps this section away.
+                    if (wasEmailPrefilled)
                       Text(
-                        "Enter your email address and we'll send you a link to reset your password.",
+                        "A password reset link will be sent to "
+                            "${resetEmailController.text.trim()}. Continue?",
                         textAlign: TextAlign.center,
                         style: GoogleFonts.poppins(
                           fontSize: 14,
-                          color: const Color(0xFF6B7280),
+                          color: const Color(0xFF64748B),
+                          height: 1.4,
                         ),
-                      ),
-                      const SizedBox(height: 20),
-                      TextFormField(
-                        controller: emailResetController,
-                        keyboardType: TextInputType.emailAddress,
+                      )
+                    else ...[
+                      Text(
+                        "Enter your email to receive the reset link.",
+                        textAlign: TextAlign.center,
                         style: GoogleFonts.poppins(
-                          fontSize: 15,
-                          fontWeight: FontWeight.w500,
-                          color: const Color(0xFF111827),
+                          fontSize: 14,
+                          color: const Color(0xFF64748B),
+                          height: 1.4,
                         ),
-                        decoration: InputDecoration(
-                          hintText: "you@example.com",
-                          prefixIcon: const Icon(Icons.email_outlined),
-                          filled: true,
-                          fillColor: const Color(0xffF7F8FC),
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(16),
-                            borderSide: BorderSide.none,
-                          ),
-                        ),
-                        validator: (value) {
-                          if (value == null || value.trim().isEmpty) {
-                            return "Please enter your email";
-                          }
-                          if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(value.trim())) {
-                            return "Enter a valid email address";
-                          }
-                          return null;
-                        },
                       ),
-                      const SizedBox(height: 24),
-                      Row(
-                        children: [
-                          Expanded(
-                            child: OutlinedButton(
-                              onPressed: isSending ? null : () => Navigator.pop(dialogContext),
-                              style: OutlinedButton.styleFrom(
-                                padding: const EdgeInsets.symmetric(vertical: 14),
-                                side: const BorderSide(color: Color(0xFFE5E7EB)),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(12),
-                                ),
+                      const SizedBox(height: 14),
+                      TextField(
+                        controller: resetEmailController,
+                        keyboardType: TextInputType.emailAddress,
+                        autofocus: true,
+                      )
+                    ],
+
+                    const SizedBox(height: 26),
+
+                    Row(
+                      children: [
+                        // Cancel button
+                        Expanded(
+                          child: OutlinedButton(
+                            onPressed: isSending
+                                ? null
+                                : () => Navigator.pop(dialogContext),
+                            style: OutlinedButton.styleFrom(
+                              padding:
+                              const EdgeInsets.symmetric(vertical: 14),
+                              side: const BorderSide(
+                                color: Color(0xFFE2E8F0),
                               ),
-                              child: Text(
-                                "Cancel",
-                                style: GoogleFonts.poppins(
-                                  fontSize: 15,
-                                  fontWeight: FontWeight.w600,
-                                  color: const Color(0xFF6B7280),
-                                ),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(14),
+                              ),
+                            ),
+                            child: Text(
+                              "Cancel",
+                              style: GoogleFonts.poppins(
+                                fontSize: 15,
+                                fontWeight: FontWeight.w600,
+                                color: const Color(0xFF2563EB),
                               ),
                             ),
                           ),
-                          const SizedBox(width: 12),
-                          Expanded(
-                            child: ElevatedButton(
-                              onPressed: isSending
-                                  ? null
-                                  : () async {
-                                      if (!formKey.currentState!.validate()) return;
-                                      setState(() {
-                                        isSending = true;
-                                      });
-                                      try {
-                                        await FirebaseAuth.instance.sendPasswordResetEmail(
-                                          email: emailResetController.text.trim(),
-                                        );
-                                        if (context.mounted) {
-                                          ScaffoldMessenger.of(context).showSnackBar(
-                                            SnackBar(
-                                              content: Text("Password reset link sent to ${emailResetController.text.trim()}"),
-                                              backgroundColor: const Color(0xFF22C55E),
-                                              behavior: SnackBarBehavior.floating,
-                                            ),
-                                          );
-                                        }
-                                        Navigator.pop(dialogContext);
-                                      } on FirebaseAuthException catch (e) {
-                                        if (context.mounted) {
-                                          ScaffoldMessenger.of(context).showSnackBar(
-                                            SnackBar(
-                                              content: Text(e.message ?? "Failed to send reset email."),
-                                              backgroundColor: const Color(0xFFEF4444),
-                                              behavior: SnackBarBehavior.floating,
-                                            ),
-                                          );
-                                        }
-                                      } catch (e) {
-                                        if (context.mounted) {
-                                          ScaffoldMessenger.of(context).showSnackBar(
-                                            SnackBar(
-                                              content: Text("Error: ${e.toString()}"),
-                                              backgroundColor: const Color(0xFFEF4444),
-                                              behavior: SnackBarBehavior.floating,
-                                            ),
-                                          );
-                                        }
-                                      } finally {
-                                        setState(() {
-                                          isSending = false;
-                                        });
-                                      }
-                                    },
-                              style: ElevatedButton.styleFrom(
-                                padding: const EdgeInsets.symmetric(vertical: 14),
-                                backgroundColor: const Color(0xFF2563EB),
-                                elevation: 0,
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(12),
-                                ),
-                              ),
-                              child: isSending
-                                  ? const SizedBox(
-                                      height: 20,
-                                      width: 20,
-                                      child: CircularProgressIndicator(
-                                        color: Colors.white,
-                                        strokeWidth: 2,
+                        ),
+
+                        const SizedBox(width: 12),
+
+                        // Send Email button — always active once an
+                        // email is present, whether typed above or here.
+                        Expanded(
+                          child: ElevatedButton(
+                            onPressed: (isSending ||
+                                resetEmailController.text.trim().isEmpty)
+                                ? null
+                                : () async {
+                              final email =
+                              resetEmailController.text.trim();
+                              setState(() => isSending = true);
+
+                              try {
+                                await _auth.sendPasswordResetEmail(
+                                  email: email,
+                                );
+
+                                // Keep the login form's email field
+                                // in sync with what was just used.
+                                emailController.text = email;
+
+                                if (Navigator.canPop(dialogContext)) {
+                                  Navigator.pop(dialogContext);
+                                }
+
+                                if (!mounted) return;
+
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                    content: Text("Password reset email sent."),
+                                  ),
+                                );
+                                if (mounted) {
+                                  ScaffoldMessenger.of(context)
+                                      .showSnackBar(
+                                    SnackBar(
+                                      content: Text(
+                                        "Reset link sent to $email",
                                       ),
-                                    )
-                                  : Text(
-                                      "Send",
-                                      style: GoogleFonts.poppins(
-                                        fontSize: 15,
-                                        fontWeight: FontWeight.bold,
-                                        color: Colors.white,
+                                      backgroundColor:
+                                      const Color(0xFF16A34A),
+                                      behavior:
+                                      SnackBarBehavior.floating,
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius:
+                                        BorderRadius.circular(12),
                                       ),
                                     ),
+                                  );
+                                }
+                              } on FirebaseAuthException catch (e) {
+                                if (mounted) {
+                                  ScaffoldMessenger.of(context)
+                                      .showSnackBar(
+                                    SnackBar(
+                                      content: Text(
+                                        e.message ??
+                                            "Failed to send reset email.",
+                                      ),
+                                      backgroundColor:
+                                      const Color(0xFFDC2626),
+                                      behavior:
+                                      SnackBarBehavior.floating,
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius:
+                                        BorderRadius.circular(12),
+                                      ),
+                                    ),
+                                  );
+                                }
+                              }
+                              finally {
+                                if (dialogContext.mounted) {
+                                  setState(() {
+                                    isSending = false;
+                                  });
+                                }
+                              };
+                            },
+                            style: ElevatedButton.styleFrom(
+                              padding:
+                              const EdgeInsets.symmetric(vertical: 14),
+                              backgroundColor: const Color(0xFF2563EB),
+                              elevation: 0,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(14),
+                              ),
+                            ),
+                            child: isSending
+                                ? const SizedBox(
+                              height: 18,
+                              width: 18,
+                              child: CircularProgressIndicator(
+                                color: Colors.white,
+                                strokeWidth: 2,
+                              ),
+                            )
+                                : Text(
+                              "Send Email",
+                              style: GoogleFonts.poppins(
+                                fontSize: 15,
+                                fontWeight: FontWeight.w600,
+                                color: Colors.white,
+                              ),
                             ),
                           ),
-                        ],
-                      ),
-                    ],
-                  ),
+                        ),
+                      ],
+                    ),
+                  ],
                 ),
               ),
             );
@@ -285,19 +342,16 @@ class _LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-
       body: SafeArea(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-
             // Header
             Padding(
-              padding: const EdgeInsets.fromLTRB(20,20,20,30),
+              padding: const EdgeInsets.fromLTRB(20, 20, 20, 30),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-
                   Text(
                     "WELCOME BACK",
                     style: GoogleFonts.poppins(
@@ -307,19 +361,15 @@ class _LoginPageState extends State<LoginPage> {
                       letterSpacing: 1.2,
                     ),
                   ),
-
                   const SizedBox(height: 6),
-
                   Text(
                     "Login",
                     style: GoogleFonts.poppins(
                       fontSize: 34,
-                        fontWeight: FontWeight.bold,
+                      fontWeight: FontWeight.bold,
                     ),
                   ),
-
                   const SizedBox(height: 6),
-
                   Text(
                     "Sign in to your CityConnect account",
                     style: GoogleFonts.poppins(
@@ -334,71 +384,56 @@ class _LoginPageState extends State<LoginPage> {
             Expanded(
               child: Container(
                 width: double.infinity,
-
                 decoration: const BoxDecoration(
                   color: Color(0xffF4F6FA),
                 ),
+                child: Form(
+                  key: _formKey,
+                  child: SingleChildScrollView(
+                    padding: const EdgeInsets.all(20),
+                    child: Column(
+                      children: [
+                        const SizedBox(height: 15),
 
-                child: SingleChildScrollView(
-                  padding: const EdgeInsets.all(20),
-
-                  child: Column(
-                    children: [
-
-                      const SizedBox(height: 15),
-
-                      // Profile Icon
-
-                      Container(
-                        height: 72,
-                        width: 72,
-
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(18),
-
-                          gradient: const LinearGradient(
-                            colors: [
-                              Color(0xff309BFF),
-                              Color(0xff1565C0),
-                            ],
+                        // Profile Icon
+                        Container(
+                          height: 72,
+                          width: 72,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(18),
+                            gradient: const LinearGradient(
+                              colors: [
+                                Color(0xff309BFF),
+                                Color(0xff1565C0),
+                              ],
+                            ),
+                          ),
+                          child: const Icon(
+                            Icons.person_outline,
+                            color: Colors.white,
+                            size: 32,
                           ),
                         ),
 
-                        child: const Icon(
-                          Icons.person_outline,
-                          color: Colors.white,
-                          size: 32,
-                        ),
-                      ),
+                        const SizedBox(height: 22),
 
-                      const SizedBox(height: 22),
-
-                      // Login Card
-
-                      Container(
-                        padding: const EdgeInsets.all(22),
-
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(22),
-
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.black12.withOpacity(.04),
-                              blurRadius: 20,
-                              offset: const Offset(0, 10),
-                            )
-                          ],
-                        ),
-
-                        child: Form(
-                          key: _formKey,
-
+                        // Login Card
+                        Container(
+                          padding: const EdgeInsets.all(22),
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(22),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black12.withOpacity(.04),
+                                blurRadius: 20,
+                                offset: const Offset(0, 10),
+                              )
+                            ],
+                          ),
                           child: Column(
-                            crossAxisAlignment:
-                            CrossAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-
                               Text(
                                 "EMAIL ADDRESS",
                                 style: GoogleFonts.poppins(
@@ -413,32 +448,23 @@ class _LoginPageState extends State<LoginPage> {
 
                               TextFormField(
                                 controller: emailController,
-                                keyboardType:
-                                TextInputType.emailAddress,
-
+                                keyboardType: TextInputType.emailAddress,
                                 decoration: InputDecoration(
                                   hintText: "you@example.com",
-
                                   prefixIcon: const Icon(
                                     Icons.email_outlined,
                                   ),
-
                                   filled: true,
-                                  fillColor:
-                                  const Color(0xffF7F8FC),
-
+                                  fillColor: const Color(0xffF7F8FC),
                                   border: OutlineInputBorder(
-                                    borderRadius:
-                                    BorderRadius.circular(16),
+                                    borderRadius: BorderRadius.circular(16),
                                     borderSide: BorderSide.none,
                                   ),
                                 ),
-                                validator: (value)
-                                {
-                                  if(value==null || value.isEmpty)
-                                    {
-                                      return "Please Enter Email";
-                                    }
+                                validator: (value) {
+                                  if (value == null || value.isEmpty) {
+                                    return "Please Enter Email";
+                                  }
                                   return null;
                                 },
                               ),
@@ -460,45 +486,34 @@ class _LoginPageState extends State<LoginPage> {
                               TextFormField(
                                 controller: passwordController,
                                 obscureText: obscurePassword,
-
                                 decoration: InputDecoration(
                                   hintText: "Enter your password",
-
                                   prefixIcon: const Icon(
                                     Icons.lock_outline,
                                   ),
-
                                   suffixIcon: IconButton(
                                     icon: Icon(
                                       obscurePassword
                                           ? Icons.visibility_off
                                           : Icons.visibility,
                                     ),
-
                                     onPressed: () {
                                       setState(() {
-                                        obscurePassword =
-                                        !obscurePassword;
+                                        obscurePassword = !obscurePassword;
                                       });
                                     },
                                   ),
-
                                   filled: true,
-                                  fillColor:
-                                  const Color(0xffF7F8FC),
-
+                                  fillColor: const Color(0xffF7F8FC),
                                   border: OutlineInputBorder(
-                                    borderRadius:
-                                    BorderRadius.circular(16),
+                                    borderRadius: BorderRadius.circular(16),
                                     borderSide: BorderSide.none,
                                   ),
                                 ),
-                                validator: (value)
-                                {
-                                  if(value==null || value.isEmpty)
-                                    {
-                                      return "Please Enter Your Password";
-                                    }
+                                validator: (value) {
+                                  if (value == null || value.isEmpty) {
+                                    return "Please Enter Your Password";
+                                  }
                                   return null;
                                 },
                               ),
@@ -508,14 +523,13 @@ class _LoginPageState extends State<LoginPage> {
                               Align(
                                 alignment: Alignment.centerRight,
                                 child: TextButton(
-                                  onPressed: () => _showForgotPasswordDialog(context),
-
+                                  onPressed: () =>
+                                      _showForgotPasswordDialog(context),
                                   child: Text(
                                     "Forgot Password?",
                                     style: GoogleFonts.poppins(
                                       color: Colors.blue,
-                                      fontWeight:
-                                      FontWeight.w600,
+                                      fontWeight: FontWeight.w600,
                                     ),
                                   ),
                                 ),
@@ -523,85 +537,78 @@ class _LoginPageState extends State<LoginPage> {
                             ],
                           ),
                         ),
-                      ),
 
-                      const SizedBox(height: 22),
+                        const SizedBox(height: 22),
 
-                      SizedBox(
-                        width: double.infinity,
-                        height: 56,
-
-                        child: ElevatedButton(
-                          onPressed: loginUser,
-
-                          style: ElevatedButton.styleFrom(
-                            elevation: 0,
-
-                            backgroundColor:
-                            const Color(0xff1976D2),
-
-                            shape: RoundedRectangleBorder(
-                              borderRadius:
-                              BorderRadius.circular(18),
+                        SizedBox(
+                          width: double.infinity,
+                          height: 56,
+                          child: ElevatedButton(
+                            onPressed: loginUser,
+                            style: ElevatedButton.styleFrom(
+                              elevation: 0,
+                              backgroundColor: const Color(0xff1976D2),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(18),
+                              ),
                             ),
-                          ),
-
-                          child: Text(
-                            "Login",
-                            style: GoogleFonts.poppins(
-                              fontSize: 16,
-                              color: Colors.white,
-                              fontWeight: FontWeight.w600,
+                            child: Text(
+                              "Login",
+                              style: GoogleFonts.poppins(
+                                fontSize: 16,
+                                color: Colors.white,
+                                fontWeight: FontWeight.w600,
+                              ),
                             ),
                           ),
                         ),
-                      ),
 
-                      const SizedBox(height: 20),
+                        const SizedBox(height: 20),
 
-                      Row(
-                        children: const [
-                          Expanded(child: Divider()),
-                          Padding(
-                            padding:
-                            EdgeInsets.symmetric(horizontal: 12),
-                            child: Text("or"),
-                          ),
-                          Expanded(child: Divider()),
-                        ],
-                      ),
-
-                      const SizedBox(height: 20),
-
-                      Row(
-                        mainAxisAlignment:
-                        MainAxisAlignment.center,
-                        children: [
-
-                          Text(
-                            "Don't have an account?",
-                            style: GoogleFonts.poppins(
-                              color: Colors.grey,
+                        Row(
+                          children: const [
+                            Expanded(child: Divider()),
+                            Padding(
+                              padding:
+                              EdgeInsets.symmetric(horizontal: 12),
+                              child: Text("or"),
                             ),
-                          ),
+                            Expanded(child: Divider()),
+                          ],
+                        ),
 
-                          TextButton(
-                            onPressed: () {
-                              Navigator.push(context, MaterialPageRoute(builder: (context)=> Register()));
-                            },
+                        const SizedBox(height: 20),
 
-                            child: Text(
-                              "Create Account",
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              "Don't have an account?",
                               style: GoogleFonts.poppins(
-                                color: Colors.blue,
-                                fontWeight:
-                                FontWeight.w700,
+                                color: Colors.grey,
                               ),
                             ),
-                          )
-                        ],
-                      ),
-                    ],
+                            TextButton(
+                              onPressed: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => Register(),
+                                  ),
+                                );
+                              },
+                              child: Text(
+                                "Create Account",
+                                style: GoogleFonts.poppins(
+                                  color: Colors.blue,
+                                  fontWeight: FontWeight.w700,
+                                ),
+                              ),
+                            )
+                          ],
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'welcome.dart';
 
 import 'login.dart';
 import 'index.dart';
@@ -26,7 +27,7 @@ class AuthWrapper extends StatelessWidget {
           return snapshot.data!;
         }
 
-        return const LoginPage();
+        return const Welcome();
       },
     );
   }
@@ -36,9 +37,8 @@ class AuthWrapper extends StatelessWidget {
 
     // No user logged in
     if (user == null) {
-      return const LoginPage();
+      return const Welcome();
     }
-
     // Check if Admin
     QuerySnapshot adminQuery = await FirebaseFirestore.instance
         .collection("AdminDetails")
@@ -61,6 +61,6 @@ class AuthWrapper extends StatelessWidget {
 
     // If no record found
     await FirebaseAuth.instance.signOut();
-    return const LoginPage();
+    return const Welcome();
   }
 }

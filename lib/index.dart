@@ -9,7 +9,8 @@ import 'package:image_picker/image_picker.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_storage/firebase_storage.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -73,7 +74,44 @@ class _Index extends State<HomeScreen> {
       });
     }
   }
+  Future<String> uploadToCloudinary(XFile imageFile) async {
+    final uri = Uri.parse(
+      "https://api.cloudinary.com/v1_1/rmatgrzq/image/upload",
+    );
 
+    var request = http.MultipartRequest("POST", uri);
+
+    request.fields["upload_preset"] = "cityconnect";
+
+    if (kIsWeb) {
+      request.files.add(
+        http.MultipartFile.fromBytes(
+          "file",
+          await imageFile.readAsBytes(),
+          filename: imageFile.name,
+        ),
+      );
+    } else {
+      request.files.add(
+        await http.MultipartFile.fromPath(
+          "file",
+          imageFile.path,
+        ),
+      );
+    }
+
+    final response = await request.send();
+
+    if (response.statusCode == 200) {
+      final responseData = jsonDecode(
+        await response.stream.bytesToString(),
+      );
+
+      return responseData["secure_url"];
+    } else {
+      throw Exception("Cloudinary upload failed");
+    }
+  }
   Future<void> submitComplaint() async {
     if (!_formKey.currentState!.validate()) return;
 
@@ -92,18 +130,10 @@ class _Index extends State<HomeScreen> {
       }
 
       String? imageUrl;
-      if (_selectedImage != null) {
-        final ref = FirebaseStorage.instance
-            .ref()
-            .child("complaint_images")
-            .child("${DateTime.now().millisecondsSinceEpoch}.jpg");
+      String cloudinaryImageUrl = "";
 
-        if (kIsWeb) {
-          await ref.putData(await _selectedImage!.readAsBytes());
-        } else {
-          await ref.putFile(File(_selectedImage!.path));
-        }
-        imageUrl = await ref.getDownloadURL();
+      if (_selectedImage != null) {
+        cloudinaryImageUrl = await uploadToCloudinary(_selectedImage!);
       }
 
       await FirebaseFirestore.instance.collection("ComplaintDescription").add({
@@ -115,7 +145,7 @@ class _Index extends State<HomeScreen> {
         "ComplaintStatus": "Pending",
         "CreatedAt": FieldValue.serverTimestamp(),
         "UserID": user.uid,
-        if (imageUrl != null) "ImageUrl": imageUrl,
+        "ImageUrl": cloudinaryImageUrl,
       });
 
       setState(() {

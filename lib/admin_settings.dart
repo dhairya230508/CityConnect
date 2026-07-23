@@ -1,19 +1,19 @@
 // ============================================================================
 // CityConnect - Municipal Complaint Management System
-// Admin Settings / Administration Console
+// Admin Console Settings
 // ============================================================================
-// Production-quality admin dashboard page built with Flutter + Firebase.
-// Includes: profile header, live dashboard stats, editable admin profile,
-// read-only system info, security actions, recent activity feed, and a
-// change-password flow. Designed to read like a government/SaaS admin
-// console rather than a generic user profile screen.
+// Production-quality admin console screen built with Flutter + Firebase.
+// Sections: profile header, live dashboard statistics, editable admin
+// profile (name / email / hotline only), and console security actions
+// (forgot password / logout). Styled to read like a government/SaaS admin
+// console (Firebase Console / Stripe Dashboard style) rather than a plain
+// CRUD form.
 // ============================================================================
 
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:intl/intl.dart';
 import 'login.dart';
 
 // ---------------------------------------------------------------------------
@@ -58,13 +58,6 @@ class _AdminSettingsState extends State<AdminSettings>
   String adminName = '';
   String adminEmail = '';
   String adminContact = '';
-  String department = '';
-  String remarks = '';
-  String accountStatus = 'Active';
-  String role = 'Super Admin';
-  bool emailVerified = false;
-  DateTime? registeredAt;
-  DateTime? lastLoginAt;
 
   // Dashboard counters
   int totalUsers = 0;
@@ -73,14 +66,9 @@ class _AdminSettingsState extends State<AdminSettings>
   int resolvedComplaints = 0;
   bool isStatsLoading = true;
 
-  List<Map<String, dynamic>> recentActivity = [];
-  bool isActivityLoading = true;
-
   final nameController = TextEditingController();
   final emailController = TextEditingController();
   final contactController = TextEditingController();
-  final departmentController = TextEditingController();
-  final remarksController = TextEditingController();
 
   late final AnimationController _fadeController;
   late final Animation<double> _fadeAnimation;
@@ -106,11 +94,12 @@ class _AdminSettingsState extends State<AdminSettings>
     _slideAnimation = Tween<Offset>(
       begin: const Offset(0, 0.06),
       end: Offset.zero,
-    ).animate(CurvedAnimation(parent: _slideController, curve: Curves.easeOutCubic));
+    ).animate(
+      CurvedAnimation(parent: _slideController, curve: Curves.easeOutCubic),
+    );
 
     _loadAdminData();
     _loadDashboardStats();
-    _loadRecentActivity();
   }
 
   @override
@@ -118,8 +107,6 @@ class _AdminSettingsState extends State<AdminSettings>
     nameController.dispose();
     emailController.dispose();
     contactController.dispose();
-    departmentController.dispose();
-    remarksController.dispose();
     _fadeController.dispose();
     _slideController.dispose();
     super.dispose();
@@ -134,7 +121,6 @@ class _AdminSettingsState extends State<AdminSettings>
       final User? user = FirebaseAuth.instance.currentUser;
       if (user != null) {
         adminUid = user.uid;
-        emailVerified = user.emailVerified;
 
         final QuerySnapshot query = await FirebaseFirestore.instance
             .collection('AdminDetails')
@@ -149,26 +135,14 @@ class _AdminSettingsState extends State<AdminSettings>
           adminName = data['AdminName']?.toString() ?? '';
           adminEmail = data['AdminEmail']?.toString() ?? user.email ?? '';
           adminContact = data['AdminContact']?.toString() ?? '';
-          department = data['Department']?.toString() ?? '';
-          remarks = data['Remarks']?.toString() ?? '';
-          accountStatus = data['AccountStatus']?.toString() ?? 'Active';
-          role = data['Role']?.toString() ?? 'Super Admin';
-
-          final createdRaw = data['CreatedAt'];
-          if (createdRaw is Timestamp) registeredAt = createdRaw.toDate();
 
           nameController.text = adminName;
           emailController.text = adminEmail;
           contactController.text = adminContact;
-          departmentController.text = department;
-          remarksController.text = remarks;
         } else {
           adminEmail = user.email ?? '';
           emailController.text = adminEmail;
         }
-
-        lastLoginAt = user.metadata.lastSignInTime;
-        registeredAt ??= user.metadata.creationTime;
       }
     } catch (e) {
       debugPrint('Error loading admin data: $e');
@@ -187,16 +161,16 @@ class _AdminSettingsState extends State<AdminSettings>
       final firestore = FirebaseFirestore.instance;
 
       final results = await Future.wait([
-        firestore.collection('Users').count().get(),
-        firestore.collection('Complaints').count().get(),
+        firestore.collection('UserDetails').count().get(),
+        firestore.collection('ComplaintDescription').count().get(),
         firestore
-            .collection('Complaints')
-            .where('Status', isEqualTo: 'Pending')
+            .collection('ComplaintDescription')
+            .where('ComplaintStatus', isEqualTo: 'Pending')
             .count()
             .get(),
         firestore
-            .collection('Complaints')
-            .where('Status', isEqualTo: 'Resolved')
+            .collection('ComplaintDescription')
+            .where('ComplaintStatus', isEqualTo: 'Resolved')
             .count()
             .get(),
       ]);
@@ -211,36 +185,9 @@ class _AdminSettingsState extends State<AdminSettings>
       }
     } catch (e) {
       debugPrint('Error loading dashboard stats: $e');
+      // Never crash on missing/empty data — counters simply stay at 0.
     } finally {
       if (mounted) setState(() => isStatsLoading = false);
-    }
-  }
-
-  Future<void> _loadRecentActivity() async {
-    setState(() => isActivityLoading = true);
-    try {
-      final User? user = FirebaseAuth.instance.currentUser;
-      if (user == null) return;
-
-      final snapshot = await FirebaseFirestore.instance
-          .collection('ActivityLogs')
-          .where('AdminUid', isEqualTo: user.uid)
-          .orderBy('Timestamp', descending: true)
-          .limit(5)
-          .get();
-
-      if (mounted) {
-        setState(() {
-          recentActivity = snapshot.docs
-              .map((d) => d.data())
-              .toList()
-              .cast<Map<String, dynamic>>();
-        });
-      }
-    } catch (e) {
-      debugPrint('Error loading recent activity: $e');
-    } finally {
-      if (mounted) setState(() => isActivityLoading = false);
     }
   }
 
@@ -255,8 +202,6 @@ class _AdminSettingsState extends State<AdminSettings>
       final Map<String, dynamic> updateData = {
         'AdminName': nameController.text.trim(),
         'AdminContact': contactController.text.trim(),
-        'Department': departmentController.text.trim(),
-        'Remarks': remarksController.text.trim(),
       };
 
       if (docId.isNotEmpty) {
@@ -266,12 +211,9 @@ class _AdminSettingsState extends State<AdminSettings>
             .update(updateData);
       } else {
         final User? user = FirebaseAuth.instance.currentUser;
-        final newDoc = await FirebaseFirestore.instance
-            .collection('AdminDetails')
-            .add({
+        final newDoc =
+        await FirebaseFirestore.instance.collection('AdminDetails').add({
           'AdminEmail': user?.email ?? emailController.text.trim(),
-          'AccountStatus': 'Active',
-          'Role': 'Super Admin',
           'CreatedAt': FieldValue.serverTimestamp(),
           ...updateData,
         });
@@ -281,8 +223,6 @@ class _AdminSettingsState extends State<AdminSettings>
       setState(() {
         adminName = nameController.text.trim();
         adminContact = contactController.text.trim();
-        department = departmentController.text.trim();
-        remarks = remarksController.text.trim();
       });
 
       _showSnack('Admin profile updated successfully!', AppColors.success);
@@ -299,8 +239,7 @@ class _AdminSettingsState extends State<AdminSettings>
       iconColor: AppColors.accent,
       iconBg: const Color(0xFFEFF6FF),
       title: 'Send Reset Link',
-      message:
-      'A password reset link will be sent to $adminEmail. Continue?',
+      message: 'A password reset link will be sent to $adminEmail. Continue?',
       confirmLabel: 'Send Email',
       confirmColor: AppColors.accent,
     );
@@ -309,7 +248,8 @@ class _AdminSettingsState extends State<AdminSettings>
     setState(() => isSendingResetEmail = true);
     try {
       await FirebaseAuth.instance.sendPasswordResetEmail(email: adminEmail);
-      _showSnack('Password reset email sent to $adminEmail', AppColors.success);
+      _showSnack(
+          'Password reset email sent to $adminEmail', AppColors.success);
     } on FirebaseAuthException catch (e) {
       _showSnack(e.message ?? 'Failed to send reset email.', AppColors.error);
     } catch (e) {
@@ -370,7 +310,8 @@ class _AdminSettingsState extends State<AdminSettings>
               Text(
                 message,
                 textAlign: TextAlign.center,
-                style: GoogleFonts.inter(fontSize: 14, color: AppColors.textMuted),
+                style:
+                GoogleFonts.inter(fontSize: 14, color: AppColors.textMuted),
               ),
               const SizedBox(height: 24),
               Row(
@@ -399,11 +340,13 @@ class _AdminSettingsState extends State<AdminSettings>
                     child: ElevatedButton(
                       onPressed: () => Navigator.pop(context, true),
                       style: ElevatedButton.styleFrom(
-                        padding: const EdgeInsets.symmetric(vertical: 14),
-                        backgroundColor: confirmColor,
+                        backgroundColor: const Color(0xFF1976D2),
+                        foregroundColor: Colors.white,
+                        disabledBackgroundColor: const Color(0xFF90CAF9),
                         elevation: 0,
                         shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12)),
+                          borderRadius: BorderRadius.circular(12),
+                        ),
                       ),
                       child: Text(
                         confirmLabel,
@@ -453,12 +396,13 @@ class _AdminSettingsState extends State<AdminSettings>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.background,
+      backgroundColor: const Color(0xFFF8FAFC),
       appBar: AppBar(
         backgroundColor: Colors.white,
         elevation: 0.5,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios_new_rounded, color: AppColors.primary),
+          icon: const Icon(Icons.arrow_back_ios_new_rounded,
+              color: AppColors.primary),
           onPressed: () => Navigator.pop(context),
         ),
         title: Text(
@@ -471,14 +415,14 @@ class _AdminSettingsState extends State<AdminSettings>
         ),
       ),
       body: isLoading
-          ? const Center(child: CircularProgressIndicator(color: AppColors.accent))
+          ? const Center(
+          child: CircularProgressIndicator(color: AppColors.accent))
           : RefreshIndicator(
         color: AppColors.accent,
         onRefresh: () async {
           await Future.wait([
             _loadAdminData(),
             _loadDashboardStats(),
-            _loadRecentActivity(),
           ]);
         },
         child: FadeTransition(
@@ -490,47 +434,21 @@ class _AdminSettingsState extends State<AdminSettings>
               padding: const EdgeInsets.all(20),
               child: LayoutBuilder(
                 builder: (context, constraints) {
-                  final bool isWide = constraints.maxWidth > 720;
                   return Column(
                     children: [
                       _buildProfileHeader(),
-                      const SizedBox(height: 20),
-                      _buildDashboardStats(isWide),
                       const SizedBox(height: 24),
-                      isWide
-                          ? IntrinsicHeight(
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Expanded(
-                              flex: 3,
-                              child: _buildAdminInfoCard(),
-                            ),
-                            const SizedBox(width: 20),
-                            Expanded(
-                              flex: 2,
-                              child: _buildSystemInfoCard(),
-                            ),
-                          ],
-                        ),
-                      )
-                          : Column(
-                        children: [
-                          _buildAdminInfoCard(),
-                          const SizedBox(height: 20),
-                          _buildSystemInfoCard(),
-                        ],
-                      ),
+                      _buildSectionLabel('Dashboard Overview'),
+                      const SizedBox(height: 12),
+                      _buildDashboardStats(constraints.maxWidth),
+                      const SizedBox(height: 24),
+                      _buildAdminInfoCard(),
                       const SizedBox(height: 20),
                       _buildUpdateButton(),
                       const SizedBox(height: 32),
                       _buildSectionLabel('Console Security'),
                       const SizedBox(height: 12),
                       _buildSecuritySection(),
-                      const SizedBox(height: 32),
-                      _buildSectionLabel('Recent Activity'),
-                      const SizedBox(height: 12),
-                      _buildRecentActivityCard(),
                       const SizedBox(height: 32),
                     ],
                   );
@@ -562,8 +480,9 @@ class _AdminSettingsState extends State<AdminSettings>
   // Header
   // -------------------------------------------------------------------------
   Widget _buildProfileHeader() {
-    final String displayId =
-    adminUid.length > 8 ? adminUid.substring(0, 8).toUpperCase() : 'ADMIN-CC';
+    final String displayId = adminUid.length > 8
+        ? adminUid.substring(0, 8).toUpperCase()
+        : 'ADMIN-CC';
 
     return Container(
       width: double.infinity,
@@ -572,16 +491,13 @@ class _AdminSettingsState extends State<AdminSettings>
         gradient: const LinearGradient(
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
-          colors: [AppColors.primary, Color(0xFF1E293B)],
+          colors: [
+            Color(0xFF1976D2),
+            Color(0xFF1565C0),
+            Color(0xFF0D47A1),
+          ],
         ),
         borderRadius: BorderRadius.circular(20),
-        boxShadow: [
-          BoxShadow(
-            color: AppColors.primary.withOpacity(0.25),
-            blurRadius: 20,
-            offset: const Offset(0, 10),
-          ),
-        ],
       ),
       child: Column(
         children: [
@@ -591,71 +507,46 @@ class _AdminSettingsState extends State<AdminSettings>
               alignment: Alignment.bottomRight,
               children: [
                 Container(
-                  width: 100,
-                  height: 100,
+                  width: 92,
+                  height: 92,
                   decoration: BoxDecoration(
-                    color: AppColors.primaryLight,
+                    color: const Color(0xFFEAF4FF),
                     shape: BoxShape.circle,
-                    border: Border.all(color: AppColors.accent, width: 3),
+                    border: Border.all(color: const Color(0xFF2196F3), width: 3),
                   ),
                   child: const Icon(
                     Icons.admin_panel_settings_rounded,
                     color: AppColors.accent,
-                    size: 56,
+                    size: 50,
                   ),
                 ),
                 Container(
                   padding: const EdgeInsets.all(6),
-                  decoration:
-                  const BoxDecoration(color: AppColors.success, shape: BoxShape.circle),
-                  child: const Icon(Icons.verified_user_rounded, color: Colors.white, size: 16),
+                  decoration: const BoxDecoration(
+                      color: AppColors.success, shape: BoxShape.circle),
+                  child: const Icon(Icons.verified_user_rounded,
+                      color: Colors.white, size: 16),
                 ),
               ],
             ),
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: 14),
           Text(
             adminName.isEmpty ? 'System Administrator' : adminName,
             textAlign: TextAlign.center,
             style: GoogleFonts.inter(
-              fontSize: 22,
+              fontSize: 21,
               fontWeight: FontWeight.bold,
               color: Colors.white,
             ),
           ),
-          const SizedBox(height: 6),
+          const SizedBox(height: 4),
           Text(
             adminEmail,
             textAlign: TextAlign.center,
-            style: GoogleFonts.inter(fontSize: 14, color: AppColors.textFaint),
+            style: GoogleFonts.inter(fontSize: 13.5, color: AppColors.textFaint),
           ),
-          if (department.isNotEmpty) ...[
-            const SizedBox(height: 2),
-            Text(
-              department,
-              textAlign: TextAlign.center,
-              style: GoogleFonts.inter(fontSize: 13, color: AppColors.textFaint),
-            ),
-          ],
-          const SizedBox(height: 16),
-          Wrap(
-            spacing: 10,
-            runSpacing: 10,
-            alignment: WrapAlignment.center,
-            children: [
-              _headerBadge(
-                icon: Icons.shield_rounded,
-                label: 'SUPER ADMIN',
-                color: AppColors.accent,
-              ),
-              _headerBadge(
-                icon: Icons.badge_outlined,
-                label: 'ID: $displayId',
-                color: const Color(0xFF64748B),
-                mono: true,
-              ),
-            ],
-          ),
+          const SizedBox(height: 14),
         ],
       ),
     );
@@ -683,7 +574,9 @@ class _AdminSettingsState extends State<AdminSettings>
             label,
             style: mono
                 ? GoogleFonts.jetBrainsMono(
-                fontSize: 11, fontWeight: FontWeight.w700, color: const Color(0xFFCBD5E1))
+                fontSize: 11,
+                fontWeight: FontWeight.w700,
+                color: const Color(0xFFCBD5E1))
                 : GoogleFonts.inter(
               fontSize: 11,
               fontWeight: FontWeight.w800,
@@ -697,29 +590,49 @@ class _AdminSettingsState extends State<AdminSettings>
   }
 
   // -------------------------------------------------------------------------
-  // Dashboard stats
+  // Dashboard stats — responsive grid
+  //   Desktop (>=1000px):  4 columns, one row
+  //   Tablet  (>=620px):   2 columns (2x2)
+  //   Mobile  (>=360px):   2 columns
+  //   Very small (<360px): 1 column
   // -------------------------------------------------------------------------
-  Widget _buildDashboardStats(bool isWide) {
+  Widget _buildDashboardStats(double maxWidth) {
     final stats = [
-      _StatData('Total Users', totalUsers, Icons.groups_rounded, AppColors.accent,
-          'Registered citizens'),
+      _StatData('Total Users', totalUsers, Icons.groups_rounded,
+          AppColors.accent, 'Registered citizens'),
       _StatData('Total Complaints', totalComplaints, Icons.report_rounded,
           const Color(0xFF8B5CF6), 'All time submissions'),
-      _StatData('Pending', pendingComplaints, Icons.hourglass_top_rounded, AppColors.warning,
-          'Awaiting action'),
-      _StatData('Resolved', resolvedComplaints, Icons.task_alt_rounded, AppColors.success,
-          'Successfully closed'),
+      _StatData('Pending', pendingComplaints, Icons.hourglass_top_rounded,
+          AppColors.warning, 'Awaiting action'),
+      _StatData('Resolved', resolvedComplaints, Icons.task_alt_rounded,
+          AppColors.success, 'Successfully closed'),
     ];
+
+    int crossAxisCount;
+    double aspectRatio;
+    if (maxWidth >= 1000) {
+      crossAxisCount = 4;
+      aspectRatio = 1.5;
+    } else if (maxWidth >= 620) {
+      crossAxisCount = 2;
+      aspectRatio = 1.2;
+    } else if (maxWidth >= 360) {
+      crossAxisCount = 1;
+      aspectRatio = 2.6;
+    } else {
+      crossAxisCount = 1;
+      aspectRatio = 2.8;
+    }
 
     return GridView.builder(
       shrinkWrap: true,
       physics: const NeverScrollableScrollPhysics(),
       itemCount: stats.length,
       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: isWide ? 4 : 2,
-        crossAxisSpacing: 14,
-        mainAxisSpacing: 14,
-        childAspectRatio: isWide ? 1.35 : 1.25,
+        crossAxisCount: crossAxisCount,
+        crossAxisSpacing: 12,
+        mainAxisSpacing: 12,
+        childAspectRatio: aspectRatio,
       ),
       itemBuilder: (context, i) => DashboardStatCard(
         data: stats[i],
@@ -729,7 +642,7 @@ class _AdminSettingsState extends State<AdminSettings>
   }
 
   // -------------------------------------------------------------------------
-  // Admin info card
+  // Admin info card — Full Name, Official Email (read only), Hotline
   // -------------------------------------------------------------------------
   Widget _buildAdminInfoCard() {
     return _PremiumCard(
@@ -738,7 +651,8 @@ class _AdminSettingsState extends State<AdminSettings>
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            _cardHeader(Icons.badge_rounded, 'Administrative Officer Details'),
+            _cardHeader(
+                Icons.badge_rounded, 'Administrative Officer Details'),
             const Divider(height: 32, color: AppColors.border),
             PremiumTextField(
               controller: nameController,
@@ -774,71 +688,8 @@ class _AdminSettingsState extends State<AdminSettings>
                 return null;
               },
             ),
-            const SizedBox(height: 20),
-            PremiumTextField(
-              controller: departmentController,
-              label: 'Assigned Department',
-              prefixIcon: Icons.account_balance_rounded,
-              validator: (value) {
-                if (value == null || value.trim().isEmpty) {
-                  return 'Department assignment is required';
-                }
-                return null;
-              },
-            ),
-            const SizedBox(height: 20),
-            PremiumTextField(
-              controller: remarksController,
-              label: 'Remarks & Security Notes',
-              prefixIcon: Icons.sticky_note_2_outlined,
-              maxLines: 3,
-            ),
           ],
         ),
-      ),
-    );
-  }
-
-  // -------------------------------------------------------------------------
-  // System info card
-  // -------------------------------------------------------------------------
-  Widget _buildSystemInfoCard() {
-    final String displayId =
-    adminUid.length > 8 ? adminUid.substring(0, 8).toUpperCase() : 'ADMIN-CC';
-    final dateFmt = DateFormat('MMM d, yyyy • h:mm a');
-
-    return _PremiumCard(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          _cardHeader(Icons.dns_rounded, 'System Information'),
-          const Divider(height: 32, color: AppColors.border),
-          SystemInfoRow(label: 'Admin ID', value: displayId, mono: true),
-          SystemInfoRow(
-            label: 'Account Status',
-            value: accountStatus,
-            valueColor: accountStatus.toLowerCase() == 'active'
-                ? AppColors.success
-                : AppColors.error,
-            badge: true,
-          ),
-          SystemInfoRow(label: 'Role', value: role),
-          SystemInfoRow(
-            label: 'Registration Date',
-            value: registeredAt != null ? dateFmt.format(registeredAt!) : '—',
-          ),
-          SystemInfoRow(
-            label: 'Last Login',
-            value: lastLoginAt != null ? dateFmt.format(lastLoginAt!) : '—',
-          ),
-          SystemInfoRow(
-            label: 'Email Verified',
-            value: emailVerified ? 'Verified' : 'Unverified',
-            valueColor: emailVerified ? AppColors.success : AppColors.warning,
-            badge: true,
-            isLast: true,
-          ),
-        ],
       ),
     );
   }
@@ -854,7 +705,7 @@ class _AdminSettingsState extends State<AdminSettings>
             style: GoogleFonts.inter(
               fontSize: 16,
               fontWeight: FontWeight.bold,
-              color: AppColors.primary,
+              color: Colors.blueAccent,
             ),
           ),
         ),
@@ -871,7 +722,7 @@ class _AdminSettingsState extends State<AdminSettings>
   }
 
   // -------------------------------------------------------------------------
-  // Security section
+  // Security section — Forgot Password, Logout
   // -------------------------------------------------------------------------
   Widget _buildSecuritySection() {
     return Column(
@@ -884,7 +735,8 @@ class _AdminSettingsState extends State<AdminSettings>
               ? const SizedBox(
             width: 18,
             height: 18,
-            child: CircularProgressIndicator(strokeWidth: 2, color: AppColors.accent),
+            child: CircularProgressIndicator(
+                strokeWidth: 2, color: AppColors.accent),
           )
               : null,
           onTap: isSendingResetEmail ? () {} : _sendPasswordResetEmail,
@@ -900,36 +752,6 @@ class _AdminSettingsState extends State<AdminSettings>
       ],
     );
   }
-
-  // -------------------------------------------------------------------------
-  // Recent activity
-  // -------------------------------------------------------------------------
-  Widget _buildRecentActivityCard() {
-    return _PremiumCard(
-      padding: const EdgeInsets.symmetric(vertical: 8),
-      child: isActivityLoading
-          ? const Padding(
-        padding: EdgeInsets.symmetric(vertical: 32),
-        child: Center(
-            child: CircularProgressIndicator(color: AppColors.accent, strokeWidth: 2)),
-      )
-          : recentActivity.isEmpty
-          ? Padding(
-        padding: const EdgeInsets.symmetric(vertical: 32),
-        child: Center(
-          child: Text(
-            'No recent activity yet',
-            style: GoogleFonts.inter(color: AppColors.textMuted, fontSize: 14),
-          ),
-        ),
-      )
-          : Column(
-        children: recentActivity
-            .map((activity) => ActivityTile(activity: activity))
-            .toList(),
-      ),
-    );
-  }
 }
 
 class _StatData {
@@ -939,7 +761,8 @@ class _StatData {
   final Color color;
   final String subtitle;
 
-  const _StatData(this.title, this.value, this.icon, this.color, this.subtitle);
+  const _StatData(
+      this.title, this.value, this.icon, this.color, this.subtitle);
 }
 
 // ---------------------------------------------------------------------------
@@ -977,222 +800,127 @@ class _PremiumCard extends StatelessWidget {
 }
 
 // ---------------------------------------------------------------------------
-// Dashboard stat card
+// Dashboard stat card — animated counter, hover + press animation
 // ---------------------------------------------------------------------------
-class DashboardStatCard extends StatelessWidget {
+class DashboardStatCard extends StatefulWidget {
   final _StatData data;
   final bool isLoading;
 
-  const DashboardStatCard({super.key, required this.data, required this.isLoading});
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: AppColors.card,
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: AppColors.border),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.02),
-            blurRadius: 8,
-            offset: const Offset(0, 3),
-          ),
-        ],
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Container(
-            padding: const EdgeInsets.all(9),
-            decoration: BoxDecoration(
-              color: data.color.withOpacity(0.1),
-              borderRadius: BorderRadius.circular(10),
-            ),
-            child: Icon(data.icon, color: data.color, size: 20),
-          ),
-          const Spacer(),
-          isLoading
-              ? Container(
-            height: 22,
-            width: 40,
-            decoration: BoxDecoration(
-              color: AppColors.border,
-              borderRadius: BorderRadius.circular(6),
-            ),
-          )
-              : Text(
-            '${data.value}',
-            style: GoogleFonts.inter(
-              fontSize: 24,
-              fontWeight: FontWeight.w800,
-              color: AppColors.primary,
-            ),
-          ),
-          const SizedBox(height: 2),
-          Text(
-            data.title,
-            style: GoogleFonts.inter(
-              fontSize: 12.5,
-              fontWeight: FontWeight.w700,
-              color: AppColors.primary,
-            ),
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-          ),
-          const SizedBox(height: 1),
-          Text(
-            data.subtitle,
-            style: GoogleFonts.inter(fontSize: 10.5, color: AppColors.textMuted),
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-// ---------------------------------------------------------------------------
-// System info row
-// ---------------------------------------------------------------------------
-class SystemInfoRow extends StatelessWidget {
-  final String label;
-  final String value;
-  final Color? valueColor;
-  final bool mono;
-  final bool badge;
-  final bool isLast;
-
-  const SystemInfoRow({
+  const DashboardStatCard({
     super.key,
-    required this.label,
-    required this.value,
-    this.valueColor,
-    this.mono = false,
-    this.badge = false,
-    this.isLast = false,
+    required this.data,
+    required this.isLoading,
   });
 
   @override
-  Widget build(BuildContext context) {
-    final Color color = valueColor ?? AppColors.primary;
-    return Padding(
-      padding: EdgeInsets.only(bottom: isLast ? 0 : 16),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Expanded(
-            child: Text(
-              label,
-              style: GoogleFonts.inter(fontSize: 13, color: AppColors.textMuted),
-            ),
-          ),
-          if (badge)
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-              decoration: BoxDecoration(
-                color: color.withOpacity(0.1),
-                borderRadius: BorderRadius.circular(20),
-              ),
-              child: Text(
-                value,
-                style: GoogleFonts.inter(
-                    fontSize: 12, fontWeight: FontWeight.w700, color: color),
-              ),
-            )
-          else
-            Flexible(
-              child: Text(
-                value,
-                textAlign: TextAlign.right,
-                style: mono
-                    ? GoogleFonts.jetBrainsMono(
-                    fontSize: 12.5, fontWeight: FontWeight.w700, color: color)
-                    : GoogleFonts.inter(
-                    fontSize: 13.5, fontWeight: FontWeight.w600, color: color),
-              ),
-            ),
-        ],
-      ),
-    );
-  }
+  State<DashboardStatCard> createState() => _DashboardStatCardState();
 }
 
-// ---------------------------------------------------------------------------
-// Activity tile
-// ---------------------------------------------------------------------------
-class ActivityTile extends StatelessWidget {
-  final Map<String, dynamic> activity;
-
-  const ActivityTile({super.key, required this.activity});
-
-  IconData _iconFor(String type) {
-    switch (type) {
-      case 'ComplaintAssigned':
-        return Icons.assignment_ind_rounded;
-      case 'ComplaintApproved':
-        return Icons.check_circle_rounded;
-      case 'ComplaintRejected':
-        return Icons.cancel_rounded;
-      case 'UserAccountCreated':
-        return Icons.person_add_alt_1_rounded;
-      case 'StaffAdded':
-        return Icons.group_add_rounded;
-      default:
-        return Icons.notifications_none_rounded;
-    }
-  }
-
-  Color _colorFor(String type) {
-    switch (type) {
-      case 'ComplaintAssigned':
-        return AppColors.accent;
-      case 'ComplaintApproved':
-        return AppColors.success;
-      case 'ComplaintRejected':
-        return AppColors.error;
-      case 'UserAccountCreated':
-        return const Color(0xFF8B5CF6);
-      case 'StaffAdded':
-        return AppColors.warning;
-      default:
-        return AppColors.textMuted;
-    }
-  }
+class _DashboardStatCardState extends State<DashboardStatCard> {
+  bool _isHovered = false;
+  bool _isPressed = false;
 
   @override
   Widget build(BuildContext context) {
-    final String type = activity['Type']?.toString() ?? 'Unknown';
-    final String description = activity['Description']?.toString() ?? type;
-    final Timestamp? ts = activity['Timestamp'] as Timestamp?;
-    final String timeText = ts != null
-        ? DateFormat('MMM d, h:mm a').format(ts.toDate())
-        : '';
-    final Color color = _colorFor(type);
+    final double scale = _isPressed ? 0.97 : (_isHovered ? 1.02 : 1.0);
 
-    return ListTile(
-      contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
-      leading: Container(
-        padding: const EdgeInsets.all(9),
-        decoration: BoxDecoration(color: color.withOpacity(0.1), shape: BoxShape.circle),
-        child: Icon(_iconFor(type), color: color, size: 18),
+    return MouseRegion(
+      onEnter: (_) => setState(() => _isHovered = true),
+      onExit: (_) => setState(() => _isHovered = false),
+      child: GestureDetector(
+        onTapDown: (_) => setState(() => _isPressed = true),
+        onTapUp: (_) => setState(() => _isPressed = false),
+        onTapCancel: () => setState(() => _isPressed = false),
+        child: AnimatedScale(
+          scale: scale,
+          duration: const Duration(milliseconds: 150),
+          curve: Curves.easeOut,
+          child: AnimatedContainer(
+            duration: const Duration(milliseconds: 150),
+            padding: const EdgeInsets.all(16),
+            decoration: BoxDecoration(
+              color: AppColors.card,
+              borderRadius: BorderRadius.circular(16),
+              border: Border.all(
+                color: _isHovered
+                    ? widget.data.color.withOpacity(0.4)
+                    : AppColors.border,
+              ),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withOpacity(_isHovered ? 0.06 : 0.02),
+                  blurRadius: _isHovered ? 16 : 8,
+                  offset: Offset(0, _isHovered ? 6 : 3),
+                ),
+              ],
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Container(
+                  padding: const EdgeInsets.all(9),
+                  decoration: BoxDecoration(
+                    color: widget.data.color.withOpacity(0.1),
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: Icon(widget.data.icon,
+                      color: widget.data.color, size: 20),
+                ),
+                const SizedBox(height: 6),
+                widget.isLoading
+                    ? Container(
+                  height: 22,
+                  width: 40,
+                  decoration: BoxDecoration(
+                    color: AppColors.border,
+                    borderRadius: BorderRadius.circular(6),
+                  ),
+                )
+                    : TweenAnimationBuilder<int>(
+                  tween: IntTween(begin: 0, end: widget.data.value),
+                  duration: const Duration(milliseconds: 800),
+                  curve: Curves.easeOutCubic,
+                  builder: (context, value, _) => Text(
+                    '$value',
+                    style: GoogleFonts.inter(
+                      fontSize: 20,
+                      fontWeight: FontWeight.w800,
+                      color: AppColors.primary,
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 2),
+                Text(
+                  widget.data.title,
+                  style: GoogleFonts.inter(
+                    fontSize: 12,
+                    fontWeight: FontWeight.w700,
+                    color: AppColors.primary,
+                  ),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                ),
+                const SizedBox(height: 1),
+                Text(
+                  widget.data.subtitle,
+                  style: GoogleFonts.inter(
+                      fontSize: 10, color: AppColors.textMuted),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ],
+            ),
+          ),
+        ),
       ),
-      title: Text(
-        description,
-        style: GoogleFonts.inter(fontSize: 14, fontWeight: FontWeight.w600, color: AppColors.primary),
-      ),
-      subtitle: timeText.isNotEmpty
-          ? Text(timeText, style: GoogleFonts.inter(fontSize: 12, color: AppColors.textMuted))
-          : null,
     );
   }
 }
 
-// ---------------------------------------------------------------------------
+
 // Reusable text field
-// ---------------------------------------------------------------------------
+
 class PremiumTextField extends StatelessWidget {
   final TextEditingController controller;
   final String label;
@@ -1243,7 +971,8 @@ class PremiumTextField extends StatelessWidget {
             filled: true,
             fillColor: readOnly ? AppColors.background : Colors.white,
             prefixIcon: Icon(prefixIcon, color: AppColors.accent, size: 20),
-            contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+            contentPadding:
+            const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
             enabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12),
               borderSide: const BorderSide(color: AppColors.border, width: 1.5),
@@ -1288,29 +1017,57 @@ class PremiumButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
+    return Container(
       width: double.infinity,
-      height: 54,
+      height: 56,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(14),
+        gradient: const LinearGradient(
+          colors: [
+            Color(0xFF42A5F5),
+            Color(0xFF1E88E5),
+            Color(0xFF1565C0),
+          ],
+        ),
+        boxShadow: [
+          BoxShadow(
+            color: const Color(0xFF2196F3).withOpacity(0.5),
+            blurRadius: 35,
+            spreadRadius: 3,
+            offset: const Offset(0, 12),
+          ),
+        ],
+      ),
       child: ElevatedButton(
         onPressed: isLoading ? null : onPressed,
         style: ElevatedButton.styleFrom(
-          backgroundColor: color,
-          disabledBackgroundColor: color.withOpacity(0.6),
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+          backgroundColor: Colors.transparent,
+          shadowColor: Colors.transparent,
           elevation: 0,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(14),
+          ),
         ),
-        child: isLoading
-            ? const SizedBox(
-          height: 24,
-          width: 24,
-          child: CircularProgressIndicator(color: Colors.white, strokeWidth: 2.5),
-        )
-            : Text(
-          text,
-          style: GoogleFonts.inter(
-            color: Colors.white,
-            fontSize: 16,
-            fontWeight: FontWeight.bold,
+        child: AnimatedSwitcher(
+          duration: const Duration(milliseconds: 200),
+          child: isLoading
+              ? const SizedBox(
+            key: ValueKey("loading"),
+            width: 24,
+            height: 24,
+            child: CircularProgressIndicator(
+              color: Colors.white,
+              strokeWidth: 2.5,
+            ),
+          )
+              : Text(
+            text,
+            key: const ValueKey("label"),
+            style: GoogleFonts.inter(
+              color: Colors.white,
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
+            ),
           ),
         ),
       ),
@@ -1319,7 +1076,7 @@ class PremiumButton extends StatelessWidget {
 }
 
 // ---------------------------------------------------------------------------
-// Reusable action card (with subtitle + press animation)
+// Reusable action card (icon, title, subtitle, chevron, hover + press)
 // ---------------------------------------------------------------------------
 class PremiumActionCard extends StatefulWidget {
   final IconData icon;
@@ -1345,70 +1102,86 @@ class PremiumActionCard extends StatefulWidget {
 
 class _PremiumActionCardState extends State<PremiumActionCard> {
   bool _isPressed = false;
+  bool _isHovered = false;
 
   @override
   Widget build(BuildContext context) {
-    return AnimatedScale(
-      scale: _isPressed ? 0.98 : 1.0,
-      duration: const Duration(milliseconds: 100),
-      child: GestureDetector(
-        onTapDown: (_) => setState(() => _isPressed = true),
-        onTapUp: (_) {
-          setState(() => _isPressed = false);
-          widget.onTap();
-        },
-        onTapCancel: () => setState(() => _isPressed = false),
-        child: Container(
-          width: double.infinity,
-          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
-          decoration: BoxDecoration(
-            color: Colors.white,
+    final double scale = _isPressed ? 0.98 : 1.0;
+
+    return MouseRegion(
+      onEnter: (_) => setState(() => _isHovered = true),
+      onExit: (_) => setState(() => _isHovered = false),
+      child: AnimatedScale(
+        scale: scale,
+        duration: const Duration(milliseconds: 100),
+        child: Material(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(12),
+          child: InkWell(
             borderRadius: BorderRadius.circular(12),
-            border: Border.all(color: AppColors.border),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black.withOpacity(_isPressed ? 0.01 : 0.02),
-                blurRadius: _isPressed ? 6 : 10,
-                offset: Offset(0, _isPressed ? 2 : 4),
-              ),
-            ],
-          ),
-          child: Row(
-            children: [
-              Container(
-                padding: const EdgeInsets.all(10),
-                decoration: BoxDecoration(
-                  color: widget.iconColor.withOpacity(0.08),
-                  borderRadius: BorderRadius.circular(10),
+            onTapDown: (_) => setState(() => _isPressed = true),
+            onTapUp: (_) => setState(() => _isPressed = false),
+            onTapCancel: () => setState(() => _isPressed = false),
+            onTap: widget.onTap,
+            child: AnimatedContainer(
+              duration: const Duration(milliseconds: 150),
+              width: double.infinity,
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(12),
+                border: Border.all(
+                  color: _isHovered
+                      ? widget.iconColor.withOpacity(0.35)
+                      : AppColors.border,
                 ),
-                child: Icon(widget.icon, color: widget.iconColor, size: 22),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(_isPressed ? 0.01 : 0.02),
+                    blurRadius: _isPressed ? 6 : 10,
+                    offset: Offset(0, _isPressed ? 2 : 4),
+                  ),
+                ],
               ),
-              const SizedBox(width: 16),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      widget.title,
-                      style: GoogleFonts.inter(
-                        fontSize: 15,
-                        fontWeight: FontWeight.w600,
-                        color: AppColors.primary,
-                      ),
+              child: Row(
+                children: [
+                  Container(
+                    padding: const EdgeInsets.all(10),
+                    decoration: BoxDecoration(
+                      color: widget.iconColor.withOpacity(0.08),
+                      borderRadius: BorderRadius.circular(10),
                     ),
-                    if (widget.subtitle != null) ...[
-                      const SizedBox(height: 2),
-                      Text(
-                        widget.subtitle!,
-                        style: GoogleFonts.inter(fontSize: 12, color: AppColors.textMuted),
-                      ),
-                    ],
-                  ],
-                ),
+                    child: Icon(widget.icon, color: widget.iconColor, size: 22),
+                  ),
+                  const SizedBox(width: 16),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          widget.title,
+                          style: GoogleFonts.inter(
+                            fontSize: 15,
+                            fontWeight: FontWeight.w600,
+                            color: AppColors.primary,
+                          ),
+                        ),
+                        if (widget.subtitle != null) ...[
+                          const SizedBox(height: 2),
+                          Text(
+                            widget.subtitle!,
+                            style: GoogleFonts.inter(
+                                fontSize: 12, color: AppColors.textMuted),
+                          ),
+                        ],
+                      ],
+                    ),
+                  ),
+                  widget.trailing ??
+                      const Icon(Icons.arrow_forward_ios_rounded,
+                          size: 14, color: AppColors.textMuted),
+                ],
               ),
-              widget.trailing ??
-                  const Icon(Icons.arrow_forward_ios_rounded, size: 14, color: AppColors.textMuted),
-            ],
+            ),
           ),
         ),
       ),
