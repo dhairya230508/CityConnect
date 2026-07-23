@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'dart:async';
+import 'login.dart';
+import 'home.dart';
 
 class Welcome extends StatefulWidget {
   const Welcome({super.key});
@@ -8,16 +11,30 @@ class Welcome extends StatefulWidget {
 
 }
 
+
 class _WelcomeState extends State<Welcome> {
+  @override
+  @override
+  void initState() {
+    super.initState();
+
+    Future.delayed(const Duration(seconds: 3), () {
+      if (mounted) {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (context) => const home(),
+          ),
+        );
+      }
+    });
+  }
   @override
   Widget build(BuildContext context) {
 
-    // FOR RESPONSIVE DESING FOR EVERY SCREEN
 
-    // Gets the total width of the screen
     double screenWidth = MediaQuery.sizeOf(context).width;
 
-    // Gets the total height of the screen
     double screenHeight = MediaQuery.sizeOf(context).height;
 
     return  Scaffold(

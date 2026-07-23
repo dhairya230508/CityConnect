@@ -7,7 +7,7 @@ import 'firebase_options.dart';
 import 'login.dart';
 import 'index.dart';
 import 'register.dart';
-
+import 'auth.dart';
 
 
 Future<void> main() async {
@@ -27,8 +27,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: FirebaseAuth.instance.currentUser!=null?HomeScreen():LoginPage(),
-
+      home: const AuthWrapper(),
     );
   }
 }

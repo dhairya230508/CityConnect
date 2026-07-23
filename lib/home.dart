@@ -19,7 +19,7 @@ class _homeState extends State<home> {
     return Scaffold(
       body: Column(
         children: [
-          // expanded - takes up remaining space.
+
           Expanded(
             flex: 1,
             child: Container(

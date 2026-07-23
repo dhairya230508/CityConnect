@@ -316,7 +316,7 @@ class _RegisterState extends State<Register> {
                                 TextFormField(
                                   controller: wardController,
                                   keyboardType: TextInputType.number,
-                                  readOnly: true,
+
                                   decoration: InputDecoration(
                                     hintText: "Enter Ward No.",
                                     border: OutlineInputBorder(

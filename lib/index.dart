@@ -27,10 +27,12 @@ class _Index extends State<HomeScreen> {
   final TextEditingController nameController = TextEditingController();
   final TextEditingController phoneController = TextEditingController();
   final TextEditingController addressController = TextEditingController();
+  final TextEditingController descriptionController = TextEditingController();
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
   final ImagePicker _picker = ImagePicker();
   XFile? _selectedImage;
+  bool isSubmitting = false;
 
   @override
   void initState() {
@@ -75,6 +77,10 @@ class _Index extends State<HomeScreen> {
   Future<void> submitComplaint() async {
     if (!_formKey.currentState!.validate()) return;
 
+    setState(() {
+      isSubmitting = true;
+    });
+
     try {
       final user = FirebaseAuth.instance.currentUser;
 
@@ -85,14 +91,37 @@ class _Index extends State<HomeScreen> {
         return;
       }
 
+      String? imageUrl;
+      if (_selectedImage != null) {
+        final ref = FirebaseStorage.instance
+            .ref()
+            .child("complaint_images")
+            .child("${DateTime.now().millisecondsSinceEpoch}.jpg");
+
+        if (kIsWeb) {
+          await ref.putData(await _selectedImage!.readAsBytes());
+        } else {
+          await ref.putFile(File(_selectedImage!.path));
+        }
+        imageUrl = await ref.getDownloadURL();
+      }
+
       await FirebaseFirestore.instance.collection("ComplaintDescription").add({
         "Name": nameController.text.trim(),
         "Contact": phoneController.text.trim(),
         "Address": addressController.text.trim(),
         "ProblemType": selectedDepartment,
+        "ComplaintDescription": descriptionController.text.trim(),
         "ComplaintStatus": "Pending",
         "CreatedAt": FieldValue.serverTimestamp(),
         "UserID": user.uid,
+        if (imageUrl != null) "ImageUrl": imageUrl,
+      });
+
+      setState(() {
+        _selectedImage = null;
+        selectedDepartment = null;
+        descriptionController.clear();
       });
 
       ScaffoldMessenger.of(context).showSnackBar(
@@ -106,6 +135,10 @@ class _Index extends State<HomeScreen> {
       ScaffoldMessenger.of(
         context,
       ).showSnackBar(SnackBar(content: Text(e.toString())));
+    } finally {
+      setState(() {
+        isSubmitting = false;
+      });
     }
   }
 
@@ -324,6 +357,30 @@ class _Index extends State<HomeScreen> {
                                   return null;
                                 },
                               ),
+                              const SizedBox(height: 15),
+                              TextFormField(
+                                controller: descriptionController,
+                                maxLines: 4,
+                                decoration: InputDecoration(
+                                  hintText: "Enter Complaint Description",
+                                  prefixIcon: const Padding(
+                                    padding: EdgeInsets.only(bottom: 50),
+                                    child: Icon(Icons.description_outlined),
+                                  ),
+                                  filled: true,
+                                  fillColor: const Color(0xffF7F8FC),
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(16),
+                                    borderSide: BorderSide.none,
+                                  ),
+                                ),
+                                validator: (value) {
+                                  if (value == null || value.isEmpty) {
+                                    return "Please Enter Complaint Description";
+                                  }
+                                  return null;
+                                },
+                              ),
 
                               const SizedBox(height: 20),
 
@@ -400,7 +457,7 @@ class _Index extends State<HomeScreen> {
                           width: double.infinity,
                           height: 50,
                           child: ElevatedButton(
-                            onPressed: submitComplaint,
+                            onPressed: isSubmitting ? null : submitComplaint,
                             style: ElevatedButton.styleFrom(
                               elevation: 0,
                               backgroundColor: const Color(0xff1976D2),
@@ -408,14 +465,23 @@ class _Index extends State<HomeScreen> {
                                 borderRadius: BorderRadius.circular(18),
                               ),
                             ),
-                            child: Text(
-                              "Submit Complaint",
-                              style: GoogleFonts.poppins(
-                                fontSize: 16,
-                                color: Colors.white,
-                                fontWeight: FontWeight.w600,
-                              ),
-                            ),
+                            child: isSubmitting
+                                ? const SizedBox(
+                                    height: 20,
+                                    width: 20,
+                                    child: CircularProgressIndicator(
+                                      color: Colors.white,
+                                      strokeWidth: 2,
+                                    ),
+                                  )
+                                : Text(
+                                    "Submit Complaint",
+                                    style: GoogleFonts.poppins(
+                                      fontSize: 16,
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  ),
                           ),
                         ),
                       ],
@@ -463,7 +529,7 @@ class _Index extends State<HomeScreen> {
             else if (index == 2) {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => ProfilePage()),
+                MaterialPageRoute(builder: (context) => const ProfilePage()),
               );
             }
           },

@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:intl/intl.dart';
 import 'home.dart';
 import 'profile.dart';
+import 'admin.dart';
 
 
 class ComplaintPage extends StatefulWidget {
@@ -115,17 +116,41 @@ class _ComplaintPageState extends State<ComplaintPage> {
       final ts = (data["CreatedAt"] as Timestamp).toDate();
       dateStr = DateFormat("d MMM yyyy").format(ts);
     }
-    return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 15, vertical: 8),
-      padding: const EdgeInsets.all(14),
-      decoration: BoxDecoration(
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 8),
+      child: Material(
         color: Colors.white,
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: Colors.grey.shade200),
-      ),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
+        child: InkWell(
+          borderRadius: BorderRadius.circular(16),
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => ComplaintDetailsPage(
+                  complaintId: complaint.id,
+                  name: data["Name"] ?? "",
+                  contact: data["Contact"] ?? "",
+                  address: data["Address"] ?? "",
+                  problemType: title,
+                  complaintDescription: (data["ComplaintDescription"] ?? "").toString(),
+                  currentStatus: status,
+                  dateText: dateStr,
+                  imageUrl: (data["ImageUrl"] ?? data["imageUrl"] ?? data["image"] ?? "").toString(),
+                  isAdmin: false,
+                ),
+              ),
+            );
+          },
+          child: Container(
+            padding: const EdgeInsets.all(14),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(16),
+              border: Border.all(color: Colors.grey.shade200),
+            ),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
           Container(
             width: 44,
             height: 44,
@@ -187,13 +212,17 @@ class _ComplaintPageState extends State<ComplaintPage> {
                 ),
                 const SizedBox(height: 4),
               ],
+            ), // Column
+          ), // Expanded
+
+              ],
             ),
+
           ),
-        ],
+        ),
       ),
     );
   }
-
   @override
   Widget build(BuildContext context) {
     final uid = FirebaseAuth.instance.currentUser!.uid;
@@ -331,7 +360,7 @@ class _ComplaintPageState extends State<ComplaintPage> {
               else if (index == 2) {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => ProfilePage()),
+                  MaterialPageRoute(builder: (context) => const ProfilePage()),
                 );
               }
             },
