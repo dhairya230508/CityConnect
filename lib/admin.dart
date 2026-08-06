@@ -651,18 +651,24 @@ class _AdminDashboardPageState extends State<AdminDashboardPage> {
       ),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: currentIndex,
+        selectedItemColor: Colors.blue,
+        unselectedItemColor: Colors.grey,
         onTap: (index) {
-          setState(() {
-            currentIndex = index;
-          });
-
           if (index == 1) {
             Navigator.push(
               context,
               MaterialPageRoute(
                 builder: (_) => const AdminSettings(),
               ),
-            );
+            ).then((_) {
+              setState(() {
+                currentIndex = 0;
+              });
+            });
+          } else {
+            setState(() {
+              currentIndex = index;
+            });
           }
         },
         items: const [
@@ -715,6 +721,7 @@ class ComplaintDetailsPage extends StatefulWidget {
 class _ComplaintDetailsPageState extends State<ComplaintDetailsPage> {
   String selectedStatus = 'Pending';
   bool isUpdating = false;
+  bool isDeleting = false;
 
   @override
   void initState() {
@@ -1062,6 +1069,129 @@ class _ComplaintDetailsPageState extends State<ComplaintDetailsPage> {
                         color: Colors.white,
                       ),
                     ),
+                  ),
+                ),
+              ),
+              const SizedBox(height: 12),
+              SizedBox(
+                width: double.infinity,
+                height: 55,
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color(0xFFEF4444),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(16),
+                    ),
+                    elevation: 0,
+                  ),
+                  onPressed: (isUpdating || isDeleting)
+                      ? null
+                      : () async {
+                          final confirm = await showDialog<bool>(
+                            context: context,
+                            builder: (context) => AlertDialog(
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(16),
+                              ),
+                              title: const Text(
+                                'Delete Complaint',
+                                style: TextStyle(fontWeight: FontWeight.bold),
+                              ),
+                              content: const Text(
+                                'Are you sure you want to permanently delete this complaint?',
+                              ),
+                              actions: [
+                                TextButton(
+                                  onPressed: () => Navigator.pop(context, false),
+                                  child: const Text(
+                                    'Cancel',
+                                    style: TextStyle(color: Color(0xFF6B7280)),
+                                  ),
+                                ),
+                                TextButton(
+                                  onPressed: () => Navigator.pop(context, true),
+                                  child: const Text(
+                                    'Delete',
+                                    style: TextStyle(
+                                      color: Color(0xFFEF4444),
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          );
+
+                          if (confirm == true) {
+                            setState(() {
+                              isDeleting = true;
+                            });
+
+                            try {
+                              await FirebaseFirestore.instance
+                                  .collection('ComplaintDescription')
+                                  .doc(widget.complaintId)
+                                  .delete();
+
+                              if (!mounted) return;
+
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                  content: Text('Complaint Deleted Successfully'),
+                                  backgroundColor: Color(0xFFEF4444),
+                                ),
+                              );
+
+                              Navigator.of(context).pushAndRemoveUntil(
+                                MaterialPageRoute(
+                                  builder: (context) => const AdminDashboardPage(),
+                                ),
+                                (route) => false,
+                              );
+                            } catch (e) {
+                              if (!mounted) return;
+
+                              setState(() {
+                                isDeleting = false;
+                              });
+
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  content: Text('Failed to delete complaint: $e'),
+                                  backgroundColor: const Color(0xFFEF4444),
+                                ),
+                              );
+                            }
+                          }
+                        },
+                  child: AnimatedSwitcher(
+                    duration: const Duration(milliseconds: 200),
+                    child: isDeleting
+                        ? const SizedBox(
+                            key: ValueKey('deleting_loading'),
+                            width: 22,
+                            height: 22,
+                            child: CircularProgressIndicator(
+                              strokeWidth: 2.4,
+                              valueColor: AlwaysStoppedAnimation(Colors.white),
+                            ),
+                          )
+                        : const Row(
+                            key: ValueKey('deleting_label'),
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(Icons.delete_outline_rounded, color: Colors.white, size: 20),
+                              SizedBox(width: 8),
+                              Text(
+                                'Delete Complaint',
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w600,
+                                  color: Colors.white,
+                                ),
+                              ),
+                            ],
+                          ),
                   ),
                 ),
               ),

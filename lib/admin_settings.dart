@@ -458,6 +458,26 @@ class _AdminSettingsState extends State<AdminSettings>
           ),
         ),
       ),
+      bottomNavigationBar: BottomNavigationBar(
+        currentIndex: 1,
+        selectedItemColor: Colors.blue,
+        unselectedItemColor: Colors.grey,
+        onTap: (index) {
+          if (index == 0) {
+            Navigator.pop(context);
+          }
+        },
+        items: const [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            label: "Home",
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.settings),
+            label: "Settings",
+          ),
+        ],
+      ),
     );
   }
 
@@ -609,20 +629,18 @@ class _AdminSettingsState extends State<AdminSettings>
     ];
 
     int crossAxisCount;
-    double aspectRatio;
     if (maxWidth >= 1000) {
       crossAxisCount = 4;
-      aspectRatio = 1.5;
     } else if (maxWidth >= 620) {
       crossAxisCount = 2;
-      aspectRatio = 1.2;
-    } else if (maxWidth >= 360) {
-      crossAxisCount = 1;
-      aspectRatio = 2.6;
     } else {
       crossAxisCount = 1;
-      aspectRatio = 2.8;
     }
+
+    const double targetHeight = 96;
+    const double spacing = 12;
+    final double cardWidth = (maxWidth - (crossAxisCount - 1) * spacing) / crossAxisCount;
+    final double aspectRatio = cardWidth / targetHeight;
 
     return GridView.builder(
       shrinkWrap: true,
@@ -837,10 +855,10 @@ class _DashboardStatCardState extends State<DashboardStatCard> {
           curve: Curves.easeOut,
           child: AnimatedContainer(
             duration: const Duration(milliseconds: 150),
-            padding: const EdgeInsets.all(16),
+            padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
             decoration: BoxDecoration(
               color: AppColors.card,
-              borderRadius: BorderRadius.circular(16),
+              borderRadius: BorderRadius.circular(12),
               border: Border.all(
                 color: _isHovered
                     ? widget.data.color.withOpacity(0.4)
@@ -848,66 +866,77 @@ class _DashboardStatCardState extends State<DashboardStatCard> {
               ),
               boxShadow: [
                 BoxShadow(
-                  color: Colors.black.withOpacity(_isHovered ? 0.06 : 0.02),
-                  blurRadius: _isHovered ? 16 : 8,
-                  offset: Offset(0, _isHovered ? 6 : 3),
+                  color: Colors.black.withOpacity(_isHovered ? 0.05 : 0.01),
+                  blurRadius: _isHovered ? 12 : 6,
+                  offset: Offset(0, _isHovered ? 4 : 2),
                 ),
               ],
             ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.center,
+            child: Row(
               children: [
                 Container(
-                  padding: const EdgeInsets.all(9),
+                  padding: const EdgeInsets.all(10),
                   decoration: BoxDecoration(
                     color: widget.data.color.withOpacity(0.1),
                     borderRadius: BorderRadius.circular(10),
                   ),
-                  child: Icon(widget.data.icon,
-                      color: widget.data.color, size: 20),
-                ),
-                const SizedBox(height: 6),
-                widget.isLoading
-                    ? Container(
-                  height: 22,
-                  width: 40,
-                  decoration: BoxDecoration(
-                    color: AppColors.border,
-                    borderRadius: BorderRadius.circular(6),
-                  ),
-                )
-                    : TweenAnimationBuilder<int>(
-                  tween: IntTween(begin: 0, end: widget.data.value),
-                  duration: const Duration(milliseconds: 800),
-                  curve: Curves.easeOutCubic,
-                  builder: (context, value, _) => Text(
-                    '$value',
-                    style: GoogleFonts.inter(
-                      fontSize: 20,
-                      fontWeight: FontWeight.w800,
-                      color: AppColors.primary,
-                    ),
+                  child: Icon(
+                    widget.data.icon,
+                    color: widget.data.color,
+                    size: 22,
                   ),
                 ),
-                const SizedBox(height: 2),
-                Text(
-                  widget.data.title,
-                  style: GoogleFonts.inter(
-                    fontSize: 12,
-                    fontWeight: FontWeight.w700,
-                    color: AppColors.primary,
+                const SizedBox(width: 14),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        widget.data.title,
+                        style: GoogleFonts.inter(
+                          fontSize: 12,
+                          fontWeight: FontWeight.w600,
+                          color: AppColors.textMuted,
+                        ),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                      const SizedBox(height: 2),
+                      widget.isLoading
+                          ? Container(
+                              height: 22,
+                              width: 35,
+                              decoration: BoxDecoration(
+                                color: AppColors.border,
+                                borderRadius: BorderRadius.circular(4),
+                              ),
+                            )
+                          : TweenAnimationBuilder<int>(
+                              tween: IntTween(begin: 0, end: widget.data.value),
+                              duration: const Duration(milliseconds: 800),
+                              curve: Curves.easeOutCubic,
+                              builder: (context, value, _) => Text(
+                                '$value',
+                                style: GoogleFonts.inter(
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.w800,
+                                  color: AppColors.primary,
+                                ),
+                              ),
+                            ),
+                      const SizedBox(height: 1),
+                      Text(
+                        widget.data.subtitle,
+                        style: GoogleFonts.inter(
+                          fontSize: 10,
+                          color: AppColors.textFaint,
+                        ),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ],
                   ),
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                ),
-                const SizedBox(height: 1),
-                Text(
-                  widget.data.subtitle,
-                  style: GoogleFonts.inter(
-                      fontSize: 10, color: AppColors.textMuted),
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
                 ),
               ],
             ),

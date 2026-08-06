@@ -2,9 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:intl/intl.dart';
-import 'home.dart';
-import 'profile.dart';
-import 'index.dart';
+import 'bottom_navigation_bar.dart';
 import 'admin.dart';
 
 
@@ -17,8 +15,6 @@ class ComplaintPage extends StatefulWidget {
 
 class _ComplaintPageState extends State<ComplaintPage> {
   String selectedFilter = "All";
-
-  int currentIndex = 0;
 
 
   Color _statusColor(String status) {
@@ -200,15 +196,95 @@ class _ComplaintPageState extends State<ComplaintPage> {
                 ),
                 const SizedBox(height: 6),
                 Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    if (dateStr.isNotEmpty) ...[
-                      const Icon(Icons.access_time,
-                          size: 14, color: Colors.black45),
-                      const SizedBox(width: 3),
-                      Text(dateStr,
-                          style: const TextStyle(
-                              fontSize: 12, color: Colors.black54)),
-                    ],
+                    Row(
+                      children: [
+                        if (dateStr.isNotEmpty) ...[
+                          const Icon(Icons.access_time,
+                              size: 14, color: Colors.black45),
+                          const SizedBox(width: 3),
+                          Text(dateStr,
+                              style: const TextStyle(
+                                  fontSize: 12, color: Colors.black54)),
+                        ],
+                      ],
+                    ),
+                    if (status == "Pending")
+                      GestureDetector(
+                        behavior: HitTestBehavior.opaque,
+                        onTap: () async {
+                          final confirm = await showDialog<bool>(
+                            context: context,
+                            builder: (context) => AlertDialog(
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(16),
+                              ),
+                              title: const Text(
+                                'Delete Complaint',
+                                style: TextStyle(fontWeight: FontWeight.bold),
+                              ),
+                              content: const Text(
+                                'Are you sure you want to permanently delete this complaint?',
+                              ),
+                              actions: [
+                                TextButton(
+                                  onPressed: () => Navigator.pop(context, false),
+                                  child: const Text(
+                                    'Cancel',
+                                    style: TextStyle(color: Color(0xFF6B7280)),
+                                  ),
+                                ),
+                                TextButton(
+                                  onPressed: () => Navigator.pop(context, true),
+                                  child: const Text(
+                                    'Delete',
+                                    style: TextStyle(
+                                      color: Color(0xFFEF4444),
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          );
+
+                          if (confirm == true) {
+                            try {
+                              await FirebaseFirestore.instance
+                                  .collection('ComplaintDescription')
+                                  .doc(complaint.id)
+                                  .delete();
+
+                              if (!context.mounted) return;
+
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                  content: Text('Complaint Deleted Successfully'),
+                                  backgroundColor: Color(0xFFEF4444),
+                                ),
+                              );
+                            } catch (e) {
+                              if (!context.mounted) return;
+
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  content: Text('Failed to delete complaint: $e'),
+                                  backgroundColor: const Color(0xFFEF4444),
+                                ),
+                              );
+                            }
+                          }
+                        },
+                        child: const Padding(
+                          padding: EdgeInsets.all(6.0),
+                          child: Icon(
+                            Icons.delete_outline_rounded,
+                            color: Color(0xFFEF4444),
+                            size: 20,
+                          ),
+                        ),
+                      ),
                   ],
                 ),
                 const SizedBox(height: 4),
@@ -325,66 +401,7 @@ class _ComplaintPageState extends State<ComplaintPage> {
 
         ),
       ),
-        bottomNavigationBar: Container(
-          decoration: const BoxDecoration(
-            color: Colors.white,
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black12,
-                blurRadius: 10,
-                offset: Offset(0, -2),
-              ),
-            ],
-          ),
-          child: BottomNavigationBar(
-            currentIndex: currentIndex,
-
-            type: BottomNavigationBarType.fixed,
-            backgroundColor: Colors.white,
-            elevation: 0,
-            selectedItemColor: Colors.blue,
-            unselectedItemColor: Colors.grey,
-            selectedFontSize: 10,
-            unselectedFontSize: 10,
-            onTap: (index) {
-              if (index == 0) {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => const HomeScreen()),
-                );
-              } else if (index == 1) {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => ComplaintPage()),
-                );
-              }
-              else if (index == 2) {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => const ProfilePage()),
-                );
-              }
-            },
-            items: const [
-              BottomNavigationBarItem(
-                icon: Icon(Icons.home_outlined),
-                activeIcon: Icon(Icons.home),
-                label: "HOME",
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.assignment_outlined),
-                activeIcon: Icon(Icons.assignment),
-                label: "COMPLAINTS",
-              ),
-
-              BottomNavigationBarItem(
-                icon: Icon(Icons.person_outline),
-                activeIcon: Icon(Icons.person),
-                label: "PROFILE",
-              ),
-            ],
-          ),
-        ),
+        bottomNavigationBar: const CustomBottomNavBar(currentIndex: 1),
     );
   }
 }
