@@ -58,11 +58,12 @@ class _RegisterState extends State<Register> {
         "Pincode": pincodeController.text.trim(),
         "Remarks": "",
       });
-      Navigator.pushReplacement(
+      Navigator.pushAndRemoveUntil(
         context,
         MaterialPageRoute(
-            builder: (_) => const HomeScreen(),
+          builder: (_) => const HomeScreen(),
         ),
+        (route) => false,
       );
     } on FirebaseAuthException catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(

@@ -53,11 +53,12 @@ class _LoginPageState extends State<LoginPage> {
 
       if (adminQuery.docs.isNotEmpty) {
         if (!mounted) return;
-        Navigator.pushReplacement(
+        Navigator.pushAndRemoveUntil(
           context,
           MaterialPageRoute(
             builder: (_) => const AdminDashboardPage(),
           ),
+          (route) => false,
         );
         return;
       }
@@ -72,11 +73,12 @@ class _LoginPageState extends State<LoginPage> {
 
       if (userQuery.docs.isNotEmpty) {
         if (!mounted) return;
-        Navigator.pushReplacement(
+        Navigator.pushAndRemoveUntil(
           context,
           MaterialPageRoute(
             builder: (_) => const HomeScreen(),
           ),
+          (route) => false,
         );
         return;
       }

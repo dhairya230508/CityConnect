@@ -12,8 +12,8 @@ class AuthWrapper extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<Widget>(
-      future: _checkUser(),
+    return StreamBuilder<User?>(
+      stream: FirebaseAuth.instance.authStateChanges(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const Scaffold(
@@ -23,8 +23,25 @@ class AuthWrapper extends StatelessWidget {
           );
         }
 
-        if (snapshot.hasData) {
-          return snapshot.data!;
+        if (snapshot.hasData && snapshot.data != null) {
+          return FutureBuilder<Widget>(
+            future: _checkUserRole(snapshot.data!),
+            builder: (context, roleSnapshot) {
+              if (roleSnapshot.connectionState == ConnectionState.waiting) {
+                return const Scaffold(
+                  body: Center(
+                    child: CircularProgressIndicator(),
+                  ),
+                );
+              }
+
+              if (roleSnapshot.hasData) {
+                return roleSnapshot.data!;
+              }
+
+              return const Welcome();
+            },
+          );
         }
 
         return const Welcome();
@@ -32,13 +49,7 @@ class AuthWrapper extends StatelessWidget {
     );
   }
 
-  Future<Widget> _checkUser() async {
-    User? user = FirebaseAuth.instance.currentUser;
-
-    // No user logged in
-    if (user == null) {
-      return const Welcome();
-    }
+  Future<Widget> _checkUserRole(User user) async {
     // Check if Admin
     QuerySnapshot adminQuery = await FirebaseFirestore.instance
         .collection("AdminDetails")
