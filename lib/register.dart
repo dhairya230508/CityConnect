@@ -43,6 +43,7 @@ class _RegisterState extends State<Register> {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text("Account created successfully"),
+          duration: Duration(seconds: 2),
         ),
       );
       await FirebaseFirestore.instance
@@ -69,6 +70,7 @@ class _RegisterState extends State<Register> {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text(e.message ?? "Registration failed"),
+          duration: const Duration(seconds: 2),
         ),
       );
     }
@@ -431,6 +433,7 @@ class _RegisterState extends State<Register> {
                                   ScaffoldMessenger.of(context).showSnackBar(
                                     const SnackBar(
                                       content: Text("Please accept Terms & Conditions"),
+                                      duration: Duration(seconds: 2),
                                     ),
                                   );
                                   return;

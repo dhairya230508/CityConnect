@@ -261,6 +261,7 @@ class _ComplaintPageState extends State<ComplaintPage> {
                               ScaffoldMessenger.of(context).showSnackBar(
                                 const SnackBar(
                                   content: Text('Complaint Deleted Successfully'),
+                                  duration: Duration(seconds: 2),
                                   backgroundColor: Color(0xFFEF4444),
                                 ),
                               );
@@ -270,6 +271,7 @@ class _ComplaintPageState extends State<ComplaintPage> {
                               ScaffoldMessenger.of(context).showSnackBar(
                                 SnackBar(
                                   content: Text('Failed to delete complaint: $e'),
+                                  duration: const Duration(seconds: 2),
                                   backgroundColor: const Color(0xFFEF4444),
                                 ),
                               );

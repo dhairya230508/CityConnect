@@ -125,6 +125,7 @@ class _ProfilePageState extends State<ProfilePage> {
                             const SnackBar(
                               content: Text(
                                   "Password reset email sent successfully."),
+                              duration: Duration(seconds: 2),
                               backgroundColor: Colors.green,
                               behavior: SnackBarBehavior.floating,
                             ),
@@ -136,6 +137,7 @@ class _ProfilePageState extends State<ProfilePage> {
                             SnackBar(
                               content:
                               Text(e.message ?? "Something went wrong"),
+                              duration: const Duration(seconds: 2),
                               backgroundColor: Colors.red,
                               behavior: SnackBarBehavior.floating,
                             ),
@@ -291,6 +293,7 @@ class _ProfilePageState extends State<ProfilePage> {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
             content: Text("Profile Updated Successfully"),
+            duration: Duration(seconds: 2),
             backgroundColor: Color(0xFF22C55E),
             behavior: SnackBarBehavior.floating,
           ),
@@ -301,6 +304,7 @@ class _ProfilePageState extends State<ProfilePage> {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
             content: Text("Failed to Update Profile"),
+            duration: Duration(seconds: 2),
             backgroundColor: Color(0xFFEF4444),
             behavior: SnackBarBehavior.floating,
           ),

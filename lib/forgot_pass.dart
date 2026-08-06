@@ -128,7 +128,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
         backgroundColor: isSuccess ? const Color(0xFF16A34A) : const Color(0xFFDC2626),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
         margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
-        duration: const Duration(seconds: 3),
+        duration: const Duration(seconds: 2),
         content: Row(
           children: <Widget>[
             Icon(

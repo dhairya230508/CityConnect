@@ -122,7 +122,10 @@ class _Index extends State<HomeScreen> {
       if (user == null) {
         ScaffoldMessenger.of(
           context,
-        ).showSnackBar(const SnackBar(content: Text("User not logged in")));
+        ).showSnackBar(const SnackBar(
+          content: Text("User not logged in"),
+          duration: Duration(seconds: 2),
+        ));
         return;
       }
 
@@ -152,7 +155,10 @@ class _Index extends State<HomeScreen> {
       });
 
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text("Complaint submitted successfully")),
+        const SnackBar(
+          content: Text("Complaint submitted successfully"),
+          duration: Duration(seconds: 2),
+        ),
       );
 
       print("Complaint Saved");
@@ -161,7 +167,10 @@ class _Index extends State<HomeScreen> {
 
       ScaffoldMessenger.of(
         context,
-      ).showSnackBar(SnackBar(content: Text(e.toString())));
+      ).showSnackBar(SnackBar(
+        content: Text(e.toString()),
+        duration: const Duration(seconds: 2),
+      ));
     } finally {
       setState(() {
         isSubmitting = false;

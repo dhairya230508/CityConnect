@@ -264,6 +264,7 @@ class _AdminSettingsState extends State<AdminSettings>
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text(message, style: GoogleFonts.inter()),
+        duration: const Duration(seconds: 2),
         backgroundColor: color,
         behavior: SnackBarBehavior.floating,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),

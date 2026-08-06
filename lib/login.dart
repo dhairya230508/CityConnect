@@ -85,12 +85,18 @@ class _LoginPageState extends State<LoginPage> {
 
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text("User record not found")),
+        const SnackBar(
+          content: Text("User record not found"),
+          duration: Duration(seconds: 2),
+        ),
       );
     } on FirebaseAuthException catch (e) {
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(e.message ?? "Login Failed")),
+        SnackBar(
+          content: Text(e.message ?? "Login Failed"),
+          duration: const Duration(seconds: 2),
+        ),
       );
     }
   }
@@ -251,6 +257,7 @@ class _LoginPageState extends State<LoginPage> {
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   const SnackBar(
                                     content: Text("Password reset email sent."),
+                                    duration: Duration(seconds: 2),
                                   ),
                                 );
                                 if (mounted) {
@@ -260,6 +267,7 @@ class _LoginPageState extends State<LoginPage> {
                                       content: Text(
                                         "Reset link sent to $email",
                                       ),
+                                      duration: const Duration(seconds: 2),
                                       backgroundColor:
                                       const Color(0xFF16A34A),
                                       behavior:
@@ -280,6 +288,7 @@ class _LoginPageState extends State<LoginPage> {
                                         e.message ??
                                             "Failed to send reset email.",
                                       ),
+                                      duration: const Duration(seconds: 2),
                                       backgroundColor:
                                       const Color(0xFFDC2626),
                                       behavior:
