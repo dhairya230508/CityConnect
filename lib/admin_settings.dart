@@ -341,9 +341,8 @@ class _AdminSettingsState extends State<AdminSettings>
                     child: ElevatedButton(
                       onPressed: () => Navigator.pop(context, true),
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color(0xFF1976D2),
+                        backgroundColor: confirmColor,
                         foregroundColor: Colors.white,
-                        disabledBackgroundColor: const Color(0xFF90CAF9),
                         elevation: 0,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(12),

@@ -16,11 +16,13 @@ class _RegisterState extends State<Register> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   bool isShow = true;
+  bool isConfirmShow = true;
   bool agree = false;
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final TextEditingController nameController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
+  final TextEditingController confirmPasswordController = TextEditingController();
   final TextEditingController phoneController = TextEditingController();
   final TextEditingController cityController = TextEditingController();
   final TextEditingController wardController = TextEditingController();
@@ -29,6 +31,17 @@ class _RegisterState extends State<Register> {
   String? selectedCity;
 
   Future<void> registerUser() async {
+    if (passwordController.text != confirmPasswordController.text) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text("Passwords do not match"),
+          duration: Duration(seconds: 2),
+        ),
+      );
+      _formKey.currentState!.validate();
+      return;
+    }
+
     if (!_formKey.currentState!.validate()) return;
 
     try {
@@ -40,6 +53,7 @@ class _RegisterState extends State<Register> {
 
       final uid = userCredential.user!.uid;
 
+      if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text("Account created successfully"),
@@ -59,6 +73,7 @@ class _RegisterState extends State<Register> {
         "Pincode": pincodeController.text.trim(),
         "Remarks": "",
       });
+      if (!mounted) return;
       Navigator.pushAndRemoveUntil(
         context,
         MaterialPageRoute(
@@ -74,6 +89,20 @@ class _RegisterState extends State<Register> {
         ),
       );
     }
+  }
+
+  @override
+  void dispose() {
+    nameController.dispose();
+    emailController.dispose();
+    passwordController.dispose();
+    confirmPasswordController.dispose();
+    phoneController.dispose();
+    cityController.dispose();
+    wardController.dispose();
+    addressController.dispose();
+    pincodeController.dispose();
+    super.dispose();
   }
 
   @override
@@ -221,6 +250,43 @@ class _RegisterState extends State<Register> {
                                       r'^.{6,}$',
                                     ).hasMatch(value)) {
                                       return "Enter a Strong Password";
+                                    }
+                                    return null;
+                                  },
+                                ),
+
+                                const SizedBox(height: 20),
+
+                                TextFormField(
+                                  controller: confirmPasswordController,
+                                  obscureText: isConfirmShow,
+                                  decoration: InputDecoration(
+                                    hintText: "Confirm Password",
+                                    border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(12),
+                                    ),
+                                    suffixIcon: IconButton(
+                                      icon: Icon(
+                                        isConfirmShow
+                                            ? Icons.visibility_off
+                                            : Icons.visibility,
+                                      ),
+                                      onPressed: () {
+                                        setState(() {
+                                          isConfirmShow = !isConfirmShow;
+                                        });
+                                      },
+                                    ),
+                                    prefixIcon: const Icon(
+                                      Icons.lock_outline_sharp,
+                                    ),
+                                  ),
+                                  validator: (value) {
+                                    if (value == null || value.isEmpty) {
+                                      return "Please confirm your password";
+                                    }
+                                    if (value != passwordController.text) {
+                                      return "Passwords do not match";
                                     }
                                     return null;
                                   },
