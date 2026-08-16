@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'dart:io';
 import 'bottom_navigation_bar.dart';
@@ -298,6 +299,10 @@ class _Index extends State<HomeScreen> {
                               TextFormField(
                                 controller: phoneController,
                                 keyboardType: TextInputType.phone,
+                                inputFormatters: [
+                                  FilteringTextInputFormatter.digitsOnly,
+                                  LengthLimitingTextInputFormatter(10),
+                                ],
                                 decoration: InputDecoration(
                                   hintText: "Enter Contact Number",
                                   prefixIcon: const Icon(Icons.call),
@@ -371,16 +376,23 @@ class _Index extends State<HomeScreen> {
                                     ),
                                     selectedItemBuilder: (BuildContext context) {
                                       return snapshot.data!.docs.map((doc) {
-                                        return Text(
-                                          doc["DepartmentName"].toString(),
+                                        final rawName = doc["DepartmentName"].toString();
+                                        final cleanName = rawName.replaceAll(RegExp(r'^[^\w\s]+'), '').trim();
+                                        return Align(
+                                          alignment: Alignment.centerLeft,
+                                          child: Text(
+                                            cleanName,
+                                            overflow: TextOverflow.ellipsis,
+                                          ),
                                         );
                                       }).toList();
                                     },
                                     items: snapshot.data!.docs.map((doc) {
-                                      final deptName = doc["DepartmentName"].toString();
-                                      final deptIcon = _getDepartmentIcon(deptName);
+                                      final rawName = doc["DepartmentName"].toString();
+                                      final cleanName = rawName.replaceAll(RegExp(r'^[^\w\s]+'), '').trim();
+                                      final deptIcon = _getDepartmentIcon(rawName);
                                       return DropdownMenuItem<String>(
-                                        value: deptName,
+                                        value: rawName,
                                         child: Row(
                                           mainAxisSize: MainAxisSize.min,
                                           children: [
@@ -390,7 +402,7 @@ class _Index extends State<HomeScreen> {
                                               size: 20,
                                             ),
                                             const SizedBox(width: 10),
-                                            Text(deptName),
+                                            Text(cleanName),
                                           ],
                                         ),
                                       );

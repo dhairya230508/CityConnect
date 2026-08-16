@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:intl/intl.dart';
 import 'bottom_navigation_bar.dart';
 import 'admin.dart';
+import 'pdf_user.dart';
 
 
 class ComplaintPage extends StatefulWidget {
@@ -317,24 +318,34 @@ class _ComplaintPageState extends State<ComplaintPage> {
               padding: const EdgeInsets.fromLTRB(20, 20, 20, 16),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
-                children: const [
-                  Text(
-                    "MY ACTIVITY",
-                    style: TextStyle(
-                      fontSize: 10,
-                      fontWeight: FontWeight.w700,
-                      color: Colors.blue,
-                      letterSpacing: 1.2,
-                    ),
-                  ),
-                  SizedBox(height: 4),
-                  Text(
-                    "My Complaints",
-                    style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.w700,
-                      color: Colors.black87,
-                    ),
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: const [
+                          Text(
+                            "MY ACTIVITY",
+                            style: TextStyle(
+                              fontSize: 10,
+                              fontWeight: FontWeight.w700,
+                              color: Colors.blue,
+                              letterSpacing: 1.2,
+                            ),
+                          ),
+                          SizedBox(height: 4),
+                          Text(
+                            "My Complaints",
+                            style: TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.w700,
+                              color: Colors.black87,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
                   ),
                 ],
               ),
@@ -354,7 +365,24 @@ class _ComplaintPageState extends State<ComplaintPage> {
                     return const Center(child: Text("No Complaints Found"));
                   }
 
-                  final allDocs = snapshot.data!.docs;
+                  final allDocs = List<QueryDocumentSnapshot>.from(snapshot.data!.docs);
+
+                  // Sort newest first by CreatedAt timestamp
+                  allDocs.sort((a, b) {
+                    final dataA = a.data() as Map<String, dynamic>;
+                    final dataB = b.data() as Map<String, dynamic>;
+                    final tA = dataA['CreatedAt'] is Timestamp
+                        ? (dataA['CreatedAt'] as Timestamp).toDate()
+                        : (dataA['createdAt'] is Timestamp
+                            ? (dataA['createdAt'] as Timestamp).toDate()
+                            : DateTime.fromMillisecondsSinceEpoch(0));
+                    final tB = dataB['CreatedAt'] is Timestamp
+                        ? (dataB['CreatedAt'] as Timestamp).toDate()
+                        : (dataB['createdAt'] is Timestamp
+                            ? (dataB['createdAt'] as Timestamp).toDate()
+                            : DateTime.fromMillisecondsSinceEpoch(0));
+                    return tB.compareTo(tA);
+                  });
 
                   int countFor(String status) => allDocs
                       .where((d) => (d["ComplaintStatus"] ?? "") == status)
@@ -368,7 +396,39 @@ class _ComplaintPageState extends State<ComplaintPage> {
 
                   return Column(
                     children: [
-                      const SizedBox(height: 16),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              "${filteredDocs.length} complaints found",
+                              style: const TextStyle(
+                                fontSize: 13,
+                                fontWeight: FontWeight.w600,
+                                color: Color(0xFF4B5563),
+                              ),
+                            ),
+                            ElevatedButton.icon(
+                              onPressed: filteredDocs.isEmpty
+                                  ? null
+                                  : () => generateUserComplaintPdf(filteredDocs),
+                              icon: const Icon(Icons.picture_as_pdf, size: 16, color: Colors.white),
+                              label: const Text(
+                                "Export PDF",
+                                style: TextStyle(color: Colors.white, fontSize: 12, fontWeight: FontWeight.bold),
+                              ),
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: const Color(0xFF22C55E),
+                                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
@@ -400,10 +460,9 @@ class _ComplaintPageState extends State<ComplaintPage> {
               ),
             ),
           ],
-
         ),
       ),
-        bottomNavigationBar: const CustomBottomNavBar(currentIndex: 1),
+      bottomNavigationBar: const CustomBottomNavBar(currentIndex: 1),
     );
   }
 }

@@ -22,6 +22,7 @@ class _LoginPageState extends State<LoginPage> {
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
   bool obscurePassword = true;
+  bool isLoading = false;
 
   @override
   void dispose() {
@@ -34,24 +35,49 @@ class _LoginPageState extends State<LoginPage> {
   Future<void> loginUser() async {
     if (!_formKey.currentState!.validate()) return;
 
+    setState(() {
+      isLoading = true;
+    });
+
+    final String inputEmail = emailController.text.trim();
+    final String inputPassword = passwordController.text.trim();
+
     try {
-      // Login first
-      UserCredential userCredential =
-      await FirebaseAuth.instance.signInWithEmailAndPassword(
-        email: emailController.text.trim(),
-        password: passwordController.text.trim(),
+      // 1. Authenticate with Firebase Auth
+      UserCredential userCredential = await FirebaseAuth.instance.signInWithEmailAndPassword(
+        email: inputEmail,
+        password: inputPassword,
       );
 
-      // Now you can use userCredential
+      final String userEmail = (userCredential.user?.email ?? inputEmail).trim();
+      final String uid = userCredential.user?.uid ?? '';
+
+      // 2. Check if Admin (by AdminEmail query or UID doc)
       QuerySnapshot adminQuery = await FirebaseFirestore.instance
           .collection("AdminDetails")
-          .where(
-        "AdminEmail",
-        isEqualTo: userCredential.user!.email,
-      )
+          .where("AdminEmail", isEqualTo: userEmail)
           .get();
 
-      if (adminQuery.docs.isNotEmpty) {
+      bool isAdmin = adminQuery.docs.isNotEmpty;
+
+      if (!isAdmin && uid.isNotEmpty) {
+        DocumentSnapshot adminDoc = await FirebaseFirestore.instance
+            .collection("AdminDetails")
+            .doc(uid)
+            .get();
+        if (adminDoc.exists) isAdmin = true;
+      }
+
+      if (!isAdmin) {
+        // Case-insensitive query fallback for admin email
+        QuerySnapshot adminQueryLower = await FirebaseFirestore.instance
+            .collection("AdminDetails")
+            .where("AdminEmail", isEqualTo: userEmail.toLowerCase())
+            .get();
+        if (adminQueryLower.docs.isNotEmpty) isAdmin = true;
+      }
+
+      if (isAdmin) {
         if (!mounted) return;
         Navigator.pushAndRemoveUntil(
           context,
@@ -63,41 +89,81 @@ class _LoginPageState extends State<LoginPage> {
         return;
       }
 
-      QuerySnapshot userQuery = await FirebaseFirestore.instance
-          .collection("UserDetails")
-          .where(
-        "Email",
-        isEqualTo: userCredential.user!.email,
-      )
-          .get();
-
-      if (userQuery.docs.isNotEmpty) {
-        if (!mounted) return;
-        Navigator.pushAndRemoveUntil(
-          context,
-          MaterialPageRoute(
-            builder: (_) => const HomeScreen(),
-          ),
-          (route) => false,
-        );
-        return;
+      // 3. Check if User (by UID doc or Email query)
+      bool isUser = false;
+      if (uid.isNotEmpty) {
+        DocumentSnapshot userDoc = await FirebaseFirestore.instance
+            .collection("UserDetails")
+            .doc(uid)
+            .get();
+        if (userDoc.exists) isUser = true;
       }
 
+      if (!isUser) {
+        QuerySnapshot userQuery = await FirebaseFirestore.instance
+            .collection("UserDetails")
+            .where("Email", isEqualTo: userEmail)
+            .get();
+        if (userQuery.docs.isNotEmpty) isUser = true;
+      }
+
+      if (!isUser) {
+        QuerySnapshot userQueryLower = await FirebaseFirestore.instance
+            .collection("UserDetails")
+            .where("Email", isEqualTo: userEmail.toLowerCase())
+            .get();
+        if (userQueryLower.docs.isNotEmpty) isUser = true;
+      }
+
+      // 4. Navigate to User Home Screen
       if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text("User record not found"),
-          duration: Duration(seconds: 2),
+      Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(
+          builder: (_) => const HomeScreen(),
         ),
+        (route) => false,
       );
     } on FirebaseAuthException catch (e) {
       if (!mounted) return;
+      String errorMessage = "Login failed. Please check your credentials.";
+      if (e.code == 'invalid-credential' ||
+          e.code == 'wrong-password' ||
+          e.code == 'user-not-found' ||
+          e.code == 'INVALID_LOGIN_CREDENTIALS') {
+        errorMessage = "Incorrect email or password. Please try again.";
+      } else if (e.code == 'invalid-email') {
+        errorMessage = "Invalid email format. Please enter a valid email address.";
+      } else if (e.code == 'user-disabled') {
+        errorMessage = "This user account has been disabled.";
+      } else if (e.code == 'too-many-requests') {
+        errorMessage = "Too many failed attempts. Please try again later.";
+      } else if (e.message != null && e.message!.isNotEmpty) {
+        errorMessage = e.message!;
+      }
+
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text(e.message ?? "Login Failed"),
-          duration: const Duration(seconds: 2),
+          content: Text(errorMessage),
+          backgroundColor: const Color(0xFFEF4444),
+          duration: const Duration(seconds: 3),
         ),
       );
+    } catch (e) {
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text("Login error: ${e.toString()}"),
+          backgroundColor: const Color(0xFFEF4444),
+          duration: const Duration(seconds: 3),
+        ),
+      );
+    } finally {
+      if (mounted) {
+        setState(() {
+          isLoading = false;
+        });
+      }
     }
   }
 
@@ -618,7 +684,7 @@ class _LoginPageState extends State<LoginPage> {
                           width: double.infinity,
                           height: 56,
                           child: ElevatedButton(
-                            onPressed: loginUser,
+                            onPressed: isLoading ? null : loginUser,
                             style: ElevatedButton.styleFrom(
                               elevation: 0,
                               backgroundColor: const Color(0xff1976D2),
@@ -626,14 +692,23 @@ class _LoginPageState extends State<LoginPage> {
                                 borderRadius: BorderRadius.circular(18),
                               ),
                             ),
-                            child: Text(
-                              "Login",
-                              style: GoogleFonts.poppins(
-                                fontSize: 16,
-                                color: Colors.white,
-                                fontWeight: FontWeight.w600,
-                              ),
-                            ),
+                            child: isLoading
+                                ? const SizedBox(
+                                    height: 24,
+                                    width: 24,
+                                    child: CircularProgressIndicator(
+                                      color: Colors.white,
+                                      strokeWidth: 2.5,
+                                    ),
+                                  )
+                                : Text(
+                                    "Login",
+                                    style: GoogleFonts.poppins(
+                                      fontSize: 16,
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  ),
                           ),
                         ),
 

@@ -50,28 +50,65 @@ class AuthWrapper extends StatelessWidget {
   }
 
   Future<Widget> _checkUserRole(User user) async {
-    // Check if Admin
-    QuerySnapshot adminQuery = await FirebaseFirestore.instance
-        .collection("AdminDetails")
-        .where("AdminEmail", isEqualTo: user.email)
-        .get();
+    final email = user.email ?? '';
+    final uid = user.uid;
 
-    if (adminQuery.docs.isNotEmpty) {
-      return const AdminDashboardPage();
-    }
+    try {
+      // 1. Check if Admin by Email query
+      QuerySnapshot adminQuery = await FirebaseFirestore.instance
+          .collection("AdminDetails")
+          .where("AdminEmail", isEqualTo: email)
+          .get();
 
-    // Check if Normal User
-    QuerySnapshot userQuery = await FirebaseFirestore.instance
-        .collection("UserDetails")
-        .where("Email", isEqualTo: user.email)
-        .get();
+      if (adminQuery.docs.isNotEmpty) {
+        return const AdminDashboardPage();
+      }
 
-    if (userQuery.docs.isNotEmpty) {
+      // Check Admin by lowercased email
+      QuerySnapshot adminQueryLower = await FirebaseFirestore.instance
+          .collection("AdminDetails")
+          .where("AdminEmail", isEqualTo: email.toLowerCase())
+          .get();
+
+      if (adminQueryLower.docs.isNotEmpty) {
+        return const AdminDashboardPage();
+      }
+
+      // Check Admin by UID doc
+      DocumentSnapshot adminDoc = await FirebaseFirestore.instance
+          .collection("AdminDetails")
+          .doc(uid)
+          .get();
+
+      if (adminDoc.exists) {
+        return const AdminDashboardPage();
+      }
+
+      // 2. Check if Normal User by UID doc
+      DocumentSnapshot userDoc = await FirebaseFirestore.instance
+          .collection("UserDetails")
+          .doc(uid)
+          .get();
+
+      if (userDoc.exists) {
+        return const HomeScreen();
+      }
+
+      // Check Normal User by Email
+      QuerySnapshot userQuery = await FirebaseFirestore.instance
+          .collection("UserDetails")
+          .where("Email", isEqualTo: email)
+          .get();
+
+      if (userQuery.docs.isNotEmpty) {
+        return const HomeScreen();
+      }
+
+      // Default fallback for logged in users
+      return const HomeScreen();
+    } catch (e) {
+      debugPrint('Error checking user role: $e');
       return const HomeScreen();
     }
-
-    // If no record found
-    await FirebaseAuth.instance.signOut();
-    return const Welcome();
   }
 }

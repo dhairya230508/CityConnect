@@ -1,5 +1,5 @@
 import 'package:city_connect/admin_settings.dart';
-// import 'package:city_connect/user_edit.dart';
+import 'admin_reports.dart';
 import 'profile.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -7,6 +7,7 @@ import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:printing/printing.dart';
 import 'package:intl/intl.dart';
+import 'pdf_admin.dart';
 
 
 
@@ -18,8 +19,8 @@ class AdminDashboardPage extends StatefulWidget {
 }
 
 class _AdminDashboardPageState extends State<AdminDashboardPage> {
-  TextEditingController searchController = TextEditingController();
-  String searchQuery = '';
+  TextEditingController reportCitySearchController = TextEditingController();
+  String reportCitySearchQuery = '';
   String selectedFilter = 'All';
   int currentIndex = 0;
 
@@ -90,559 +91,24 @@ class _AdminDashboardPageState extends State<AdminDashboardPage> {
 
   @override
   void dispose() {
-    searchController.dispose();
+    reportCitySearchController.dispose();
     super.dispose();
   }
 
   Future<void> _exportToPdf(List<QueryDocumentSnapshot> docs) async {
-    final pdf = pw.Document();
-
-    final headers = ['Date', 'Department', 'Citizen Info', 'City & Address', 'Status'];
-
-    final data = docs.map((doc) {
-      final map = doc.data() as Map<String, dynamic>;
-      
-      String dateText = 'N/A';
-      if (map['CreatedAt'] != null && map['CreatedAt'] is Timestamp) {
-        final date = (map['CreatedAt'] as Timestamp).toDate();
-        dateText = DateFormat('dd/MM/yyyy').format(date);
-      }
-      
-      final dept = (map['ProblemType'] ?? '').toString();
-      final citizenName = (map['Name'] ?? '').toString();
-      final citizenContact = (map['Contact'] ?? '').toString();
-      final citizenInfo = '$citizenName\n$citizenContact';
-      
-      final userId = (map['UserID'] ?? '').toString();
-      final city = userCities[userId] ?? 'N/A';
-      final address = (map['Address'] ?? '').toString();
-      final locationInfo = 'City: $city\n$address';
-      
-      final status = (map['ComplaintStatus'] ?? 'Pending').toString();
-      
-      return [dateText, dept, citizenInfo, locationInfo, status];
-    }).toList();
-
-    pdf.addPage(
-      pw.MultiPage(
-        pageFormat: PdfPageFormat.a4,
-        margin: const pw.EdgeInsets.all(32),
-        build: (pw.Context context) {
-          return [
-            pw.Header(
-              level: 0,
-              child: pw.Row(
-                mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
-                children: [
-                  pw.Text(
-                    'CityConnect - Complaints Report',
-                    style: pw.TextStyle(
-                      fontSize: 22,
-                      fontWeight: pw.FontWeight.bold,
-                      color: PdfColors.blue800,
-                    ),
-                  ),
-                  pw.Text(
-                    DateFormat('dd/MM/yyyy HH:mm').format(DateTime.now()),
-                    style: const pw.TextStyle(
-                      fontSize: 10,
-                      color: PdfColors.grey600,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            pw.SizedBox(height: 16),
-            
-            pw.Container(
-              padding: const pw.EdgeInsets.all(10),
-              decoration: pw.BoxDecoration(
-                color: PdfColors.grey100,
-                borderRadius: pw.BorderRadius.circular(6),
-              ),
-              child: pw.Column(
-                crossAxisAlignment: pw.CrossAxisAlignment.start,
-                children: [
-                  pw.Text(
-                    'Filter Criteria:',
-                    style: pw.TextStyle(fontWeight: pw.FontWeight.bold, fontSize: 12),
-                  ),
-                  pw.SizedBox(height: 4),
-                  pw.Row(
-                    children: [
-                      pw.Text(
-                        'Date Range: ',
-                        style: pw.TextStyle(fontWeight: pw.FontWeight.bold, fontSize: 10),
-                      ),
-                      pw.Text(
-                        reportFromDate != null && reportToDate != null
-                            ? '${DateFormat('dd/MM/yyyy').format(reportFromDate!)} to ${DateFormat('dd/MM/yyyy').format(reportToDate!)}'
-                            : 'All Time',
-                        style: const pw.TextStyle(fontSize: 10),
-                      ),
-                      pw.SizedBox(width: 20),
-                      pw.Text(
-                        'City: ',
-                        style: pw.TextStyle(fontWeight: pw.FontWeight.bold, fontSize: 10),
-                      ),
-                      pw.Text(
-                        reportSelectedCity,
-                        style: const pw.TextStyle(fontSize: 10),
-                      ),
-                      pw.SizedBox(width: 20),
-                      pw.Text(
-                        'Total Complaints: ',
-                        style: pw.TextStyle(fontWeight: pw.FontWeight.bold, fontSize: 10),
-                      ),
-                      pw.Text(
-                        '${docs.length}',
-                        style: const pw.TextStyle(fontSize: 10),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-            pw.SizedBox(height: 20),
-
-            pw.TableHelper.fromTextArray(
-              headers: headers,
-              data: data,
-              border: pw.TableBorder.all(color: PdfColors.grey300, width: 0.5),
-              headerStyle: pw.TextStyle(fontWeight: pw.FontWeight.bold, fontSize: 10, color: PdfColors.white),
-              headerDecoration: const pw.BoxDecoration(color: PdfColors.blue800),
-              cellStyle: const pw.TextStyle(fontSize: 9),
-              cellPadding: const pw.EdgeInsets.symmetric(horizontal: 6, vertical: 6),
-              columnWidths: {
-                0: const pw.FlexColumnWidth(1.2),
-                1: const pw.FlexColumnWidth(1.8),
-                2: const pw.FlexColumnWidth(2.5),
-                3: const pw.FlexColumnWidth(3.5),
-                4: const pw.FlexColumnWidth(1.2),
-              },
-            ),
-          ];
-        },
-      ),
-    );
-
-    await Printing.layoutPdf(
-      onLayout: (PdfPageFormat format) async => pdf.save(),
-      name: 'CityConnect_Complaints_Report_${DateFormat('yyyyMMdd').format(DateTime.now())}.pdf',
+    await generateAdminComplaintPdf(
+      docs: docs,
+      userCities: userCities,
+      reportFromDate: reportFromDate,
+      reportToDate: reportToDate,
+      reportSelectedCity: reportSelectedCity,
     );
   }
 
   Widget _buildReportsBody() {
-    return StreamBuilder<QuerySnapshot>(
-      stream: FirebaseFirestore.instance
-          .collection('ComplaintDescription')
-          .orderBy('CreatedAt', descending: true)
-          .snapshots(),
-      builder: (context, snapshot) {
-        if (snapshot.hasError) {
-          return const Center(
-            child: Text(
-              'Something went wrong',
-              style: TextStyle(color: Color(0xFF6B7280), fontSize: 14),
-            ),
-          );
-        }
-
-        if (!snapshot.hasData) {
-          return const Center(
-            child: CircularProgressIndicator(color: Color(0xFF2563EB)),
-          );
-        }
-
-        List<QueryDocumentSnapshot> allDocs = snapshot.data!.docs;
-
-        List<QueryDocumentSnapshot> filteredDocs = allDocs.where((doc) {
-          final data = doc.data() as Map<String, dynamic>;
-
-          DateTime? createdAt;
-          if (data['CreatedAt'] != null && data['CreatedAt'] is Timestamp) {
-            createdAt = (data['CreatedAt'] as Timestamp).toDate();
-          }
-
-          if (reportFromDate != null && createdAt != null) {
-            final startOfFrom = DateTime(reportFromDate!.year, reportFromDate!.month, reportFromDate!.day);
-            if (createdAt.isBefore(startOfFrom)) return false;
-          }
-          if (reportToDate != null && createdAt != null) {
-            final endOfTo = DateTime(reportToDate!.year, reportToDate!.month, reportToDate!.day, 23, 59, 59, 999);
-            if (createdAt.isAfter(endOfTo)) return false;
-          }
-
-          if (reportSelectedCity != 'All Cities') {
-            final userId = (data['UserID'] ?? '').toString();
-            final userCity = userCities[userId] ?? '';
-            final address = (data['Address'] ?? '').toString();
-
-            final queryCity = reportSelectedCity.toLowerCase().trim();
-            final matchesUserCity = userCity.toLowerCase().trim() == queryCity;
-            final matchesAddress = address.toLowerCase().contains(queryCity);
-
-            if (!matchesUserCity && !matchesAddress) return false;
-          }
-
-          return true;
-        }).toList();
-
-        return Column(
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(16),
-              child: Container(
-                padding: const EdgeInsets.all(16),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(16),
-                  border: Border.all(color: const Color(0xFFE5E7EB)),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withOpacity(0.04),
-                      blurRadius: 10,
-                      offset: const Offset(0, 4),
-                    ),
-                  ],
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Text(
-                      'FILTER COMPLAINTS',
-                      style: TextStyle(
-                        fontSize: 12,
-                        fontWeight: FontWeight.bold,
-                        color: Color(0xFF6B7280),
-                        letterSpacing: 0.8,
-                      ),
-                    ),
-                    const SizedBox(height: 14),
-
-                    Row(
-                      children: [
-                        Expanded(
-                          child: InkWell(
-                            onTap: () async {
-                              final picked = await showDatePicker(
-                                context: context,
-                                initialDate: reportFromDate ?? DateTime.now(),
-                                firstDate: DateTime(2020),
-                                lastDate: DateTime(2100),
-                              );
-                              if (picked != null) {
-                                setState(() {
-                                  reportFromDate = picked;
-                                });
-                              }
-                            },
-                            child: Container(
-                              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
-                              decoration: BoxDecoration(
-                                color: const Color(0xFFF9FAFB),
-                                borderRadius: BorderRadius.circular(10),
-                                border: Border.all(color: const Color(0xFFE5E7EB)),
-                              ),
-                              child: Row(
-                                children: [
-                                  const Icon(Icons.calendar_today_rounded, size: 16, color: Color(0xFF2563EB)),
-                                  const SizedBox(width: 8),
-                                  Expanded(
-                                    child: Text(
-                                      reportFromDate == null
-                                          ? 'From Date'
-                                          : DateFormat('dd/MM/yyyy').format(reportFromDate!),
-                                      style: TextStyle(
-                                        fontSize: 13,
-                                        color: reportFromDate == null ? const Color(0xFF9CA3AF) : const Color(0xFF111827),
-                                        fontWeight: reportFromDate == null ? FontWeight.normal : FontWeight.w500,
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ),
-                        const SizedBox(width: 12),
-                        Expanded(
-                          child: InkWell(
-                            onTap: () async {
-                              final picked = await showDatePicker(
-                                context: context,
-                                initialDate: reportToDate ?? DateTime.now(),
-                                firstDate: DateTime(2020),
-                                lastDate: DateTime(2100),
-                              );
-                              if (picked != null) {
-                                setState(() {
-                                  reportToDate = picked;
-                                });
-                              }
-                            },
-                            child: Container(
-                              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
-                              decoration: BoxDecoration(
-                                color: const Color(0xFFF9FAFB),
-                                borderRadius: BorderRadius.circular(10),
-                                border: Border.all(color: const Color(0xFFE5E7EB)),
-                              ),
-                              child: Row(
-                                children: [
-                                  const Icon(Icons.calendar_today_rounded, size: 16, color: Color(0xFF2563EB)),
-                                  const SizedBox(width: 8),
-                                  Expanded(
-                                    child: Text(
-                                      reportToDate == null
-                                          ? 'To Date'
-                                          : DateFormat('dd/MM/yyyy').format(reportToDate!),
-                                      style: TextStyle(
-                                        fontSize: 13,
-                                        color: reportToDate == null ? const Color(0xFF9CA3AF) : const Color(0xFF111827),
-                                        fontWeight: reportToDate == null ? FontWeight.normal : FontWeight.w500,
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-
-                    if (reportFromDate != null || reportToDate != null) ...[
-                      const SizedBox(height: 8),
-                      Align(
-                        alignment: Alignment.centerRight,
-                        child: TextButton.icon(
-                          onPressed: () {
-                            setState(() {
-                              reportFromDate = null;
-                              reportToDate = null;
-                            });
-                          },
-                          icon: const Icon(Icons.clear, size: 14, color: Color(0xFFEF4444)),
-                          label: const Text(
-                            'Clear Dates',
-                            style: TextStyle(color: Color(0xFFEF4444), fontSize: 12),
-                          ),
-                        ),
-                      ),
-                    ],
-
-                    const SizedBox(height: 14),
-
-                    DropdownButtonFormField<String>(
-                      value: reportSelectedCity,
-                      decoration: InputDecoration(
-                        labelText: 'Select City',
-                        labelStyle: const TextStyle(fontSize: 12, color: Color(0xFF6B7280)),
-                        filled: true,
-                        fillColor: const Color(0xFFF9FAFB),
-                        contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10),
-                          borderSide: const BorderSide(color: Color(0xFFE5E7EB)),
-                        ),
-                        enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10),
-                          borderSide: const BorderSide(color: Color(0xFFE5E7EB)),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10),
-                          borderSide: const BorderSide(color: Color(0xFF2563EB)),
-                        ),
-                      ),
-                      items: [
-                        const DropdownMenuItem(
-                          value: 'All Cities',
-                          child: Text('All Cities', style: TextStyle(fontSize: 14)),
-                        ),
-                        ...citiesList.map((cityName) => DropdownMenuItem(
-                          value: cityName,
-                          child: Text(cityName, style: const TextStyle(fontSize: 14)),
-                        )),
-                      ],
-                      onChanged: (value) {
-                        setState(() {
-                          reportSelectedCity = value!;
-                        });
-                      },
-                    ),
-                  ],
-                ),
-              ),
-            ),
-
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    '${filteredDocs.length} complaints found',
-                    style: const TextStyle(
-                      fontSize: 13,
-                      fontWeight: FontWeight.w600,
-                      color: Color(0xFF4B5563),
-                    ),
-                  ),
-                  ElevatedButton.icon(
-                    onPressed: filteredDocs.isEmpty
-                        ? null
-                        : () => _exportToPdf(filteredDocs),
-                    icon: const Icon(Icons.picture_as_pdf, size: 18, color: Colors.white),
-                    label: const Text(
-                      'Export PDF',
-                      style: TextStyle(color: Colors.white, fontSize: 13, fontWeight: FontWeight.bold),
-                    ),
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color(0xFF22C55E),
-                      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            const SizedBox(height: 12),
-
-            Expanded(
-              child: filteredDocs.isEmpty
-                  ? const Center(
-                      child: Text(
-                        'No complaints match the filters',
-                        style: TextStyle(color: Color(0xFF6B7280), fontSize: 14),
-                      ),
-                    )
-                  : ListView.builder(
-                      padding: const EdgeInsets.fromLTRB(16, 4, 16, 16),
-                      itemCount: filteredDocs.length,
-                      itemBuilder: (context, index) {
-                        QueryDocumentSnapshot doc = filteredDocs[index];
-                        Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
-
-                        String name = (data['Name'] ?? '').toString();
-                        String contact = (data['Contact'] ?? '').toString();
-                        String address = (data['Address'] ?? '').toString();
-                        String problemType = (data['ProblemType'] ?? '').toString();
-                        String status = (data['ComplaintStatus'] ?? 'Pending').toString();
-                        String userId = (data['UserID'] ?? '').toString();
-                        String city = userCities[userId] ?? 'N/A';
-
-                        String dateText = '';
-                        if (data['CreatedAt'] != null && data['CreatedAt'] is Timestamp) {
-                          DateTime date = (data['CreatedAt'] as Timestamp).toDate();
-                          dateText = DateFormat('dd/MM/yyyy').format(date);
-                        }
-
-                        String imageUrl = (data['ImageUrl'] ?? data['imageUrl'] ?? data['image'] ?? '').toString();
-
-                        Color statusColor = const Color(0xFFF59E0B);
-                        if (status == 'In Progress') {
-                          statusColor = const Color(0xFF3B82F6);
-                        } else if (status == 'Resolved') {
-                          statusColor = const Color(0xFF22C55E);
-                        }
-
-                        return Padding(
-                          padding: const EdgeInsets.only(bottom: 12),
-                          child: Container(
-                            padding: const EdgeInsets.all(16),
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(16),
-                              border: Border.all(color: const Color(0xFFE5E7EB)),
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Colors.black.withOpacity(0.04),
-                                  blurRadius: 10,
-                                  offset: const Offset(0, 4),
-                                ),
-                              ],
-                            ),
-                            child: Row(
-                              children: [
-                                Container(
-                                  width: 44,
-                                  height: 44,
-                                  decoration: BoxDecoration(
-                                    color: Colors.grey.shade100,
-                                    shape: BoxShape.circle,
-                                  ),
-                                  child: Icon(
-                                    _getDepartmentIcon(problemType),
-                                    color: Colors.black87,
-                                    size: 20,
-                                  ),
-                                ),
-                                const SizedBox(width: 12),
-                                Expanded(
-                                  child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        problemType,
-                                        style: const TextStyle(
-                                          fontSize: 15,
-                                          fontWeight: FontWeight.w600,
-                                          color: Color(0xFF111827),
-                                        ),
-                                      ),
-                                      const SizedBox(height: 6),
-                                      Text(
-                                        'Citizen: $name ($contact)',
-                                        style: const TextStyle(fontSize: 13, color: Color(0xFF6B7280)),
-                                      ),
-                                      const SizedBox(height: 2),
-                                      Text(
-                                        'City: $city',
-                                        style: const TextStyle(fontSize: 13, color: Color(0xFF111827), fontWeight: FontWeight.w500),
-                                      ),
-                                      const SizedBox(height: 2),
-                                      Text(
-                                        address,
-                                        maxLines: 1,
-                                        overflow: TextOverflow.ellipsis,
-                                        style: const TextStyle(fontSize: 13, color: Color(0xFF6B7280)),
-                                      ),
-                                      const SizedBox(height: 8),
-                                      Text(
-                                        dateText,
-                                        style: const TextStyle(fontSize: 12, color: Color(0xFF9CA3AF)),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                Container(
-                                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                                  decoration: BoxDecoration(
-                                    color: statusColor.withOpacity(0.12),
-                                    borderRadius: BorderRadius.circular(20),
-                                  ),
-                                  child: Text(
-                                    status,
-                                    style: TextStyle(
-                                      fontSize: 11,
-                                      fontWeight: FontWeight.w600,
-                                      color: statusColor,
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        );
-                      },
-                    ),
-            ),
-          ],
-        );
-      },
+    return AdminReportsPage(
+      userCities: userCities,
+      citiesList: citiesList,
     );
   }
 
@@ -700,28 +166,18 @@ class _AdminDashboardPageState extends State<AdminDashboardPage> {
           }
         }
 
-        // ------------------ Apply search ------------------
-        if (searchQuery.trim().isNotEmpty) {
-          String query = searchQuery.toLowerCase();
-          List<QueryDocumentSnapshot> searchedDocs = [];
-
-          for (var doc in filteredDocs) {
-            Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
-            String name = (data['Name'] ?? '').toString().toLowerCase();
-            String problemType =
-            (data['ProblemType'] ?? '').toString().toLowerCase();
-            String address =
-            (data['Address'] ?? '').toString().toLowerCase();
-
-            if (name.contains(query) ||
-                problemType.contains(query) ||
-                address.contains(query)) {
-              searchedDocs.add(doc);
-            }
-          }
-
-          filteredDocs = searchedDocs;
-        }
+        // ------------------ Enforce newest-first sorting ------------------
+        filteredDocs.sort((a, b) {
+          final dataA = a.data() as Map<String, dynamic>;
+          final dataB = b.data() as Map<String, dynamic>;
+          final tA = dataA['CreatedAt'] is Timestamp
+              ? (dataA['CreatedAt'] as Timestamp).toDate()
+              : DateTime.fromMillisecondsSinceEpoch(0);
+          final tB = dataB['CreatedAt'] is Timestamp
+              ? (dataB['CreatedAt'] as Timestamp).toDate()
+              : DateTime.fromMillisecondsSinceEpoch(0);
+          return tB.compareTo(tA);
+        });
 
         return Column(
           children: [
@@ -913,60 +369,6 @@ class _AdminDashboardPageState extends State<AdminDashboardPage> {
               ),
             ),
 
-            // ================= Search Bar =================
-            Padding(
-              padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
-              child: Container(
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(14),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withOpacity(0.02),
-                      blurRadius: 10,
-                      offset: const Offset(0, 4),
-                    ),
-                  ],
-                ),
-                child: TextField(
-                  controller: searchController,
-                  onChanged: (value) {
-                    setState(() {
-                      searchQuery = value;
-                    });
-                  },
-                  decoration: InputDecoration(
-                    hintText: 'Search complaints (Name, address, dept...)',
-                    hintStyle: const TextStyle(color: Color(0xFF9CA3AF), fontSize: 14),
-                    prefixIcon: const Icon(Icons.search_rounded, color: Color(0xFF2563EB), size: 20),
-                    suffixIcon: searchQuery.isNotEmpty
-                        ? GestureDetector(
-                            onTap: () {
-                              setState(() {
-                                searchController.clear();
-                                searchQuery = '';
-                              });
-                            },
-                            child: const Icon(Icons.clear_rounded, color: Color(0xFF9CA3AF), size: 20),
-                          )
-                        : null,
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(14),
-                      borderSide: const BorderSide(color: Color(0xFFE5E7EB)),
-                    ),
-                    enabledBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(14),
-                      borderSide: const BorderSide(color: Color(0xFFE5E7EB)),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(14),
-                      borderSide: const BorderSide(color: Color(0xFF2563EB)),
-                    ),
-                    contentPadding: const EdgeInsets.symmetric(vertical: 14),
-                  ),
-                ),
-              ),
-            ),
 
             // ================= Filter Chips =================
             Padding(

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'login.dart';
 import 'package:city_connect/index.dart';
@@ -18,7 +19,7 @@ class _RegisterState extends State<Register> {
 
   bool isShow = true;
   bool isConfirmShow = true;
-  bool agree = false;
+  bool isLoading = false;
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final TextEditingController nameController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
@@ -45,7 +46,22 @@ class _RegisterState extends State<Register> {
 
     if (!_formKey.currentState!.validate()) return;
 
+    final phone = phoneController.text.trim();
+    if (!RegExp(r'^[0-9]{10}$').hasMatch(phone)) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text("Enter a valid 10-digit mobile number"),
+          duration: Duration(seconds: 2),
+        ),
+      );
+      return;
+    }
+
     try {
+      setState(() {
+        isLoading = true;
+      });
+
       final UserCredential userCredential =
       await _auth.createUserWithEmailAndPassword(
         email: emailController.text.trim(),
@@ -89,6 +105,12 @@ class _RegisterState extends State<Register> {
           duration: const Duration(seconds: 2),
         ),
       );
+    } finally {
+      if (mounted) {
+        setState(() {
+          isLoading = false;
+        });
+      }
     }
   }
 
@@ -296,6 +318,10 @@ class _RegisterState extends State<Register> {
                                 TextFormField(
                                   controller: phoneController,
                                   keyboardType: TextInputType.phone,
+                                  inputFormatters: [
+                                    FilteringTextInputFormatter.digitsOnly,
+                                    LengthLimitingTextInputFormatter(10),
+                                  ],
                                   decoration: InputDecoration(
                                     hintText: "Contact Number",
                                     border: OutlineInputBorder(
@@ -306,13 +332,11 @@ class _RegisterState extends State<Register> {
                                     ),
                                   ),
                                   validator: (value) {
-                                    if (value == null || value.isEmpty) {
+                                    if (value == null || value.trim().isEmpty) {
                                       return "Please enter your contact number";
                                     }
-                                    if (!RegExp(
-                                      r'^[0-9]{10}$',
-                                    ).hasMatch(value)) {
-                                      return "Enter a valid 10-digit number";
+                                    if (!RegExp(r'^[0-9]{10}$').hasMatch(value.trim())) {
+                                      return "Enter a valid 10-digit mobile number";
                                     }
                                     return null;
                                   },
@@ -409,56 +433,16 @@ class _RegisterState extends State<Register> {
                             ),
                           ),
                         ),
-                        const SizedBox(height: 20),
-
-                        Row(
-                          children: [
-                            Checkbox(
-                              value: agree,
-                              onChanged: (value) {
-                                setState(() {
-                                  agree = value!;
-                                });
-                              },
-                            ),
-                            const Expanded(
-                              child: Text.rich(
-                                TextSpan(
-                                  text: "I agree to the ",
-                                  children: [
-                                    TextSpan(
-                                      text: "Terms and Services",
-                                      style: TextStyle(color: Colors.blue),
-                                    ),
-                                    TextSpan(text: " and "),
-                                    TextSpan(
-                                      text: "Privacy & Policy",
-                                      style: TextStyle(color: Colors.blue),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
                         const SizedBox(height: 30),
                         Column(
                           children: [
                             ElevatedButton(
-                              onPressed: () async {
-                                if (!_formKey.currentState!.validate()) return;
-
-                                if (!agree) {
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    const SnackBar(
-                                      content: Text("Please accept Terms & Conditions"),
-                                      duration: Duration(seconds: 2),
-                                    ),
-                                  );
-                                  return;
-                                }
-                                await registerUser();
-                              },
+                              onPressed: isLoading
+                                  ? null
+                                  : () async {
+                                      if (!_formKey.currentState!.validate()) return;
+                                      await registerUser();
+                                    },
                               style: ElevatedButton.styleFrom(
                                 minimumSize: const Size(double.infinity, 55),
                                 backgroundColor: const Color(0xFF2B7FD8),
@@ -466,14 +450,23 @@ class _RegisterState extends State<Register> {
                                   borderRadius: BorderRadius.circular(18),
                                 ),
                               ),
-                              child: Text(
-                                "Register",
-                                style: GoogleFonts.poppins(
-                                  fontSize: 15,
-                                  fontWeight: FontWeight.w300,
-                                  color: Colors.white,
-                                ),
-                              ),
+                              child: isLoading
+                                  ? const SizedBox(
+                                      height: 24,
+                                      width: 24,
+                                      child: CircularProgressIndicator(
+                                        color: Colors.white,
+                                        strokeWidth: 2.5,
+                                      ),
+                                    )
+                                  : Text(
+                                      "Register",
+                                      style: GoogleFonts.poppins(
+                                        fontSize: 15,
+                                        fontWeight: FontWeight.w500,
+                                        color: Colors.white,
+                                      ),
+                                    ),
                             ),
                             const SizedBox(height: 20),
 

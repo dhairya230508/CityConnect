@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'login.dart';
+import 'index.dart';
 import 'bottom_navigation_bar.dart';
 import 'searchable_city_field.dart';
 
@@ -199,9 +201,12 @@ class _ProfilePageState extends State<ProfilePage> {
           var data = query.docs.first.data() as Map<String, dynamic>;
           docId = query.docs.first.id;
 
+          String contact = data['Contact']?.toString() ?? '';
+          if (contact.length > 10) contact = contact.substring(0, 10);
+
           nameController.text = data['Name']?.toString() ?? '';
           emailController.text = data['Email']?.toString() ?? user.email ?? '';
-          phoneController.text = data['Contact']?.toString() ?? '';
+          phoneController.text = contact;
           cityController.text = data['City']?.toString() ?? '';
           wardController.text = data['Ward']?.toString() ?? '';
           pincodeController.text = data['Pincode']?.toString() ?? '';
@@ -220,9 +225,12 @@ class _ProfilePageState extends State<ProfilePage> {
             var data = doc.data() as Map<String, dynamic>;
             docId = doc.id;
 
+            String contact = data['Contact']?.toString() ?? '';
+            if (contact.length > 10) contact = contact.substring(0, 10);
+
             nameController.text = data['Name']?.toString() ?? '';
             emailController.text = data['Email']?.toString() ?? user.email ?? '';
-            phoneController.text = data['Contact']?.toString() ?? '';
+            phoneController.text = contact;
             cityController.text = data['City']?.toString() ?? '';
             wardController.text = data['Ward']?.toString() ?? '';
             pincodeController.text = data['Pincode']?.toString() ?? '';
@@ -257,10 +265,13 @@ class _ProfilePageState extends State<ProfilePage> {
       isUpdating = true;
     });
 
+    String contact = phoneController.text.trim();
+    if (contact.length > 10) contact = contact.substring(0, 10);
+
     try {
       final updateData = {
         "Name": nameController.text.trim(),
-        "Contact": phoneController.text.trim(),
+        "Contact": contact,
         "City": cityController.text.trim(),
         "Ward": wardController.text.trim(),
         "Pincode": pincodeController.text.trim(),
@@ -513,7 +524,13 @@ class _ProfilePageState extends State<ProfilePage> {
         elevation: 0.5,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_ios_new_rounded, color: Color(0xFF2563EB)),
-          onPressed: () => Navigator.pop(context),
+          onPressed: () {
+            Navigator.pushAndRemoveUntil(
+              context,
+              MaterialPageRoute(builder: (_) => const HomeScreen()),
+              (route) => false,
+            );
+          },
         ),
         title: Text(
           "My Profile",
@@ -604,6 +621,10 @@ class _ProfilePageState extends State<ProfilePage> {
                               label: "Mobile Number",
                               prefixIcon: Icons.phone,
                               keyboardType: TextInputType.phone,
+                              inputFormatters: [
+                                FilteringTextInputFormatter.digitsOnly,
+                                LengthLimitingTextInputFormatter(10),
+                              ],
                               validator: (value) {
                                 if (value == null || value.trim().isEmpty) {
                                   return "Mobile Number cannot be empty";
@@ -748,6 +769,7 @@ class PremiumTextField extends StatelessWidget {
   final IconData prefixIcon;
   final bool readOnly;
   final TextInputType keyboardType;
+  final List<TextInputFormatter>? inputFormatters;
   final String? Function(String?)? validator;
 
   const PremiumTextField({
@@ -757,6 +779,7 @@ class PremiumTextField extends StatelessWidget {
     required this.prefixIcon,
     this.readOnly = false,
     this.keyboardType = TextInputType.text,
+    this.inputFormatters,
     this.validator,
   });
 
@@ -778,6 +801,8 @@ class PremiumTextField extends StatelessWidget {
           controller: controller,
           readOnly: readOnly,
           keyboardType: keyboardType,
+          inputFormatters: inputFormatters,
+          maxLength: keyboardType == TextInputType.phone ? 10 : null,
           validator: validator,
           style: GoogleFonts.inter(
             fontSize: 15,
@@ -785,6 +810,7 @@ class PremiumTextField extends StatelessWidget {
             color: readOnly ? const Color(0xFF6B7280) : const Color(0xFF111827),
           ),
           decoration: InputDecoration(
+            counterText: "",
             filled: true,
             fillColor: readOnly ? const Color(0xFFF8FAFC) : Colors.white,
             prefixIcon: Icon(

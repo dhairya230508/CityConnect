@@ -11,6 +11,7 @@
 // ============================================================================
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -963,6 +964,7 @@ class PremiumTextField extends StatelessWidget {
   final IconData prefixIcon;
   final bool readOnly;
   final TextInputType keyboardType;
+  final List<TextInputFormatter>? inputFormatters;
   final int maxLines;
   final String? Function(String?)? validator;
 
@@ -973,6 +975,7 @@ class PremiumTextField extends StatelessWidget {
     required this.prefixIcon,
     this.readOnly = false,
     this.keyboardType = TextInputType.text,
+    this.inputFormatters,
     this.maxLines = 1,
     this.validator,
   });
@@ -996,6 +999,8 @@ class PremiumTextField extends StatelessWidget {
           controller: controller,
           readOnly: readOnly,
           keyboardType: keyboardType,
+          inputFormatters: inputFormatters,
+          maxLength: keyboardType == TextInputType.phone ? 10 : null,
           maxLines: maxLines,
           validator: validator,
           style: GoogleFonts.inter(
@@ -1004,6 +1009,7 @@ class PremiumTextField extends StatelessWidget {
             color: readOnly ? AppColors.textMuted : AppColors.primary,
           ),
           decoration: InputDecoration(
+            counterText: "",
             filled: true,
             fillColor: readOnly ? AppColors.background : Colors.white,
             prefixIcon: Icon(prefixIcon, color: AppColors.accent, size: 20),
