@@ -47,8 +47,8 @@ class _ComplaintPageState extends State<ComplaintPage> {
     final t = title.toLowerCase();
     if (t.contains("water")) return Icons.water_drop;
     if (t.contains("electric")) return Icons.bolt;
-    if (t.contains("sanitation") || t.contains("garbage")) {
-      return Icons.delete_outline;
+    if (t.contains("sanit") || t.contains("senit") || t.contains("garbage")) {
+      return Icons.cleaning_services;
     }
     if (t.contains("construction") || t.contains("road")) {
       return Icons.construction;

@@ -22,6 +22,19 @@ class _Index extends State<HomeScreen> {
 
   String? selectedDepartment;
 
+  IconData _getDepartmentIcon(String departmentName) {
+    final name = departmentName.toLowerCase();
+    if (name.contains("water")) return Icons.water_drop;
+    if (name.contains("electric")) return Icons.bolt;
+    if (name.contains("sanit") || name.contains("senit") || name.contains("garbage")) {
+      return Icons.cleaning_services;
+    }
+    if (name.contains("construct") || name.contains("road") || name.contains("engineer")) {
+      return Icons.construction;
+    }
+    return Icons.business;
+  }
+
   final TextEditingController nameController = TextEditingController();
   final TextEditingController phoneController = TextEditingController();
   final TextEditingController addressController = TextEditingController();
@@ -344,15 +357,42 @@ class _Index extends State<HomeScreen> {
                                     value: selectedDepartment,
                                     decoration: InputDecoration(
                                       labelText: "Select Department",
-                                      prefixIcon: const Icon(Icons.business),
+                                      prefixIcon: Icon(
+                                        selectedDepartment != null
+                                            ? _getDepartmentIcon(selectedDepartment!)
+                                            : Icons.business,
+                                        color: selectedDepartment != null
+                                            ? const Color(0xFF2563EB)
+                                            : Colors.grey,
+                                      ),
                                       border: OutlineInputBorder(
                                         borderRadius: BorderRadius.circular(16),
                                       ),
                                     ),
+                                    selectedItemBuilder: (BuildContext context) {
+                                      return snapshot.data!.docs.map((doc) {
+                                        return Text(
+                                          doc["DepartmentName"].toString(),
+                                        );
+                                      }).toList();
+                                    },
                                     items: snapshot.data!.docs.map((doc) {
+                                      final deptName = doc["DepartmentName"].toString();
+                                      final deptIcon = _getDepartmentIcon(deptName);
                                       return DropdownMenuItem<String>(
-                                        value: doc["DepartmentName"],
-                                        child: Text(doc["DepartmentName"]),
+                                        value: deptName,
+                                        child: Row(
+                                          mainAxisSize: MainAxisSize.min,
+                                          children: [
+                                            Icon(
+                                              deptIcon,
+                                              color: const Color(0xFF2563EB),
+                                              size: 20,
+                                            ),
+                                            const SizedBox(width: 10),
+                                            Text(deptName),
+                                          ],
+                                        ),
                                       );
                                     }).toList(),
                                     onChanged: (value) {

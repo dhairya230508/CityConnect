@@ -46,6 +46,8 @@ dependencies:
 #  cloudinary_api: ^1.1.1
   dio: ^5.10.0
   shared_preferences: ^2.5.5
+  pdf: ^3.13.0
+  printing: ^5.15.0
 
 
 

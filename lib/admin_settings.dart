@@ -38,7 +38,8 @@ class AppColors {
 // AdminSettings - main entry page
 // ---------------------------------------------------------------------------
 class AdminSettings extends StatefulWidget {
-  const AdminSettings({super.key});
+  final int previousIndex;
+  const AdminSettings({super.key, this.previousIndex = 0});
 
   @override
   State<AdminSettings> createState() => _AdminSettingsState();
@@ -403,7 +404,7 @@ class _AdminSettingsState extends State<AdminSettings>
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_ios_new_rounded,
               color: AppColors.primary),
-          onPressed: () => Navigator.pop(context),
+          onPressed: () => Navigator.pop(context, widget.previousIndex),
         ),
         title: Text(
           'Admin Console Settings',
@@ -459,18 +460,24 @@ class _AdminSettingsState extends State<AdminSettings>
         ),
       ),
       bottomNavigationBar: BottomNavigationBar(
-        currentIndex: 1,
+        currentIndex: 2,
         selectedItemColor: Colors.blue,
         unselectedItemColor: Colors.grey,
         onTap: (index) {
           if (index == 0) {
-            Navigator.pop(context);
+            Navigator.pop(context, 0);
+          } else if (index == 1) {
+            Navigator.pop(context, 1);
           }
         },
         items: const [
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
             label: "Home",
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.analytics),
+            label: "Reports",
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.settings),

@@ -3,6 +3,10 @@ import 'package:city_connect/admin_settings.dart';
 import 'profile.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:pdf/pdf.dart';
+import 'package:pdf/widgets.dart' as pw;
+import 'package:printing/printing.dart';
+import 'package:intl/intl.dart';
 
 
 
@@ -18,532 +22,541 @@ class _AdminDashboardPageState extends State<AdminDashboardPage> {
   String searchQuery = '';
   String selectedFilter = 'All';
   int currentIndex = 0;
+
+  DateTime? reportFromDate;
+  DateTime? reportToDate;
+  String reportSelectedCity = 'All Cities';
+  Map<String, String> userCities = {};
+  List<String> citiesList = [];
+
+  @override
+  void initState() {
+    super.initState();
+    _loadUserCities();
+    _loadCities();
+  }
+
+  Future<void> _loadUserCities() async {
+    try {
+      final querySnapshot = await FirebaseFirestore.instance.collection('UserDetails').get();
+      final Map<String, String> tempMap = {};
+      for (var doc in querySnapshot.docs) {
+        final data = doc.data();
+        final city = (data['City'] ?? '').toString();
+        tempMap[doc.id] = city;
+      }
+      if (mounted) {
+        setState(() {
+          userCities = tempMap;
+        });
+      }
+    } catch (e) {
+      debugPrint('Error loading user cities: $e');
+    }
+  }
+
+  Future<void> _loadCities() async {
+    try {
+      final querySnapshot = await FirebaseFirestore.instance.collection('CityDetails').get();
+      final list = querySnapshot.docs.map((doc) {
+        final data = doc.data();
+        return (data['CityName'] ?? '').toString().trim();
+      }).where((name) => name.isNotEmpty).toList();
+      
+      list.sort();
+      
+      if (mounted) {
+        setState(() {
+          citiesList = list;
+        });
+      }
+    } catch (e) {
+      debugPrint('Error loading cities: $e');
+    }
+  }
+
+  IconData _getDepartmentIcon(String title) {
+    final t = title.toLowerCase();
+    if (t.contains("water")) return Icons.water_drop;
+    if (t.contains("electric")) return Icons.bolt;
+    if (t.contains("sanit") || t.contains("senit") || t.contains("garbage")) {
+      return Icons.cleaning_services;
+    }
+    if (t.contains("construction") || t.contains("road")) {
+      return Icons.construction;
+    }
+    return Icons.report_outlined;
+  }
+
   @override
   void dispose() {
     searchController.dispose();
     super.dispose();
   }
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: const Color(0xFFF8FAFC),
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        elevation: 0.5,
-        centerTitle: false,
-        title: const Text(
-          'Admin Dashboard',
-          style: TextStyle(
-            color: Color(0xFF111827),
-            fontSize: 20,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-        iconTheme: const IconThemeData(color: Color(0xFF2563EB)),
-      ),
-      body: StreamBuilder<QuerySnapshot>(
-        stream: FirebaseFirestore.instance
-            .collection('ComplaintDescription')
-            .orderBy('CreatedAt', descending: true)
-            .snapshots(),
-        builder: (context, snapshot) {
-          if (snapshot.hasError) {
-            return const Center(
-              child: Text(
-                'Something went wrong',
-                style: TextStyle(color: Color(0xFF6B7280), fontSize: 14),
-              ),
-            );
-          }
+  Future<void> _exportToPdf(List<QueryDocumentSnapshot> docs) async {
+    final pdf = pw.Document();
 
-          if (!snapshot.hasData) {
-            return const Center(
-              child: CircularProgressIndicator(color: Color(0xFF2563EB)),
-            );
-          }
+    final headers = ['Date', 'Department', 'Citizen Info', 'City & Address', 'Status'];
 
-          List<QueryDocumentSnapshot> allDocs = snapshot.data!.docs;
+    final data = docs.map((doc) {
+      final map = doc.data() as Map<String, dynamic>;
+      
+      String dateText = 'N/A';
+      if (map['CreatedAt'] != null && map['CreatedAt'] is Timestamp) {
+        final date = (map['CreatedAt'] as Timestamp).toDate();
+        dateText = DateFormat('dd/MM/yyyy').format(date);
+      }
+      
+      final dept = (map['ProblemType'] ?? '').toString();
+      final citizenName = (map['Name'] ?? '').toString();
+      final citizenContact = (map['Contact'] ?? '').toString();
+      final citizenInfo = '$citizenName\n$citizenContact';
+      
+      final userId = (map['UserID'] ?? '').toString();
+      final city = userCities[userId] ?? 'N/A';
+      final address = (map['Address'] ?? '').toString();
+      final locationInfo = 'City: $city\n$address';
+      
+      final status = (map['ComplaintStatus'] ?? 'Pending').toString();
+      
+      return [dateText, dept, citizenInfo, locationInfo, status];
+    }).toList();
 
-          // ------------------ Count totals ------------------
-          int totalCount = allDocs.length;
-          int pendingCount = 0;
-          int inProgressCount = 0;
-          int resolvedCount = 0;
-
-          for (var doc in allDocs) {
-            Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
-            String status = (data['ComplaintStatus'] ?? '').toString();
-
-            if (status == 'Pending') {
-              pendingCount = pendingCount + 1;
-            } else if (status == 'In Progress') {
-              inProgressCount = inProgressCount + 1;
-            } else if (status == 'Resolved') {
-              resolvedCount = resolvedCount + 1;
-            }
-          }
-
-          // ------------------ Apply filter chip ------------------
-          List<QueryDocumentSnapshot> filteredDocs = [];
-          for (var doc in allDocs) {
-            Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
-            String status = (data['ComplaintStatus'] ?? '').toString();
-
-            if (selectedFilter == 'All' || status == selectedFilter) {
-              filteredDocs.add(doc);
-            }
-          }
-
-          // ------------------ Apply search ------------------
-          if (searchQuery.trim().isNotEmpty) {
-            String query = searchQuery.toLowerCase();
-            List<QueryDocumentSnapshot> searchedDocs = [];
-
-            for (var doc in filteredDocs) {
-              Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
-              String name = (data['Name'] ?? '').toString().toLowerCase();
-              String problemType =
-              (data['ProblemType'] ?? '').toString().toLowerCase();
-              String address =
-              (data['Address'] ?? '').toString().toLowerCase();
-
-              if (name.contains(query) ||
-                  problemType.contains(query) ||
-                  address.contains(query)) {
-                searchedDocs.add(doc);
-              }
-            }
-
-            filteredDocs = searchedDocs;
-          }
-
-          return Column(
-            children: [
-              // ================= Dashboard Cards =================
-              Padding(
-                padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
-                child: Column(
-                  children: [
-                    Row(
-                      children: [
-                        // ---- Total Complaints card ----
-                        Expanded(
-                          child: Container(
-                            padding: const EdgeInsets.all(16),
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(16),
-                              border: Border.all(color: const Color(0xFFE5E7EB)),
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Colors.black.withOpacity(0.05),
-                                  blurRadius: 10,
-                                  offset: const Offset(0, 4),
-                                ),
-                              ],
-                            ),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                const Icon(Icons.list_alt_rounded,
-                                    color: Color(0xFF2563EB), size: 26),
-                                const SizedBox(height: 10),
-                                Text(
-                                  totalCount.toString(),
-                                  style: const TextStyle(
-                                    fontSize: 24,
-                                    fontWeight: FontWeight.bold,
-                                    color: Color(0xFF111827),
-                                  ),
-                                ),
-                                const SizedBox(height: 4),
-                                const Text(
-                                  'Total Complaints',
-                                  style: TextStyle(
-                                    fontSize: 12,
-                                    color: Color(0xFF6B7280),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                        const SizedBox(width: 12),
-                        // ---- Pending card ----
-                        Expanded(
-                          child: Container(
-                            padding: const EdgeInsets.all(16),
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(16),
-                              border: Border.all(color: const Color(0xFFE5E7EB)),
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Colors.black.withOpacity(0.05),
-                                  blurRadius: 10,
-                                  offset: const Offset(0, 4),
-                                ),
-                              ],
-                            ),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                const Icon(Icons.hourglass_empty_rounded,
-                                    color: Color(0xFFF59E0B), size: 26),
-                                const SizedBox(height: 10),
-                                Text(
-                                  pendingCount.toString(),
-                                  style: const TextStyle(
-                                    fontSize: 24,
-                                    fontWeight: FontWeight.bold,
-                                    color: Color(0xFF111827),
-                                  ),
-                                ),
-                                const SizedBox(height: 4),
-                                const Text(
-                                  'Pending',
-                                  style: TextStyle(
-                                    fontSize: 12,
-                                    color: Color(0xFF6B7280),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ],
+    pdf.addPage(
+      pw.MultiPage(
+        pageFormat: PdfPageFormat.a4,
+        margin: const pw.EdgeInsets.all(32),
+        build: (pw.Context context) {
+          return [
+            pw.Header(
+              level: 0,
+              child: pw.Row(
+                mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
+                children: [
+                  pw.Text(
+                    'CityConnect - Complaints Report',
+                    style: pw.TextStyle(
+                      fontSize: 22,
+                      fontWeight: pw.FontWeight.bold,
+                      color: PdfColors.blue800,
                     ),
-                    const SizedBox(height: 12),
-                    Row(
-                      children: [
-                        // ---- In Progress card ----
-                        Expanded(
-                          child: Container(
-                            padding: const EdgeInsets.all(16),
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(16),
-                              border: Border.all(color: const Color(0xFFE5E7EB)),
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Colors.black.withOpacity(0.05),
-                                  blurRadius: 10,
-                                  offset: const Offset(0, 4),
-                                ),
-                              ],
-                            ),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                const Icon(Icons.autorenew_rounded,
-                                    color: Color(0xFF3B82F6), size: 26),
-                                const SizedBox(height: 10),
-                                Text(
-                                  inProgressCount.toString(),
-                                  style: const TextStyle(
-                                    fontSize: 24,
-                                    fontWeight: FontWeight.bold,
-                                    color: Color(0xFF111827),
-                                  ),
-                                ),
-                                const SizedBox(height: 4),
-                                const Text(
-                                  'In Progress',
-                                  style: TextStyle(
-                                    fontSize: 12,
-                                    color: Color(0xFF6B7280),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                        const SizedBox(width: 12),
-                        // ---- Resolved card ----
-                        Expanded(
-                          child: Container(
-                            padding: const EdgeInsets.all(16),
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(16),
-                              border: Border.all(color: const Color(0xFFE5E7EB)),
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Colors.black.withOpacity(0.05),
-                                  blurRadius: 10,
-                                  offset: const Offset(0, 4),
-                                ),
-                              ],
-                            ),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                const Icon(Icons.check_circle_outline_rounded,
-                                    color: Color(0xFF22C55E), size: 26),
-                                const SizedBox(height: 10),
-                                Text(
-                                  resolvedCount.toString(),
-                                  style: const TextStyle(
-                                    fontSize: 24,
-                                    fontWeight: FontWeight.bold,
-                                    color: Color(0xFF111827),
-                                  ),
-                                ),
-                                const SizedBox(height: 4),
-                                const Text(
-                                  'Resolved',
-                                  style: TextStyle(
-                                    fontSize: 12,
-                                    color: Color(0xFF6B7280),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-
-
-
-              Padding(
-                padding: const EdgeInsets.fromLTRB(16, 4, 16, 8),
-                child: Row(
-                  children: [
-                    // ---- All chip ----
-                    Expanded(
-                      child: GestureDetector(
-                        onTap: () {
-                          setState(() {
-                            selectedFilter = 'All';
-                          });
-                        },
-                        child: AnimatedContainer(
-                          duration: const Duration(milliseconds: 200),
-                          margin: const EdgeInsets.only(right: 6),
-                          padding: const EdgeInsets.symmetric(vertical: 10),
-                          alignment: Alignment.center,
-                          decoration: BoxDecoration(
-                            color: selectedFilter == 'All'
-                                ? const Color(0xFF2563EB)
-                                : Colors.white,
-                            borderRadius: BorderRadius.circular(20),
-                            border: Border.all(
-                              color: selectedFilter == 'All'
-                                  ? const Color(0xFF2563EB)
-                                  : const Color(0xFFE5E7EB),
-                            ),
-                          ),
-                          child: Text(
-                            'All',
-                            style: TextStyle(
-                              fontSize: 13,
-                              fontWeight: FontWeight.w600,
-                              color: selectedFilter == 'All'
-                                  ? Colors.white
-                                  : const Color(0xFF6B7280),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                    // ---- Pending chip ----
-                    Expanded(
-                      child: GestureDetector(
-                        onTap: () {
-                          setState(() {
-                            selectedFilter = 'Pending';
-                          });
-                        },
-                        child: AnimatedContainer(
-                          duration: const Duration(milliseconds: 200),
-                          margin: const EdgeInsets.symmetric(horizontal: 6),
-                          padding: const EdgeInsets.symmetric(vertical: 10),
-                          alignment: Alignment.center,
-                          decoration: BoxDecoration(
-                            color: selectedFilter == 'Pending'
-                                ? const Color(0xFF2563EB)
-                                : Colors.white,
-                            borderRadius: BorderRadius.circular(20),
-                            border: Border.all(
-                              color: selectedFilter == 'Pending'
-                                  ? const Color(0xFF2563EB)
-                                  : const Color(0xFFE5E7EB),
-                            ),
-                          ),
-                          child: Text(
-                            'Pending',
-                            style: TextStyle(
-                              fontSize: 13,
-                              fontWeight: FontWeight.w600,
-                              color: selectedFilter == 'Pending'
-                                  ? Colors.white
-                                  : const Color(0xFF6B7280),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                    // ---- In Progress chip ----
-                    Expanded(
-                      child: GestureDetector(
-                        onTap: () {
-                          setState(() {
-                            selectedFilter = 'In Progress';
-                          });
-                        },
-                        child: AnimatedContainer(
-                          duration: const Duration(milliseconds: 200),
-                          margin: const EdgeInsets.symmetric(horizontal: 6),
-                          padding: const EdgeInsets.symmetric(vertical: 10),
-                          alignment: Alignment.center,
-                          decoration: BoxDecoration(
-                            color: selectedFilter == 'In Progress'
-                                ? const Color(0xFF2563EB)
-                                : Colors.white,
-                            borderRadius: BorderRadius.circular(20),
-                            border: Border.all(
-                              color: selectedFilter == 'In Progress'
-                                  ? const Color(0xFF2563EB)
-                                  : const Color(0xFFE5E7EB),
-                            ),
-                          ),
-                          child: Text(
-                            'In Progress',
-                            style: TextStyle(
-                              fontSize: 13,
-                              fontWeight: FontWeight.w600,
-                              color: selectedFilter == 'In Progress'
-                                  ? Colors.white
-                                  : const Color(0xFF6B7280),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                    // ---- Resolved chip ----
-                    Expanded(
-                      child: GestureDetector(
-                        onTap: () {
-                          setState(() {
-                            selectedFilter = 'Resolved';
-                          });
-                        },
-                        child: AnimatedContainer(
-                          duration: const Duration(milliseconds: 200),
-                          margin: const EdgeInsets.only(left: 6),
-                          padding: const EdgeInsets.symmetric(vertical: 10),
-                          alignment: Alignment.center,
-                          decoration: BoxDecoration(
-                            color: selectedFilter == 'Resolved'
-                                ? const Color(0xFF2563EB)
-                                : Colors.white,
-                            borderRadius: BorderRadius.circular(20),
-                            border: Border.all(
-                              color: selectedFilter == 'Resolved'
-                                  ? const Color(0xFF2563EB)
-                                  : const Color(0xFFE5E7EB),
-                            ),
-                          ),
-                          child: Text(
-                            'Resolved',
-                            style: TextStyle(
-                              fontSize: 13,
-                              fontWeight: FontWeight.w600,
-                              color: selectedFilter == 'Resolved'
-                                  ? Colors.white
-                                  : const Color(0xFF6B7280),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-
-              // ================= Complaint List =================
-              Expanded(
-                child: filteredDocs.isEmpty
-                    ? const Center(
-                  child: Text(
-                    'No complaints found',
-                    style:
-                    TextStyle(color: Color(0xFF6B7280), fontSize: 14),
                   ),
-                )
-                    : ListView.builder(
-                  padding: const EdgeInsets.fromLTRB(16, 4, 16, 16),
-                  itemCount: filteredDocs.length,
-                  itemBuilder: (context, index) {
-                    QueryDocumentSnapshot doc = filteredDocs[index];
-                    Map<String, dynamic> data =
-                    doc.data() as Map<String, dynamic>;
+                  pw.Text(
+                    DateFormat('dd/MM/yyyy HH:mm').format(DateTime.now()),
+                    style: const pw.TextStyle(
+                      fontSize: 10,
+                      color: PdfColors.grey600,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            pw.SizedBox(height: 16),
+            
+            pw.Container(
+              padding: const pw.EdgeInsets.all(10),
+              decoration: pw.BoxDecoration(
+                color: PdfColors.grey100,
+                borderRadius: pw.BorderRadius.circular(6),
+              ),
+              child: pw.Column(
+                crossAxisAlignment: pw.CrossAxisAlignment.start,
+                children: [
+                  pw.Text(
+                    'Filter Criteria:',
+                    style: pw.TextStyle(fontWeight: pw.FontWeight.bold, fontSize: 12),
+                  ),
+                  pw.SizedBox(height: 4),
+                  pw.Row(
+                    children: [
+                      pw.Text(
+                        'Date Range: ',
+                        style: pw.TextStyle(fontWeight: pw.FontWeight.bold, fontSize: 10),
+                      ),
+                      pw.Text(
+                        reportFromDate != null && reportToDate != null
+                            ? '${DateFormat('dd/MM/yyyy').format(reportFromDate!)} to ${DateFormat('dd/MM/yyyy').format(reportToDate!)}'
+                            : 'All Time',
+                        style: const pw.TextStyle(fontSize: 10),
+                      ),
+                      pw.SizedBox(width: 20),
+                      pw.Text(
+                        'City: ',
+                        style: pw.TextStyle(fontWeight: pw.FontWeight.bold, fontSize: 10),
+                      ),
+                      pw.Text(
+                        reportSelectedCity,
+                        style: const pw.TextStyle(fontSize: 10),
+                      ),
+                      pw.SizedBox(width: 20),
+                      pw.Text(
+                        'Total Complaints: ',
+                        style: pw.TextStyle(fontWeight: pw.FontWeight.bold, fontSize: 10),
+                      ),
+                      pw.Text(
+                        '${docs.length}',
+                        style: const pw.TextStyle(fontSize: 10),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+            pw.SizedBox(height: 20),
 
-                    String name = (data['Name'] ?? '').toString();
-                    String contact = (data['Contact'] ?? '').toString();
-                    String address = (data['Address'] ?? '').toString();
-                    String problemType =
-                    (data['ProblemType'] ?? '').toString();
-                    String status =
-                    (data['ComplaintStatus'] ?? 'Pending').toString();
+            pw.TableHelper.fromTextArray(
+              headers: headers,
+              data: data,
+              border: pw.TableBorder.all(color: PdfColors.grey300, width: 0.5),
+              headerStyle: pw.TextStyle(fontWeight: pw.FontWeight.bold, fontSize: 10, color: PdfColors.white),
+              headerDecoration: const pw.BoxDecoration(color: PdfColors.blue800),
+              cellStyle: const pw.TextStyle(fontSize: 9),
+              cellPadding: const pw.EdgeInsets.symmetric(horizontal: 6, vertical: 6),
+              columnWidths: {
+                0: const pw.FlexColumnWidth(1.2),
+                1: const pw.FlexColumnWidth(1.8),
+                2: const pw.FlexColumnWidth(2.5),
+                3: const pw.FlexColumnWidth(3.5),
+                4: const pw.FlexColumnWidth(1.2),
+              },
+            ),
+          ];
+        },
+      ),
+    );
 
-                    String dateText = '';
-                    if (data['CreatedAt'] != null &&
-                        data['CreatedAt'] is Timestamp) {
-                      DateTime date =
-                      (data['CreatedAt'] as Timestamp).toDate();
-                      dateText =
-                      '${date.day.toString().padLeft(2, '0')}/${date.month.toString().padLeft(2, '0')}/${date.year}';
-                    }
+    await Printing.layoutPdf(
+      onLayout: (PdfPageFormat format) async => pdf.save(),
+      name: 'CityConnect_Complaints_Report_${DateFormat('yyyyMMdd').format(DateTime.now())}.pdf',
+    );
+  }
 
-                    String imageUrl = (data['ImageUrl'] ?? data['imageUrl'] ?? data['image'] ?? '').toString();
+  Widget _buildReportsBody() {
+    return StreamBuilder<QuerySnapshot>(
+      stream: FirebaseFirestore.instance
+          .collection('ComplaintDescription')
+          .orderBy('CreatedAt', descending: true)
+          .snapshots(),
+      builder: (context, snapshot) {
+        if (snapshot.hasError) {
+          return const Center(
+            child: Text(
+              'Something went wrong',
+              style: TextStyle(color: Color(0xFF6B7280), fontSize: 14),
+            ),
+          );
+        }
 
-                    Color statusColor = const Color(0xFFF59E0B);
-                    if (status == 'In Progress') {
-                      statusColor = const Color(0xFF3B82F6);
-                    } else if (status == 'Resolved') {
-                      statusColor = const Color(0xFF22C55E);
-                    }
+        if (!snapshot.hasData) {
+          return const Center(
+            child: CircularProgressIndicator(color: Color(0xFF2563EB)),
+          );
+        }
 
-                    return Padding(
-                      padding: const EdgeInsets.only(bottom: 12),
-                      child: Material(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(16),
-                        child: InkWell(
-                          borderRadius: BorderRadius.circular(16),
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => ComplaintDetailsPage(
-                                  complaintId: doc.id,
-                                  name: name,
-                                  contact: contact,
-                                  address: address,
-                                  problemType: problemType,
-                                  complaintDescription:
-                                  (data['ComplaintDescription'] ?? '')
-                                      .toString(),
-                                  currentStatus: status,
-                                  dateText: dateText,
-                                  imageUrl: imageUrl,
-                                ),
+        List<QueryDocumentSnapshot> allDocs = snapshot.data!.docs;
+
+        List<QueryDocumentSnapshot> filteredDocs = allDocs.where((doc) {
+          final data = doc.data() as Map<String, dynamic>;
+
+          DateTime? createdAt;
+          if (data['CreatedAt'] != null && data['CreatedAt'] is Timestamp) {
+            createdAt = (data['CreatedAt'] as Timestamp).toDate();
+          }
+
+          if (reportFromDate != null && createdAt != null) {
+            final startOfFrom = DateTime(reportFromDate!.year, reportFromDate!.month, reportFromDate!.day);
+            if (createdAt.isBefore(startOfFrom)) return false;
+          }
+          if (reportToDate != null && createdAt != null) {
+            final endOfTo = DateTime(reportToDate!.year, reportToDate!.month, reportToDate!.day, 23, 59, 59, 999);
+            if (createdAt.isAfter(endOfTo)) return false;
+          }
+
+          if (reportSelectedCity != 'All Cities') {
+            final userId = (data['UserID'] ?? '').toString();
+            final userCity = userCities[userId] ?? '';
+            final address = (data['Address'] ?? '').toString();
+
+            final queryCity = reportSelectedCity.toLowerCase().trim();
+            final matchesUserCity = userCity.toLowerCase().trim() == queryCity;
+            final matchesAddress = address.toLowerCase().contains(queryCity);
+
+            if (!matchesUserCity && !matchesAddress) return false;
+          }
+
+          return true;
+        }).toList();
+
+        return Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(16),
+              child: Container(
+                padding: const EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(16),
+                  border: Border.all(color: const Color(0xFFE5E7EB)),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withOpacity(0.04),
+                      blurRadius: 10,
+                      offset: const Offset(0, 4),
+                    ),
+                  ],
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text(
+                      'FILTER COMPLAINTS',
+                      style: TextStyle(
+                        fontSize: 12,
+                        fontWeight: FontWeight.bold,
+                        color: Color(0xFF6B7280),
+                        letterSpacing: 0.8,
+                      ),
+                    ),
+                    const SizedBox(height: 14),
+
+                    Row(
+                      children: [
+                        Expanded(
+                          child: InkWell(
+                            onTap: () async {
+                              final picked = await showDatePicker(
+                                context: context,
+                                initialDate: reportFromDate ?? DateTime.now(),
+                                firstDate: DateTime(2020),
+                                lastDate: DateTime(2100),
+                              );
+                              if (picked != null) {
+                                setState(() {
+                                  reportFromDate = picked;
+                                });
+                              }
+                            },
+                            child: Container(
+                              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
+                              decoration: BoxDecoration(
+                                color: const Color(0xFFF9FAFB),
+                                borderRadius: BorderRadius.circular(10),
+                                border: Border.all(color: const Color(0xFFE5E7EB)),
                               ),
-                            );
+                              child: Row(
+                                children: [
+                                  const Icon(Icons.calendar_today_rounded, size: 16, color: Color(0xFF2563EB)),
+                                  const SizedBox(width: 8),
+                                  Expanded(
+                                    child: Text(
+                                      reportFromDate == null
+                                          ? 'From Date'
+                                          : DateFormat('dd/MM/yyyy').format(reportFromDate!),
+                                      style: TextStyle(
+                                        fontSize: 13,
+                                        color: reportFromDate == null ? const Color(0xFF9CA3AF) : const Color(0xFF111827),
+                                        fontWeight: reportFromDate == null ? FontWeight.normal : FontWeight.w500,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(width: 12),
+                        Expanded(
+                          child: InkWell(
+                            onTap: () async {
+                              final picked = await showDatePicker(
+                                context: context,
+                                initialDate: reportToDate ?? DateTime.now(),
+                                firstDate: DateTime(2020),
+                                lastDate: DateTime(2100),
+                              );
+                              if (picked != null) {
+                                setState(() {
+                                  reportToDate = picked;
+                                });
+                              }
+                            },
+                            child: Container(
+                              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
+                              decoration: BoxDecoration(
+                                color: const Color(0xFFF9FAFB),
+                                borderRadius: BorderRadius.circular(10),
+                                border: Border.all(color: const Color(0xFFE5E7EB)),
+                              ),
+                              child: Row(
+                                children: [
+                                  const Icon(Icons.calendar_today_rounded, size: 16, color: Color(0xFF2563EB)),
+                                  const SizedBox(width: 8),
+                                  Expanded(
+                                    child: Text(
+                                      reportToDate == null
+                                          ? 'To Date'
+                                          : DateFormat('dd/MM/yyyy').format(reportToDate!),
+                                      style: TextStyle(
+                                        fontSize: 13,
+                                        color: reportToDate == null ? const Color(0xFF9CA3AF) : const Color(0xFF111827),
+                                        fontWeight: reportToDate == null ? FontWeight.normal : FontWeight.w500,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+
+                    if (reportFromDate != null || reportToDate != null) ...[
+                      const SizedBox(height: 8),
+                      Align(
+                        alignment: Alignment.centerRight,
+                        child: TextButton.icon(
+                          onPressed: () {
+                            setState(() {
+                              reportFromDate = null;
+                              reportToDate = null;
+                            });
                           },
+                          icon: const Icon(Icons.clear, size: 14, color: Color(0xFFEF4444)),
+                          label: const Text(
+                            'Clear Dates',
+                            style: TextStyle(color: Color(0xFFEF4444), fontSize: 12),
+                          ),
+                        ),
+                      ),
+                    ],
+
+                    const SizedBox(height: 14),
+
+                    DropdownButtonFormField<String>(
+                      value: reportSelectedCity,
+                      decoration: InputDecoration(
+                        labelText: 'Select City',
+                        labelStyle: const TextStyle(fontSize: 12, color: Color(0xFF6B7280)),
+                        filled: true,
+                        fillColor: const Color(0xFFF9FAFB),
+                        contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                          borderSide: const BorderSide(color: Color(0xFFE5E7EB)),
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                          borderSide: const BorderSide(color: Color(0xFFE5E7EB)),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                          borderSide: const BorderSide(color: Color(0xFF2563EB)),
+                        ),
+                      ),
+                      items: [
+                        const DropdownMenuItem(
+                          value: 'All Cities',
+                          child: Text('All Cities', style: TextStyle(fontSize: 14)),
+                        ),
+                        ...citiesList.map((cityName) => DropdownMenuItem(
+                          value: cityName,
+                          child: Text(cityName, style: const TextStyle(fontSize: 14)),
+                        )),
+                      ],
+                      onChanged: (value) {
+                        setState(() {
+                          reportSelectedCity = value!;
+                        });
+                      },
+                    ),
+                  ],
+                ),
+              ),
+            ),
+
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    '${filteredDocs.length} complaints found',
+                    style: const TextStyle(
+                      fontSize: 13,
+                      fontWeight: FontWeight.w600,
+                      color: Color(0xFF4B5563),
+                    ),
+                  ),
+                  ElevatedButton.icon(
+                    onPressed: filteredDocs.isEmpty
+                        ? null
+                        : () => _exportToPdf(filteredDocs),
+                    icon: const Icon(Icons.picture_as_pdf, size: 18, color: Colors.white),
+                    label: const Text(
+                      'Export PDF',
+                      style: TextStyle(color: Colors.white, fontSize: 13, fontWeight: FontWeight.bold),
+                    ),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: const Color(0xFF22C55E),
+                      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(height: 12),
+
+            Expanded(
+              child: filteredDocs.isEmpty
+                  ? const Center(
+                      child: Text(
+                        'No complaints match the filters',
+                        style: TextStyle(color: Color(0xFF6B7280), fontSize: 14),
+                      ),
+                    )
+                  : ListView.builder(
+                      padding: const EdgeInsets.fromLTRB(16, 4, 16, 16),
+                      itemCount: filteredDocs.length,
+                      itemBuilder: (context, index) {
+                        QueryDocumentSnapshot doc = filteredDocs[index];
+                        Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
+
+                        String name = (data['Name'] ?? '').toString();
+                        String contact = (data['Contact'] ?? '').toString();
+                        String address = (data['Address'] ?? '').toString();
+                        String problemType = (data['ProblemType'] ?? '').toString();
+                        String status = (data['ComplaintStatus'] ?? 'Pending').toString();
+                        String userId = (data['UserID'] ?? '').toString();
+                        String city = userCities[userId] ?? 'N/A';
+
+                        String dateText = '';
+                        if (data['CreatedAt'] != null && data['CreatedAt'] is Timestamp) {
+                          DateTime date = (data['CreatedAt'] as Timestamp).toDate();
+                          dateText = DateFormat('dd/MM/yyyy').format(date);
+                        }
+
+                        String imageUrl = (data['ImageUrl'] ?? data['imageUrl'] ?? data['image'] ?? '').toString();
+
+                        Color statusColor = const Color(0xFFF59E0B);
+                        if (status == 'In Progress') {
+                          statusColor = const Color(0xFF3B82F6);
+                        } else if (status == 'Resolved') {
+                          statusColor = const Color(0xFF22C55E);
+                        }
+
+                        return Padding(
+                          padding: const EdgeInsets.only(bottom: 12),
                           child: Container(
                             padding: const EdgeInsets.all(16),
                             decoration: BoxDecoration(
                               color: Colors.white,
                               borderRadius: BorderRadius.circular(16),
-                              border:
-                              Border.all(color: const Color(0xFFE5E7EB)),
+                              border: Border.all(color: const Color(0xFFE5E7EB)),
                               boxShadow: [
                                 BoxShadow(
                                   color: Colors.black.withOpacity(0.04),
@@ -554,10 +567,23 @@ class _AdminDashboardPageState extends State<AdminDashboardPage> {
                             ),
                             child: Row(
                               children: [
+                                Container(
+                                  width: 44,
+                                  height: 44,
+                                  decoration: BoxDecoration(
+                                    color: Colors.grey.shade100,
+                                    shape: BoxShape.circle,
+                                  ),
+                                  child: Icon(
+                                    _getDepartmentIcon(problemType),
+                                    color: Colors.black87,
+                                    size: 20,
+                                  ),
+                                ),
+                                const SizedBox(width: 12),
                                 Expanded(
                                   child: Column(
-                                    crossAxisAlignment:
-                                    CrossAxisAlignment.start,
+                                    crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
                                       Text(
                                         problemType,
@@ -569,101 +595,743 @@ class _AdminDashboardPageState extends State<AdminDashboardPage> {
                                       ),
                                       const SizedBox(height: 6),
                                       Text(
-                                        name,
-                                        style: const TextStyle(
-                                          fontSize: 13,
-                                          color: Color(0xFF6B7280),
-                                        ),
+                                        'Citizen: $name ($contact)',
+                                        style: const TextStyle(fontSize: 13, color: Color(0xFF6B7280)),
                                       ),
                                       const SizedBox(height: 2),
                                       Text(
-                                        contact,
-                                        style: const TextStyle(
-                                          fontSize: 13,
-                                          color: Color(0xFF6B7280),
-                                        ),
+                                        'City: $city',
+                                        style: const TextStyle(fontSize: 13, color: Color(0xFF111827), fontWeight: FontWeight.w500),
                                       ),
                                       const SizedBox(height: 2),
                                       Text(
                                         address,
                                         maxLines: 1,
                                         overflow: TextOverflow.ellipsis,
-                                        style: const TextStyle(
-                                          fontSize: 13,
-                                          color: Color(0xFF6B7280),
-                                        ),
+                                        style: const TextStyle(fontSize: 13, color: Color(0xFF6B7280)),
                                       ),
                                       const SizedBox(height: 8),
                                       Text(
                                         dateText,
-                                        style: const TextStyle(
-                                          fontSize: 12,
-                                          color: Color(0xFF9CA3AF),
-                                        ),
+                                        style: const TextStyle(fontSize: 12, color: Color(0xFF9CA3AF)),
                                       ),
                                     ],
                                   ),
                                 ),
-                                Column(
-                                  mainAxisAlignment:
-                                  MainAxisAlignment.spaceBetween,
-                                  crossAxisAlignment:
-                                  CrossAxisAlignment.end,
-                                  children: [
-                                    Container(
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 10, vertical: 5),
-                                      decoration: BoxDecoration(
-                                        color:
-                                        statusColor.withOpacity(0.12),
-                                        borderRadius:
-                                        BorderRadius.circular(20),
-                                      ),
-                                      child: Text(
-                                        status,
-                                        style: TextStyle(
-                                          fontSize: 11,
-                                          fontWeight: FontWeight.w600,
-                                          color: statusColor,
-                                        ),
-                                      ),
+                                Container(
+                                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                                  decoration: BoxDecoration(
+                                    color: statusColor.withOpacity(0.12),
+                                    borderRadius: BorderRadius.circular(20),
+                                  ),
+                                  child: Text(
+                                    status,
+                                    style: TextStyle(
+                                      fontSize: 11,
+                                      fontWeight: FontWeight.w600,
+                                      color: statusColor,
                                     ),
-                                    const SizedBox(height: 24),
-                                    const Icon(
-                                      Icons.arrow_forward_ios_rounded,
-                                      size: 14,
-                                      color: Color(0xFF9CA3AF),
-                                    ),
-                                  ],
+                                  ),
                                 ),
                               ],
                             ),
                           ),
+                        );
+                      },
+                    ),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  Widget _buildDashboardBody() {
+    return StreamBuilder<QuerySnapshot>(
+      stream: FirebaseFirestore.instance
+          .collection('ComplaintDescription')
+          .orderBy('CreatedAt', descending: true)
+          .snapshots(),
+      builder: (context, snapshot) {
+        if (snapshot.hasError) {
+          return const Center(
+            child: Text(
+              'Something went wrong',
+              style: TextStyle(color: Color(0xFF6B7280), fontSize: 14),
+            ),
+          );
+        }
+
+        if (!snapshot.hasData) {
+          return const Center(
+            child: CircularProgressIndicator(color: Color(0xFF2563EB)),
+          );
+        }
+
+        List<QueryDocumentSnapshot> allDocs = snapshot.data!.docs;
+
+        // ------------------ Count totals ------------------
+        int totalCount = allDocs.length;
+        int pendingCount = 0;
+        int inProgressCount = 0;
+        int resolvedCount = 0;
+
+        for (var doc in allDocs) {
+          Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
+          String status = (data['ComplaintStatus'] ?? '').toString();
+
+          if (status == 'Pending') {
+            pendingCount = pendingCount + 1;
+          } else if (status == 'In Progress') {
+            inProgressCount = inProgressCount + 1;
+          } else if (status == 'Resolved') {
+            resolvedCount = resolvedCount + 1;
+          }
+        }
+
+        // ------------------ Apply filter chip ------------------
+        List<QueryDocumentSnapshot> filteredDocs = [];
+        for (var doc in allDocs) {
+          Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
+          String status = (data['ComplaintStatus'] ?? '').toString();
+
+          if (selectedFilter == 'All' || status == selectedFilter) {
+            filteredDocs.add(doc);
+          }
+        }
+
+        // ------------------ Apply search ------------------
+        if (searchQuery.trim().isNotEmpty) {
+          String query = searchQuery.toLowerCase();
+          List<QueryDocumentSnapshot> searchedDocs = [];
+
+          for (var doc in filteredDocs) {
+            Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
+            String name = (data['Name'] ?? '').toString().toLowerCase();
+            String problemType =
+            (data['ProblemType'] ?? '').toString().toLowerCase();
+            String address =
+            (data['Address'] ?? '').toString().toLowerCase();
+
+            if (name.contains(query) ||
+                problemType.contains(query) ||
+                address.contains(query)) {
+              searchedDocs.add(doc);
+            }
+          }
+
+          filteredDocs = searchedDocs;
+        }
+
+        return Column(
+          children: [
+            // ================= Dashboard Cards =================
+            Padding(
+              padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
+              child: Column(
+                children: [
+                  Row(
+                    children: [
+                      // ---- Total Complaints card ----
+                      Expanded(
+                        child: Container(
+                          padding: const EdgeInsets.all(16),
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(16),
+                            border: Border.all(color: const Color(0xFFE5E7EB)),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black.withOpacity(0.05),
+                                blurRadius: 10,
+                                offset: const Offset(0, 4),
+                              ),
+                            ],
+                          ),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const Icon(Icons.list_alt_rounded,
+                                  color: Color(0xFF2563EB), size: 26),
+                              const SizedBox(height: 10),
+                              Text(
+                                totalCount.toString(),
+                                style: const TextStyle(
+                                  fontSize: 24,
+                                  fontWeight: FontWeight.bold,
+                                  color: Color(0xFF111827),
+                                ),
+                              ),
+                              const SizedBox(height: 4),
+                              const Text(
+                                'Total Complaints',
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  color: Color(0xFF6B7280),
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
                       ),
-                    );
+                      const SizedBox(width: 12),
+                      // ---- Pending card ----
+                      Expanded(
+                        child: Container(
+                          padding: const EdgeInsets.all(16),
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(16),
+                            border: Border.all(color: const Color(0xFFE5E7EB)),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black.withOpacity(0.05),
+                                blurRadius: 10,
+                                offset: const Offset(0, 4),
+                              ),
+                            ],
+                          ),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const Icon(Icons.hourglass_empty_rounded,
+                                  color: Color(0xFFF59E0B), size: 26),
+                              const SizedBox(height: 10),
+                              Text(
+                                pendingCount.toString(),
+                                style: const TextStyle(
+                                  fontSize: 24,
+                                  fontWeight: FontWeight.bold,
+                                  color: Color(0xFF111827),
+                                ),
+                              ),
+                              const SizedBox(height: 4),
+                              const Text(
+                                'Pending',
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  color: Color(0xFF6B7280),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 12),
+                  Row(
+                    children: [
+                      // ---- In Progress card ----
+                      Expanded(
+                        child: Container(
+                          padding: const EdgeInsets.all(16),
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(16),
+                            border: Border.all(color: const Color(0xFFE5E7EB)),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black.withOpacity(0.05),
+                                blurRadius: 10,
+                                offset: const Offset(0, 4),
+                              ),
+                            ],
+                          ),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const Icon(Icons.autorenew_rounded,
+                                  color: Color(0xFF3B82F6), size: 26),
+                              const SizedBox(height: 10),
+                              Text(
+                                inProgressCount.toString(),
+                                style: const TextStyle(
+                                  fontSize: 24,
+                                  fontWeight: FontWeight.bold,
+                                  color: Color(0xFF111827),
+                                ),
+                              ),
+                              const SizedBox(height: 4),
+                              const Text(
+                                'In Progress',
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  color: Color(0xFF6B7280),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      const SizedBox(width: 12),
+                      // ---- Resolved card ----
+                      Expanded(
+                        child: Container(
+                          padding: const EdgeInsets.all(16),
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(16),
+                            border: Border.all(color: const Color(0xFFE5E7EB)),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black.withOpacity(0.05),
+                                blurRadius: 10,
+                                offset: const Offset(0, 4),
+                                ),
+                              ],
+                            ),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const Icon(Icons.check_circle_outline_rounded,
+                                  color: Color(0xFF22C55E), size: 26),
+                              const SizedBox(height: 10),
+                              Text(
+                                resolvedCount.toString(),
+                                style: const TextStyle(
+                                  fontSize: 24,
+                                  fontWeight: FontWeight.bold,
+                                  color: Color(0xFF111827),
+                                ),
+                              ),
+                              const SizedBox(height: 4),
+                              const Text(
+                                'Resolved',
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  color: Color(0xFF6B7280),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+
+            // ================= Search Bar =================
+            Padding(
+              padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
+              child: Container(
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(14),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withOpacity(0.02),
+                      blurRadius: 10,
+                      offset: const Offset(0, 4),
+                    ),
+                  ],
+                ),
+                child: TextField(
+                  controller: searchController,
+                  onChanged: (value) {
+                    setState(() {
+                      searchQuery = value;
+                    });
                   },
+                  decoration: InputDecoration(
+                    hintText: 'Search complaints (Name, address, dept...)',
+                    hintStyle: const TextStyle(color: Color(0xFF9CA3AF), fontSize: 14),
+                    prefixIcon: const Icon(Icons.search_rounded, color: Color(0xFF2563EB), size: 20),
+                    suffixIcon: searchQuery.isNotEmpty
+                        ? GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                searchController.clear();
+                                searchQuery = '';
+                              });
+                            },
+                            child: const Icon(Icons.clear_rounded, color: Color(0xFF9CA3AF), size: 20),
+                          )
+                        : null,
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(14),
+                      borderSide: const BorderSide(color: Color(0xFFE5E7EB)),
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(14),
+                      borderSide: const BorderSide(color: Color(0xFFE5E7EB)),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(14),
+                      borderSide: const BorderSide(color: Color(0xFF2563EB)),
+                    ),
+                    contentPadding: const EdgeInsets.symmetric(vertical: 14),
+                  ),
                 ),
               ),
-            ],
-          );
-        },
+            ),
+
+            // ================= Filter Chips =================
+            Padding(
+              padding: const EdgeInsets.fromLTRB(16, 4, 16, 8),
+              child: Row(
+                children: [
+                  // ---- All chip ----
+                  Expanded(
+                    child: GestureDetector(
+                      onTap: () {
+                        setState(() {
+                          selectedFilter = 'All';
+                        });
+                      },
+                      child: AnimatedContainer(
+                        duration: const Duration(milliseconds: 200),
+                        margin: const EdgeInsets.only(right: 6),
+                        padding: const EdgeInsets.symmetric(vertical: 10),
+                        alignment: Alignment.center,
+                        decoration: BoxDecoration(
+                          color: selectedFilter == 'All'
+                              ? const Color(0xFF2563EB)
+                              : Colors.white,
+                          borderRadius: BorderRadius.circular(20),
+                          border: Border.all(
+                            color: selectedFilter == 'All'
+                                ? const Color(0xFF2563EB)
+                                : const Color(0xFFE5E7EB),
+                          ),
+                        ),
+                        child: Text(
+                          'All',
+                          style: TextStyle(
+                            fontSize: 13,
+                            fontWeight: FontWeight.w600,
+                            color: selectedFilter == 'All'
+                                ? Colors.white
+                                : const Color(0xFF6B7280),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                  // ---- Pending chip ----
+                  Expanded(
+                    child: GestureDetector(
+                      onTap: () {
+                        setState(() {
+                          selectedFilter = 'Pending';
+                        });
+                      },
+                      child: AnimatedContainer(
+                        duration: const Duration(milliseconds: 200),
+                        margin: const EdgeInsets.symmetric(horizontal: 6),
+                        padding: const EdgeInsets.symmetric(vertical: 10),
+                        alignment: Alignment.center,
+                        decoration: BoxDecoration(
+                          color: selectedFilter == 'Pending'
+                              ? const Color(0xFF2563EB)
+                              : Colors.white,
+                          borderRadius: BorderRadius.circular(20),
+                          border: Border.all(
+                            color: selectedFilter == 'Pending'
+                                ? const Color(0xFF2563EB)
+                                : const Color(0xFFE5E7EB),
+                          ),
+                        ),
+                        child: Text(
+                          'Pending',
+                          style: TextStyle(
+                            fontSize: 13,
+                            fontWeight: FontWeight.w600,
+                            color: selectedFilter == 'Pending'
+                                ? Colors.white
+                                : const Color(0xFF6B7280),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                  // ---- In Progress chip ----
+                  Expanded(
+                    child: GestureDetector(
+                      onTap: () {
+                        setState(() {
+                          selectedFilter = 'In Progress';
+                        });
+                      },
+                      child: AnimatedContainer(
+                        duration: const Duration(milliseconds: 200),
+                        margin: const EdgeInsets.symmetric(horizontal: 6),
+                        padding: const EdgeInsets.symmetric(vertical: 10),
+                        alignment: Alignment.center,
+                        decoration: BoxDecoration(
+                          color: selectedFilter == 'In Progress'
+                              ? const Color(0xFF2563EB)
+                              : Colors.white,
+                          borderRadius: BorderRadius.circular(20),
+                          border: Border.all(
+                            color: selectedFilter == 'In Progress'
+                                ? const Color(0xFF2563EB)
+                                : const Color(0xFFE5E7EB),
+                          ),
+                        ),
+                        child: Text(
+                          'In Progress',
+                          style: TextStyle(
+                            fontSize: 13,
+                            fontWeight: FontWeight.w600,
+                            color: selectedFilter == 'In Progress'
+                                ? Colors.white
+                                : const Color(0xFF6B7280),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                  // ---- Resolved chip ----
+                  Expanded(
+                    child: GestureDetector(
+                      onTap: () {
+                        setState(() {
+                          selectedFilter = 'Resolved';
+                        });
+                      },
+                      child: AnimatedContainer(
+                        duration: const Duration(milliseconds: 200),
+                        margin: const EdgeInsets.only(left: 6),
+                        padding: const EdgeInsets.symmetric(vertical: 10),
+                        alignment: Alignment.center,
+                        decoration: BoxDecoration(
+                          color: selectedFilter == 'Resolved'
+                              ? const Color(0xFF2563EB)
+                              : Colors.white,
+                          borderRadius: BorderRadius.circular(20),
+                          border: Border.all(
+                            color: selectedFilter == 'Resolved'
+                                ? const Color(0xFF2563EB)
+                                : const Color(0xFFE5E7EB),
+                          ),
+                        ),
+                        child: Text(
+                          'Resolved',
+                          style: TextStyle(
+                            fontSize: 13,
+                            fontWeight: FontWeight.w600,
+                            color: selectedFilter == 'Resolved'
+                                ? Colors.white
+                                : const Color(0xFF6B7280),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+
+            // ================= Complaint List =================
+            Expanded(
+              child: filteredDocs.isEmpty
+                  ? const Center(
+                      child: Text(
+                        'No complaints found',
+                        style: TextStyle(color: Color(0xFF6B7280), fontSize: 14),
+                      ),
+                    )
+                  : ListView.builder(
+                      padding: const EdgeInsets.fromLTRB(16, 4, 16, 16),
+                      itemCount: filteredDocs.length,
+                      itemBuilder: (context, index) {
+                        QueryDocumentSnapshot doc = filteredDocs[index];
+                        Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
+
+                        String name = (data['Name'] ?? '').toString();
+                        String contact = (data['Contact'] ?? '').toString();
+                        String address = (data['Address'] ?? '').toString();
+                        String problemType = (data['ProblemType'] ?? '').toString();
+                        String status = (data['ComplaintStatus'] ?? 'Pending').toString();
+
+                        String dateText = '';
+                        if (data['CreatedAt'] != null && data['CreatedAt'] is Timestamp) {
+                          DateTime date = (data['CreatedAt'] as Timestamp).toDate();
+                          dateText = '${date.day.toString().padLeft(2, '0')}/${date.month.toString().padLeft(2, '0')}/${date.year}';
+                        }
+
+                        String imageUrl = (data['ImageUrl'] ?? data['imageUrl'] ?? data['image'] ?? '').toString();
+
+                        Color statusColor = const Color(0xFFF59E0B);
+                        if (status == 'In Progress') {
+                          statusColor = const Color(0xFF3B82F6);
+                        } else if (status == 'Resolved') {
+                          statusColor = const Color(0xFF22C55E);
+                        }
+
+                        return Padding(
+                          padding: const EdgeInsets.only(bottom: 12),
+                          child: Material(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(16),
+                            child: InkWell(
+                              borderRadius: BorderRadius.circular(16),
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => ComplaintDetailsPage(
+                                      complaintId: doc.id,
+                                      name: name,
+                                      contact: contact,
+                                      address: address,
+                                      problemType: problemType,
+                                      complaintDescription: (data['ComplaintDescription'] ?? '').toString(),
+                                      currentStatus: status,
+                                      dateText: dateText,
+                                      imageUrl: imageUrl,
+                                    ),
+                                  ),
+                                );
+                              },
+                              child: Container(
+                                padding: const EdgeInsets.all(16),
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(16),
+                                  border: Border.all(color: const Color(0xFFE5E7EB)),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.black.withOpacity(0.04),
+                                      blurRadius: 10,
+                                      offset: const Offset(0, 4),
+                                    ),
+                                  ],
+                                ),
+                                child: Row(
+                                  children: [
+                                    Container(
+                                      width: 44,
+                                      height: 44,
+                                      decoration: BoxDecoration(
+                                        color: Colors.grey.shade100,
+                                        shape: BoxShape.circle,
+                                      ),
+                                      child: Icon(
+                                        _getDepartmentIcon(problemType),
+                                        color: Colors.black87,
+                                        size: 20,
+                                      ),
+                                    ),
+                                    const SizedBox(width: 12),
+                                    Expanded(
+                                      child: Column(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            problemType,
+                                            style: const TextStyle(
+                                              fontSize: 15,
+                                              fontWeight: FontWeight.w600,
+                                              color: Color(0xFF111827),
+                                            ),
+                                          ),
+                                          const SizedBox(height: 6),
+                                          Text(
+                                            name,
+                                            style: const TextStyle(fontSize: 13, color: Color(0xFF6B7280)),
+                                          ),
+                                          const SizedBox(height: 2),
+                                          Text(
+                                            contact,
+                                            style: const TextStyle(fontSize: 13, color: Color(0xFF6B7280)),
+                                          ),
+                                          const SizedBox(height: 2),
+                                          Text(
+                                            address,
+                                            maxLines: 1,
+                                            overflow: TextOverflow.ellipsis,
+                                            style: const TextStyle(fontSize: 13, color: Color(0xFF6B7280)),
+                                          ),
+                                          const SizedBox(height: 8),
+                                          Text(
+                                            dateText,
+                                            style: const TextStyle(fontSize: 12, color: Color(0xFF9CA3AF)),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    Column(
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      crossAxisAlignment: CrossAxisAlignment.end,
+                                      children: [
+                                        Container(
+                                          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                                          decoration: BoxDecoration(
+                                            color: statusColor.withOpacity(0.12),
+                                            borderRadius: BorderRadius.circular(20),
+                                          ),
+                                          child: Text(
+                                            status,
+                                            style: TextStyle(
+                                              fontSize: 11,
+                                              fontWeight: FontWeight.w600,
+                                              color: statusColor,
+                                            ),
+                                          ),
+                                        ),
+                                        const SizedBox(height: 24),
+                                        const Icon(
+                                          Icons.arrow_forward_ios_rounded,
+                                          size: 14,
+                                          color: Color(0xFF9CA3AF),
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: const Color(0xFFF8FAFC),
+      appBar: AppBar(
+        backgroundColor: Colors.white,
+        elevation: 0.5,
+        centerTitle: false,
+        title: Text(
+          currentIndex == 0 ? 'Admin Dashboard' : 'Complaints Reports',
+          style: const TextStyle(
+            color: Color(0xFF111827),
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        iconTheme: const IconThemeData(color: Color(0xFF2563EB)),
       ),
+      body: currentIndex == 0 ? _buildDashboardBody() : _buildReportsBody(),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: currentIndex,
         selectedItemColor: Colors.blue,
         unselectedItemColor: Colors.grey,
         onTap: (index) {
-          if (index == 1) {
-            Navigator.push(
+          if (index == 2) {
+            Navigator.push<int>(
               context,
               MaterialPageRoute(
-                builder: (_) => const AdminSettings(),
+                builder: (_) => AdminSettings(previousIndex: currentIndex),
               ),
-            ).then((_) {
-              setState(() {
-                currentIndex = 0;
-              });
+            ).then((returnedIndex) {
+              if (returnedIndex != null) {
+                setState(() {
+                  currentIndex = returnedIndex;
+                });
+              }
             });
           } else {
             setState(() {
@@ -675,6 +1343,10 @@ class _AdminDashboardPageState extends State<AdminDashboardPage> {
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
             label: "Home",
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.analytics),
+            label: "Reports",
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.settings),

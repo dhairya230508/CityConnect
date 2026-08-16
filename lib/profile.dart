@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'login.dart';
 import 'bottom_navigation_bar.dart';
+import 'searchable_city_field.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
@@ -614,153 +615,18 @@ class _ProfilePageState extends State<ProfilePage> {
                               },
                             ),
                             const SizedBox(height: 20),
-                            StreamBuilder<QuerySnapshot>(
-                              stream: FirebaseFirestore.instance
-                                  .collection("CityDetails")
-                                  .orderBy("CityName")
-                                  .snapshots(),
-                              builder: (context, snapshot) {
-                                if (snapshot.connectionState == ConnectionState.waiting) {
-                                  return const Padding(
-                                    padding: EdgeInsets.symmetric(vertical: 8.0),
-                                    child: Center(
-                                      child: SizedBox(
-                                        width: 24,
-                                        height: 24,
-                                        child: CircularProgressIndicator(
-                                          strokeWidth: 2,
-                                          color: Color(0xFF2563EB),
-                                        ),
-                                      ),
-                                    ),
-                                  );
+                            SearchableCityField(
+                              cityController: cityController,
+                              pincodeController: pincodeController,
+                              label: "City",
+                              primaryColor: const Color(0xFF2563EB),
+                              borderRadius: 16,
+                              isProfileStyle: true,
+                              validator: (value) {
+                                if (cityController.text.trim().isEmpty) {
+                                  return "Please select your city";
                                 }
-
-                                if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
-                                  return PremiumTextField(
-                                    controller: cityController,
-                                    label: "City",
-                                    prefixIcon: Icons.location_city,
-                                    validator: (value) {
-                                      if (value == null || value.trim().isEmpty) {
-                                        return "City cannot be empty";
-                                      }
-                                      return null;
-                                    },
-                                  );
-                                }
-
-                                final cityDocs = snapshot.data!.docs;
-                                final List<String> cityNames = cityDocs
-                                    .map((doc) => doc["CityName"].toString().trim())
-                                    .where((name) => name.isNotEmpty)
-                                    .toList();
-
-                                final String userCity = cityController.text.trim();
-
-                                String? selectedValue;
-                                if (userCity.isNotEmpty) {
-                                  final matchIndex = cityNames.indexWhere(
-                                    (name) => name.toLowerCase() == userCity.toLowerCase(),
-                                  );
-                                  if (matchIndex != -1) {
-                                    selectedValue = cityNames[matchIndex];
-                                  } else {
-                                    cityNames.add(userCity);
-                                    selectedValue = userCity;
-                                  }
-                                }
-
-                                return Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      "City",
-                                      style: GoogleFonts.inter(
-                                        fontSize: 13,
-                                        fontWeight: FontWeight.normal,
-                                        color: const Color(0xFF6B7280),
-                                      ),
-                                    ),
-                                    const SizedBox(height: 8),
-                                    DropdownButtonFormField<String>(
-                                      value: selectedValue,
-                                      isExpanded: true,
-                                      icon: const Icon(
-                                        Icons.keyboard_arrow_down_rounded,
-                                        color: Color(0xFF2563EB),
-                                      ),
-                                      style: GoogleFonts.inter(
-                                        fontSize: 15,
-                                        fontWeight: FontWeight.w500,
-                                        color: const Color(0xFF111827),
-                                      ),
-                                      decoration: InputDecoration(
-                                        filled: true,
-                                        fillColor: Colors.white,
-                                        prefixIcon: const Icon(
-                                          Icons.location_city,
-                                          color: Color(0xFF2563EB),
-                                          size: 20,
-                                        ),
-                                        contentPadding: const EdgeInsets.symmetric(
-                                            horizontal: 16, vertical: 16),
-                                        enabledBorder: OutlineInputBorder(
-                                          borderRadius: BorderRadius.circular(16),
-                                          borderSide: const BorderSide(
-                                              color: Color(0xFFE5E7EB), width: 1.5),
-                                        ),
-                                        focusedBorder: OutlineInputBorder(
-                                          borderRadius: BorderRadius.circular(16),
-                                          borderSide: const BorderSide(
-                                              color: Color(0xFF2563EB), width: 2),
-                                        ),
-                                        errorBorder: OutlineInputBorder(
-                                          borderRadius: BorderRadius.circular(16),
-                                          borderSide: const BorderSide(
-                                              color: Color(0xFFEF4444), width: 1.5),
-                                        ),
-                                        focusedErrorBorder: OutlineInputBorder(
-                                          borderRadius: BorderRadius.circular(16),
-                                          borderSide: const BorderSide(
-                                              color: Color(0xFFEF4444), width: 2),
-                                        ),
-                                        hintText: "Select City",
-                                        hintStyle: GoogleFonts.inter(
-                                            color: const Color(0xFF9CA3AF), fontSize: 14),
-                                      ),
-                                      items: cityNames.map((cityName) {
-                                        return DropdownMenuItem<String>(
-                                          value: cityName,
-                                          child: Text(cityName),
-                                        );
-                                      }).toList(),
-                                      onChanged: (value) {
-                                        if (value != null) {
-                                          setState(() {
-                                            cityController.text = value;
-                                            final matchingDoc = cityDocs.cast<DocumentSnapshot?>().firstWhere(
-                                              (doc) => doc?["CityName"].toString().trim() == value,
-                                              orElse: () => null,
-                                            );
-                                            if (matchingDoc != null) {
-                                              final docData = matchingDoc.data() as Map<String, dynamic>?;
-                                              if (docData != null && docData.containsKey("CityPincode")) {
-                                                pincodeController.text = docData["CityPincode"].toString();
-                                              }
-                                            }
-                                          });
-                                        }
-                                      },
-                                      validator: (value) {
-                                        if (cityController.text.trim().isEmpty) {
-                                          return "Please select your city";
-                                        }
-                                        return null;
-                                      },
-                                    ),
-                                  ],
-                                );
+                                return null;
                               },
                             ),
                             const SizedBox(height: 20),

@@ -64,7 +64,19 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
           .limit(1)
           .get();
 
-      if (userQuery.docs.isEmpty) {
+      bool isRegistered = userQuery.docs.isNotEmpty;
+
+      if (!isRegistered) {
+        final QuerySnapshot<Map<String, dynamic>> adminQuery =
+        await FirebaseFirestore.instance
+            .collection('AdminDetails')
+            .where('AdminEmail', isEqualTo: email)
+            .limit(1)
+            .get();
+        isRegistered = adminQuery.docs.isNotEmpty;
+      }
+
+      if (!isRegistered) {
         if (!mounted) return;
         _showSnackBar(
           message: 'No account found with this email address.',

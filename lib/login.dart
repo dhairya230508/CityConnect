@@ -186,11 +186,51 @@ class _LoginPageState extends State<LoginPage> {
                           height: 1.4,
                         ),
                       ),
-                      const SizedBox(height: 14),
+                      const SizedBox(height: 16),
                       TextField(
                         controller: resetEmailController,
                         keyboardType: TextInputType.emailAddress,
                         autofocus: true,
+                        onChanged: (value) {
+                          setState(() {});
+                        },
+                        style: GoogleFonts.poppins(fontSize: 14),
+                        decoration: InputDecoration(
+                          hintText: "Enter your email",
+                          hintStyle: GoogleFonts.poppins(
+                            color: const Color(0xFF94A3B8),
+                            fontSize: 14,
+                          ),
+                          prefixIcon: const Icon(
+                            Icons.email_outlined,
+                            color: Color(0xFF64748B),
+                          ),
+                          filled: true,
+                          fillColor: const Color(0xFFF8FAFC),
+                          contentPadding: const EdgeInsets.symmetric(
+                            vertical: 14,
+                            horizontal: 16,
+                          ),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(14),
+                            borderSide: const BorderSide(
+                              color: Color(0xFFE2E8F0),
+                            ),
+                          ),
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(14),
+                            borderSide: const BorderSide(
+                              color: Color(0xFFE2E8F0),
+                            ),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(14),
+                            borderSide: const BorderSide(
+                              color: Color(0xFF2563EB),
+                              width: 1.6,
+                            ),
+                          ),
+                        ),
                       )
                     ],
 
@@ -235,11 +275,48 @@ class _LoginPageState extends State<LoginPage> {
                                 resetEmailController.text.trim().isEmpty)
                                 ? null
                                 : () async {
-                              final email =
-                              resetEmailController.text.trim();
+                              final email = resetEmailController.text.trim();
                               setState(() => isSending = true);
+                              final scaffoldMessenger = ScaffoldMessenger.of(context);
 
                               try {
+                                // Verify email exists in database (UserDetails or AdminDetails)
+                                final QuerySnapshot userQuery =
+                                await FirebaseFirestore.instance
+                                    .collection("UserDetails")
+                                    .where("Email", isEqualTo: email)
+                                    .limit(1)
+                                    .get();
+
+                                bool isRegistered = userQuery.docs.isNotEmpty;
+
+                                if (!isRegistered) {
+                                  final QuerySnapshot adminQuery =
+                                  await FirebaseFirestore.instance
+                                      .collection("AdminDetails")
+                                      .where("AdminEmail", isEqualTo: email)
+                                      .limit(1)
+                                      .get();
+                                  isRegistered = adminQuery.docs.isNotEmpty;
+                                }
+
+                                if (!isRegistered) {
+                                  scaffoldMessenger.showSnackBar(
+                                    SnackBar(
+                                      content: const Text(
+                                        "No registered account found with this email address.",
+                                      ),
+                                      duration: const Duration(seconds: 2),
+                                      backgroundColor: const Color(0xFFDC2626),
+                                      behavior: SnackBarBehavior.floating,
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(12),
+                                      ),
+                                    ),
+                                  );
+                                  return;
+                                }
+
                                 await _auth.sendPasswordResetEmail(
                                   email: email,
                                 );
@@ -248,58 +325,44 @@ class _LoginPageState extends State<LoginPage> {
                                 // in sync with what was just used.
                                 emailController.text = email;
 
-                                if (Navigator.canPop(dialogContext)) {
+                                if (dialogContext.mounted && Navigator.canPop(dialogContext)) {
                                   Navigator.pop(dialogContext);
                                 }
 
-                                if (!mounted) return;
-
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  const SnackBar(
-                                    content: Text("Password reset email sent."),
-                                    duration: Duration(seconds: 2),
+                                scaffoldMessenger.showSnackBar(
+                                  SnackBar(
+                                    content: Text(
+                                      "Reset link sent to $email",
+                                    ),
+                                    duration: const Duration(seconds: 2),
+                                    backgroundColor:
+                                    const Color(0xFF16A34A),
+                                    behavior:
+                                    SnackBarBehavior.floating,
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius:
+                                      BorderRadius.circular(12),
+                                    ),
                                   ),
                                 );
-                                if (mounted) {
-                                  ScaffoldMessenger.of(context)
-                                      .showSnackBar(
-                                    SnackBar(
-                                      content: Text(
-                                        "Reset link sent to $email",
-                                      ),
-                                      duration: const Duration(seconds: 2),
-                                      backgroundColor:
-                                      const Color(0xFF16A34A),
-                                      behavior:
-                                      SnackBarBehavior.floating,
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius:
-                                        BorderRadius.circular(12),
-                                      ),
-                                    ),
-                                  );
-                                }
                               } on FirebaseAuthException catch (e) {
-                                if (mounted) {
-                                  ScaffoldMessenger.of(context)
-                                      .showSnackBar(
-                                    SnackBar(
-                                      content: Text(
-                                        e.message ??
-                                            "Failed to send reset email.",
-                                      ),
-                                      duration: const Duration(seconds: 2),
-                                      backgroundColor:
-                                      const Color(0xFFDC2626),
-                                      behavior:
-                                      SnackBarBehavior.floating,
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius:
-                                        BorderRadius.circular(12),
-                                      ),
+                                scaffoldMessenger.showSnackBar(
+                                  SnackBar(
+                                    content: Text(
+                                      e.message ??
+                                          "Failed to send reset email.",
                                     ),
-                                  );
-                                }
+                                    duration: const Duration(seconds: 2),
+                                    backgroundColor:
+                                    const Color(0xFFDC2626),
+                                    behavior:
+                                    SnackBarBehavior.floating,
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius:
+                                      BorderRadius.circular(12),
+                                    ),
+                                  ),
+                                );
                               }
                               finally {
                                 if (dialogContext.mounted) {
@@ -307,7 +370,7 @@ class _LoginPageState extends State<LoginPage> {
                                     isSending = false;
                                   });
                                 }
-                              };
+                              }
                             },
                             style: ElevatedButton.styleFrom(
                               padding:

@@ -4,6 +4,7 @@ import 'login.dart';
 import 'package:city_connect/index.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart' hide Index;
+import 'searchable_city_field.dart';
 
 class Register extends StatefulWidget {
   const Register({super.key});
@@ -107,8 +108,6 @@ class _RegisterState extends State<Register> {
 
   @override
   Widget build(BuildContext context) {
-    double screenWidth = MediaQuery.sizeOf(context).width;
-    double screenHeight = MediaQuery.sizeOf(context).height;
     return Scaffold(
       body: Container(
         color: Colors.white,
@@ -320,58 +319,12 @@ class _RegisterState extends State<Register> {
                                 ),
                                 const SizedBox(height: 20),
 
-                                  StreamBuilder<QuerySnapshot>(
-                                    stream: FirebaseFirestore.instance
-                                        .collection("CityDetails")
-                                        .orderBy("CityName")
-                                        .snapshots(),
-                                    builder: (context, snapshot) {
-                                      if (snapshot.connectionState == ConnectionState.waiting) {
-                                        return const CircularProgressIndicator();
-                                      }
-
-                                      if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
-                                        return const Text("No Cities Found");
-                                      }
-
-                                      return DropdownButtonFormField<String>(
-                                        value: selectedCity,
-                                        isExpanded: true,
-                                        decoration: InputDecoration(
-                                          hintText: "Select City",
-                                          border: OutlineInputBorder(
-                                            borderRadius: BorderRadius.circular(12),
-                                          ),
-                                          prefixIcon: const Icon(Icons.location_city),
-                                        ),
-                                        items: snapshot.data!.docs.map((doc) {
-                                          return DropdownMenuItem<String>(
-                                            value: doc["CityName"],
-                                            child: Text(doc["CityName"]),
-                                          );
-                                        }).toList(),
-                                        onChanged: (value) {
-                                          setState(() {
-                                            selectedCity = value;
-                                            cityController.text = value!;
-
-
-                                            var cityDoc = snapshot.data!.docs.firstWhere(
-                                                  (doc) => doc["CityName"] == value,
-                                            );
-
-                                            pincodeController.text = cityDoc["CityPincode"];
-                                          });
-                                        },
-                                        validator: (value) {
-                                          if (value == null) {
-                                            return "Please select your city";
-                                          }
-                                          return null;
-                                        },
-                                      );
-                                    },
-                                  ),
+                                 SearchableCityField(
+                                   cityController: cityController,
+                                   pincodeController: pincodeController,
+                                   primaryColor: const Color(0xFF2B7FD8),
+                                   borderRadius: 12,
+                                 ),
                                 const SizedBox(height: 20),
 
                                 TextFormField(

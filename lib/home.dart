@@ -18,6 +18,7 @@ class _homeState extends State<home> {
     final double screenHeight = size.height;
     final bool isWeb = screenWidth > 600;
 
+
     return Scaffold(
       backgroundColor: Colors.white,
       body: SafeArea(
