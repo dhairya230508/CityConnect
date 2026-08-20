@@ -5,8 +5,7 @@ import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:printing/printing.dart';
 
-/// Generates and triggers layout/download for the User PDF Complaint History.
-/// Strictly enforces security by filtering data to ONLY the authenticated user's complaints.
+
 Future<void> generateUserComplaintPdf(List<QueryDocumentSnapshot> docs) async {
   final currentUser = FirebaseAuth.instance.currentUser;
   if (currentUser == null) return;

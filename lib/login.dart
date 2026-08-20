@@ -89,30 +89,57 @@ class _LoginPageState extends State<LoginPage> {
         return;
       }
 
-      // 3. Check if User (by UID doc or Email query)
-      bool isUser = false;
+      // 3. Check if User (by UID doc or Email query) and verify Blocked status
+      DocumentSnapshot? userDocSnapshot;
       if (uid.isNotEmpty) {
         DocumentSnapshot userDoc = await FirebaseFirestore.instance
             .collection("UserDetails")
             .doc(uid)
             .get();
-        if (userDoc.exists) isUser = true;
+        if (userDoc.exists) {
+          userDocSnapshot = userDoc;
+        }
       }
 
-      if (!isUser) {
+      if (userDocSnapshot == null) {
         QuerySnapshot userQuery = await FirebaseFirestore.instance
             .collection("UserDetails")
             .where("Email", isEqualTo: userEmail)
             .get();
-        if (userQuery.docs.isNotEmpty) isUser = true;
+        if (userQuery.docs.isNotEmpty) {
+          userDocSnapshot = userQuery.docs.first;
+        }
       }
 
-      if (!isUser) {
+      if (userDocSnapshot == null) {
         QuerySnapshot userQueryLower = await FirebaseFirestore.instance
             .collection("UserDetails")
             .where("Email", isEqualTo: userEmail.toLowerCase())
             .get();
-        if (userQueryLower.docs.isNotEmpty) isUser = true;
+        if (userQueryLower.docs.isNotEmpty) {
+          userDocSnapshot = userQueryLower.docs.first;
+        }
+      }
+
+      if (userDocSnapshot != null && userDocSnapshot.exists) {
+        final userData = userDocSnapshot.data() as Map<String, dynamic>?;
+        if (userData != null) {
+          final bool isBlocked = (userData['IsBlocked'] == true ||
+              userData['isBlocked'] == true ||
+              userData['Status'] == 'Blocked');
+          if (isBlocked) {
+            await FirebaseAuth.instance.signOut();
+            if (!mounted) return;
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(
+                content: Text("Your account has been blocked by the administrator."),
+                backgroundColor: Color(0xFFEF4444),
+                duration: Duration(seconds: 4),
+              ),
+            );
+            return;
+          }
+        }
       }
 
       // 4. Navigate to User Home Screen
@@ -535,23 +562,35 @@ class _LoginPageState extends State<LoginPage> {
                       children: [
                         const SizedBox(height: 15),
 
-                        // Profile Icon
+                        // CityConnect App Logo
                         Container(
-                          height: 72,
-                          width: 72,
+                          height: 80,
+                          width: 80,
+                          padding: const EdgeInsets.all(8),
                           decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(18),
-                            gradient: const LinearGradient(
-                              colors: [
-                                Color(0xff309BFF),
-                                Color(0xff1565C0),
-                              ],
-                            ),
-                          ),
-                          child: const Icon(
-                            Icons.person_outline,
                             color: Colors.white,
-                            size: 32,
+                            borderRadius: BorderRadius.circular(20),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black.withOpacity(0.06),
+                                blurRadius: 15,
+                                offset: const Offset(0, 5),
+                              ),
+                            ],
+                          ),
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(14),
+                            child: Image.asset(
+                              'assets/LOGO.png',
+                              fit: BoxFit.contain,
+                              errorBuilder: (context, error, stackTrace) {
+                                return const Icon(
+                                  Icons.location_city_rounded,
+                                  color: Color(0xff1565C0),
+                                  size: 40,
+                                );
+                              },
+                            ),
                           ),
                         ),
 

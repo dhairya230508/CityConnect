@@ -16,6 +16,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'login.dart';
+import 'user_list.dart';
 
 // ---------------------------------------------------------------------------
 // Design tokens
@@ -444,6 +445,23 @@ class _AdminSettingsState extends State<AdminSettings>
                       const SizedBox(height: 12),
                       _buildDashboardStats(constraints.maxWidth),
                       const SizedBox(height: 24),
+                      _buildSectionLabel('User Access Control'),
+                      const SizedBox(height: 12),
+                      PremiumActionCard(
+                        icon: Icons.people_alt_rounded,
+                        title: 'Total Users & Management',
+                        subtitle: 'View user list, search, block or unblock citizen accounts',
+                        iconColor: AppColors.accent,
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const UserListPage(),
+                            ),
+                          );
+                        },
+                      ),
+                      const SizedBox(height: 24),
                       _buildAdminInfoCard(),
                       const SizedBox(height: 20),
                       _buildUpdateButton(),
@@ -660,10 +678,23 @@ class _AdminSettingsState extends State<AdminSettings>
         mainAxisSpacing: 12,
         childAspectRatio: aspectRatio,
       ),
-      itemBuilder: (context, i) => DashboardStatCard(
-        data: stats[i],
-        isLoading: isStatsLoading,
-      ),
+      itemBuilder: (context, i) {
+        final stat = stats[i];
+        return DashboardStatCard(
+          data: stat,
+          isLoading: isStatsLoading,
+          onTap: stat.title == 'Total Users'
+              ? () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const UserListPage(),
+                    ),
+                  );
+                }
+              : null,
+        );
+      },
     );
   }
 
@@ -831,11 +862,13 @@ class _PremiumCard extends StatelessWidget {
 class DashboardStatCard extends StatefulWidget {
   final _StatData data;
   final bool isLoading;
+  final VoidCallback? onTap;
 
   const DashboardStatCard({
     super.key,
     required this.data,
     required this.isLoading,
+    this.onTap,
   });
 
   @override
@@ -854,6 +887,7 @@ class _DashboardStatCardState extends State<DashboardStatCard> {
       onEnter: (_) => setState(() => _isHovered = true),
       onExit: (_) => setState(() => _isHovered = false),
       child: GestureDetector(
+        onTap: widget.onTap,
         onTapDown: (_) => setState(() => _isPressed = true),
         onTapUp: (_) => setState(() => _isPressed = false),
         onTapCancel: () => setState(() => _isPressed = false),

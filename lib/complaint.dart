@@ -16,6 +16,16 @@ class ComplaintPage extends StatefulWidget {
 
 class _ComplaintPageState extends State<ComplaintPage> {
   String selectedFilter = "All";
+  String selectedDepartmentFilter = "All";
+
+  String _formatDepartmentName(String name) {
+    String cleaned = name.replaceAll(RegExp(r'^[^\w\s]+'), '').trim();
+    if (cleaned.isEmpty) return '';
+    return cleaned.split(RegExp(r'\s+')).map((word) {
+      if (word.isEmpty) return '';
+      return word[0].toUpperCase() + word.substring(1).toLowerCase();
+    }).join(' ');
+  }
 
 
   Color _statusColor(String status) {
@@ -384,18 +394,127 @@ class _ComplaintPageState extends State<ComplaintPage> {
                     return tB.compareTo(tA);
                   });
 
-                  int countFor(String status) => allDocs
-                      .where((d) => (d["ComplaintStatus"] ?? "") == status)
-                      .length;
+                  // Collect distinct department names dynamically from user complaints with case-insensitive deduplication
+                  Map<String, String> deptMap = {};
+                  for (var doc in allDocs) {
+                    Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
+                    String pType = (data['ProblemType'] ?? '').toString();
+                    String formatted = _formatDepartmentName(pType);
+                    if (formatted.isNotEmpty) {
+                      deptMap[formatted.toLowerCase()] = formatted;
+                    }
+                  }
+                  List<String> sortedDepts = deptMap.values.toList()..sort();
+                  List<String> allAvailableDepartments = ['All', ...sortedDepts];
 
-                  final filteredDocs = selectedFilter == "All"
-                      ? allDocs
-                      : allDocs
-                      .where((d) => (d["ComplaintStatus"] ?? "") == selectedFilter)
-                      .toList();
+                  int countFor(String status) => allDocs.where((d) {
+                    final data = d.data() as Map<String, dynamic>;
+                    final st = (data["ComplaintStatus"] ?? "").toString();
+                    final pType = (data["ProblemType"] ?? "").toString();
+                    final formattedType = _formatDepartmentName(pType);
+
+                    bool matchesStatus = st == status;
+                    bool matchesDept = selectedDepartmentFilter == "All" ||
+                        formattedType.toLowerCase() == selectedDepartmentFilter.toLowerCase() ||
+                        pType.toLowerCase().contains(selectedDepartmentFilter.toLowerCase());
+
+                    return matchesStatus && matchesDept;
+                  }).length;
+
+                  final filteredDocs = allDocs.where((d) {
+                    final data = d.data() as Map<String, dynamic>;
+                    final status = (data["ComplaintStatus"] ?? "").toString();
+                    final pType = (data["ProblemType"] ?? "").toString();
+                    final formattedType = _formatDepartmentName(pType);
+
+                    bool matchesStatus = selectedFilter == "All" || status == selectedFilter;
+                    bool matchesDept = selectedDepartmentFilter == "All" ||
+                        formattedType.toLowerCase() == selectedDepartmentFilter.toLowerCase() ||
+                        pType.toLowerCase().contains(selectedDepartmentFilter.toLowerCase());
+
+                    return matchesStatus && matchesDept;
+                  }).toList();
 
                   return Column(
                     children: [
+                      // Department Filter Dropdown
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(16, 8, 16, 4),
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 2),
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(12),
+                            border: Border.all(color: const Color(0xFFE5E7EB)),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black.withOpacity(0.03),
+                                blurRadius: 6,
+                                offset: const Offset(0, 2),
+                              ),
+                            ],
+                          ),
+                          child: Row(
+                            children: [
+                              const Icon(Icons.business_rounded, size: 18, color: Color(0xFF2563EB)),
+                              const SizedBox(width: 10),
+                              const Text(
+                                "Department:",
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.bold,
+                                  color: Color(0xFF4B5563),
+                                ),
+                              ),
+                              const SizedBox(width: 10),
+                              Expanded(
+                                child: DropdownButtonHideUnderline(
+                                  child: DropdownButton<String>(
+                                    value: allAvailableDepartments.contains(selectedDepartmentFilter)
+                                        ? selectedDepartmentFilter
+                                        : 'All',
+                                    isExpanded: true,
+                                    icon: const Icon(Icons.arrow_drop_down, color: Color(0xFF6B7280)),
+                                    style: const TextStyle(
+                                      fontSize: 13,
+                                      fontWeight: FontWeight.w600,
+                                      color: Color(0xFF111827),
+                                    ),
+                                    items: allAvailableDepartments.map((dept) {
+                                      return DropdownMenuItem<String>(
+                                        value: dept,
+                                        child: Text(
+                                          dept == 'All' ? 'All Departments' : dept,
+                                          overflow: TextOverflow.ellipsis,
+                                        ),
+                                      );
+                                    }).toList(),
+                                    onChanged: (val) {
+                                      if (val != null) {
+                                        setState(() {
+                                          selectedDepartmentFilter = val;
+                                        });
+                                      }
+                                    },
+                                  ),
+                                ),
+                              ),
+                              if (selectedDepartmentFilter != 'All')
+                                GestureDetector(
+                                  onTap: () {
+                                    setState(() {
+                                      selectedDepartmentFilter = 'All';
+                                    });
+                                  },
+                                  child: const Padding(
+                                    padding: EdgeInsets.only(left: 6),
+                                    child: Icon(Icons.close_rounded, size: 16, color: Color(0xFFEF4444)),
+                                  ),
+                                ),
+                            ],
+                          ),
+                        ),
+                      ),
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                         child: Row(
@@ -432,7 +551,7 @@ class _ComplaintPageState extends State<ComplaintPage> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
-                          filterChip("All", allDocs.length, "All"),
+                          filterChip("All", selectedDepartmentFilter == "All" ? allDocs.length : filteredDocs.length, "All"),
                           filterChip(
                               "Pending", countFor("Pending"), "Pending"),
                           filterChip("In Progress",

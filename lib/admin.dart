@@ -1,13 +1,7 @@
 import 'package:city_connect/admin_settings.dart';
 import 'admin_reports.dart';
-import 'profile.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:pdf/pdf.dart';
-import 'package:pdf/widgets.dart' as pw;
-import 'package:printing/printing.dart';
-import 'package:intl/intl.dart';
-import 'pdf_admin.dart';
 
 
 
@@ -76,6 +70,8 @@ class _AdminDashboardPageState extends State<AdminDashboardPage> {
     }
   }
 
+
+
   IconData _getDepartmentIcon(String title) {
     final t = title.toLowerCase();
     if (t.contains("water")) return Icons.water_drop;
@@ -93,16 +89,6 @@ class _AdminDashboardPageState extends State<AdminDashboardPage> {
   void dispose() {
     reportCitySearchController.dispose();
     super.dispose();
-  }
-
-  Future<void> _exportToPdf(List<QueryDocumentSnapshot> docs) async {
-    await generateAdminComplaintPdf(
-      docs: docs,
-      userCities: userCities,
-      reportFromDate: reportFromDate,
-      reportToDate: reportToDate,
-      reportSelectedCity: reportSelectedCity,
-    );
   }
 
   Widget _buildReportsBody() {
@@ -155,12 +141,13 @@ class _AdminDashboardPageState extends State<AdminDashboardPage> {
           }
         }
 
-        // ------------------ Apply filter chip ------------------
+        // ------------------ Apply status filter ------------------
         List<QueryDocumentSnapshot> filteredDocs = [];
         for (var doc in allDocs) {
           Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
           String status = (data['ComplaintStatus'] ?? '').toString();
 
+          // Status Filter
           if (selectedFilter == 'All' || status == selectedFilter) {
             filteredDocs.add(doc);
           }
@@ -368,7 +355,6 @@ class _AdminDashboardPageState extends State<AdminDashboardPage> {
                 ],
               ),
             ),
-
 
             // ================= Filter Chips =================
             Padding(
@@ -793,15 +779,43 @@ class ComplaintDetailsPage extends StatefulWidget {
 }
 
 class _ComplaintDetailsPageState extends State<ComplaintDetailsPage> {
-  String selectedStatus = 'Pending';
+  late String currentStatus;
+  late String selectedStatus;
   bool isUpdating = false;
   bool isDeleting = false;
 
   @override
   void initState() {
     super.initState();
+    currentStatus = widget.currentStatus;
     selectedStatus = widget.currentStatus;
   }
+
+  List<DropdownMenuItem<String>> _buildStatusDropdownItems() {
+    final List<String> availableStatuses = [];
+    // Only allow 'Pending' if current status of this complaint is 'Pending'
+    if (currentStatus == 'Pending') {
+      availableStatuses.add('Pending');
+    }
+    // Only allow 'In Progress' if current status is 'Pending' or 'In Progress'
+    if (currentStatus == 'Pending' || currentStatus == 'In Progress') {
+      availableStatuses.add('In Progress');
+    }
+    // 'Resolved' is always an available option
+    availableStatuses.add('Resolved');
+
+    if (!availableStatuses.contains(selectedStatus)) {
+      availableStatuses.insert(0, selectedStatus);
+    }
+
+    return availableStatuses.map((status) {
+      return DropdownMenuItem<String>(
+        value: status,
+        child: Text(status),
+      );
+    }).toList();
+  }
+
   int currentIndex=0;
   @override
   Widget build(BuildContext context) {
@@ -1014,7 +1028,7 @@ class _ComplaintDetailsPageState extends State<ComplaintDetailsPage> {
                   ),
                   const SizedBox(height: 4),
                   Text(
-                    widget.currentStatus,
+                    currentStatus,
                     style: const TextStyle(
                       fontSize: 15,
                       fontWeight: FontWeight.w600,
@@ -1039,6 +1053,7 @@ class _ComplaintDetailsPageState extends State<ComplaintDetailsPage> {
               const SizedBox(height: 10),
 
               DropdownButtonFormField<String>(
+                key: ValueKey('$currentStatus-$selectedStatus'),
                 initialValue: selectedStatus,
                 decoration: InputDecoration(
                   filled: true,
@@ -1058,16 +1073,15 @@ class _ComplaintDetailsPageState extends State<ComplaintDetailsPage> {
                     borderSide: const BorderSide(color: Color(0xFF2563EB)),
                   ),
                 ),
-                items: const [
-                  DropdownMenuItem(value: 'Pending', child: Text('Pending')),
-                  DropdownMenuItem(
-                      value: 'In Progress', child: Text('In Progress')),
-                  DropdownMenuItem(value: 'Resolved', child: Text('Resolved')),
-                ],
-                onChanged: (value) {
-                  setState(() {
-                    selectedStatus = value!;
-                  });
+                items: _buildStatusDropdownItems(),
+                onChanged: currentStatus == 'Resolved'
+                    ? null
+                    : (value) {
+                  if (value != null) {
+                    setState(() {
+                      selectedStatus = value;
+                    });
+                  }
                 },
               ),
 
@@ -1084,9 +1098,31 @@ class _ComplaintDetailsPageState extends State<ComplaintDetailsPage> {
                     ),
                     elevation: 0,
                   ),
-                  onPressed: isUpdating
+                  onPressed: (isUpdating || currentStatus == 'Resolved')
                       ? null
                       : () async {
+                    if (currentStatus != 'Pending' && selectedStatus == 'Pending') {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text('Cannot change status back to Pending once in progress or resolved'),
+                          duration: Duration(seconds: 2),
+                          backgroundColor: Color(0xFFEF4444),
+                        ),
+                      );
+                      return;
+                    }
+
+                    if (currentStatus == 'Resolved' && selectedStatus != 'Resolved') {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text('Cannot change status once complaint is marked as Resolved'),
+                          duration: Duration(seconds: 2),
+                          backgroundColor: Color(0xFFEF4444),
+                        ),
+                      );
+                      return;
+                    }
+
                     setState(() {
                       isUpdating = true;
                     });
@@ -1100,6 +1136,10 @@ class _ComplaintDetailsPageState extends State<ComplaintDetailsPage> {
                       });
 
                       if (!mounted) return;
+
+                      setState(() {
+                        currentStatus = selectedStatus;
+                      });
 
                       ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(
@@ -1136,10 +1176,10 @@ class _ComplaintDetailsPageState extends State<ComplaintDetailsPage> {
                         valueColor: AlwaysStoppedAnimation(Colors.white),
                       ),
                     )
-                        : const Text(
-                      'Update Status',
-                      key: ValueKey('label'),
-                      style: TextStyle(
+                        : Text(
+                      currentStatus == 'Resolved' ? 'Already Resolved' : 'Update Status',
+                      key: const ValueKey('label'),
+                      style: const TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.w600,
                         color: Colors.white,

@@ -49,6 +49,21 @@ class _homeState extends State<home> {
                     width: isWeb ? 110 : screenHeight * 0.13,
                     height: isWeb ? 110 : screenHeight * 0.13,
                     fit: BoxFit.contain,
+                    errorBuilder: (context, error, stackTrace) {
+                      return Container(
+                        width: isWeb ? 110 : screenHeight * 0.13,
+                        height: isWeb ? 110 : screenHeight * 0.13,
+                        decoration: const BoxDecoration(
+                          color: Colors.white,
+                          shape: BoxShape.circle,
+                        ),
+                        child: Icon(
+                          Icons.location_city_rounded,
+                          size: isWeb ? 60 : screenHeight * 0.07,
+                          color: const Color(0xFF2B7FD8),
+                        ),
+                      );
+                    },
                   ),
                   const SizedBox(height: 8),
                   Text(
